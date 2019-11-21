@@ -16,9 +16,9 @@ import java.util.Optional;
 public interface PersistenceService<T> {
     List<T> select(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues);
     Optional<T> save(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues);
-    T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, Long dbSequence);
+    T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence);
     Optional<T> find(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues);
     Optional<T> findById(Table table, RowMapper<T> rowMapper, ColumnValue idColumn);
     List<T> getAll(Table table, RowMapper<T> rowMapper);
-    Integer count(Table table, RowMapper<T> rowMapper, Column column);
+    int count(Table table, RowMapper<T> rowMapper, Column column);
 }

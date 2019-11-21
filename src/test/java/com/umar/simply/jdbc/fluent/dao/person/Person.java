@@ -1,24 +1,23 @@
-package com.umar.simply.jdbc.dao;
+package com.umar.simply.jdbc.fluent.dao.person;
 
 import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.Table;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
 import static com.umar.simply.jdbc.meta.Table.table;
+import java.time.LocalDateTime;
 
 public class Person {
 
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private Boolean adult;
-    private Date created;
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private String city;
     private String country;
     private Integer age;
@@ -29,53 +28,60 @@ public class Person {
         Type safe column names declared here
      */
     public interface TblPerson {
-        Column<Long> personId = column("id");
+        final String EX_SCHEMA = "ex";
+        Column<Integer> personId = column("id");
         Column<String> fname = column("firstname");
         Column<String> lname = column("lastname");
         Column<String> email = column("email");
         Column<Boolean> adult = column("adult");
-        Column<Date> created = column("created");
+        Column<LocalDateTime> created = column("created");
+        Column<LocalDateTime> updated = column("updated");
         Column<String> city = column("city");
         Column<String> country = column("country");
         Column<Integer> age = column("age");
-        Table person = table("person", personId);
+        Table person = table(EX_SCHEMA +".person", personId);
 
         //Some column and table aliases comes handy for self joins
 
-        Column<Long> p1_id = as("id", "p1");
+        Column<Integer> p1_id = as("id", "p1");
         Column<String> p1_fname = as("firstname", "p1");
         Column<String> p1_lname = as("lastname", "p1");
         Column<String> p1_email = as("email", "p1");
         Column<Boolean> p1_adult = as("adult", "p1");
-        Column<Date> p1_created = as("created", "p1");
+        Column<LocalDateTime> p1_created = as("created", "p1");
+        Column<LocalDateTime> p1_updated = as("updated", "p1");
         Column<String> p1_city = as("city", "p1");
         Column<String> p1_country = as("country", "p1");
         Column<Integer> p1_age = as("age", "p1");
-        Table p1 = Table.as("person", "p1", personId);
+        Table p1 = Table.as(EX_SCHEMA+".person", "p1", personId);
 
-        Column<Long> p2_id = as("id", "p2");
+        Column<Integer> p2_id = as("id", "p2");
         Column<String> p2_fname = as("firstname", "p2");
         Column<String> p2_lname = as("lastname", "p2");
         Column<String> p2_email = as("email", "p2");
         Column<Boolean> p2_adult = as("adult", "p2");
-        Column<Date> p2_created = as("created", "p2");
+        Column<LocalDateTime> p2_created = as("created", "p2");
+        Column<LocalDateTime> p2_updated = as("updated", "p2");
         Column<String> p2_city = as("city", "p2");
         Column<String> p2_country = as("country", "p2");
         Column<Integer> p2_age = as("age", "p2");
-        Table p2 = Table.as("person", "p2", personId);
+        Table p2 = Table.as(EX_SCHEMA + ".person", "p2", personId);
 
         RowMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
-            final Person person = new Person();
-            person.id = rs.getLong(personId.getColumnName());
-            person.firstName = rs.getString(fname.getColumnName());
-            person.lastName = rs.getString(lname.getColumnName());
-            person.email = rs.getString(email.getColumnName());
-            person.adult = rs.getBoolean(adult.getColumnName());
-            person.created = rs.getTimestamp(created.getColumnName());
-            person.city = rs.getString(city.getColumnName());
-            person.country = rs.getString(country.getColumnName());
-            person.age = rs.getInt(age.getColumnName());
-            return person;
+            final Person personRow = new Person();
+            personRow.id = rs.getInt(personId.getColumnName());
+            personRow.firstName = rs.getString(fname.getColumnName());
+            personRow.lastName = rs.getString(lname.getColumnName());
+            personRow.email = rs.getString(email.getColumnName());
+            personRow.adult = rs.getBoolean(adult.getColumnName());
+            personRow.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
+            if(rs.getTimestamp(updated.getColumnName()) != null) {
+                personRow.updated = rs.getTimestamp(updated.getColumnName()).toLocalDateTime();
+            }
+            personRow.city = rs.getString(city.getColumnName());
+            personRow.country = rs.getString(country.getColumnName());
+            personRow.age = rs.getInt(age.getColumnName());
+            return personRow;
         };
     }
 
@@ -95,10 +101,8 @@ public class Person {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
-
         Person person = (Person) o;
-
-        if (!id.equals(person.id)) return false;
+        if (id == person.id) return true;
         if (!firstName.equals(person.firstName)) return false;
         if (!lastName.equals(person.lastName)) return false;
         return email.equals(person.email);
@@ -106,18 +110,18 @@ public class Person {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id * 31^7;
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
         result = 31 * result + email.hashCode();
         return result;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -153,11 +157,11 @@ public class Person {
         this.adult = adult;
     }
 
-    public Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
@@ -183,5 +187,18 @@ public class Person {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Person(id:%d,firstName:%s,lastName:%s,email:%s,adult:%s,city:%s, country:%s, created:%s, updated:%s)", id, firstName, lastName, email, adult, city, country,created, updated);
     }
 }

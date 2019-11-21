@@ -1,6 +1,6 @@
-package com.umar.simply.jdbc.dao.contract;
+package com.umar.simply.jdbc.fluent.dao.person.contract;
 
-import com.umar.simply.jdbc.dao.DeletePersonService;
+import com.umar.simply.jdbc.fluent.dao.person.DeletePersonService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
 

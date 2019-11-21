@@ -5,10 +5,11 @@
  */
 package com.umar.simply.jdbc.ui.javafx;
 
-import com.umar.simply.jdbc.dao.Person;
-import com.umar.simply.jdbc.dao.PersonQueryService;
+import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
+import com.umar.simply.jdbc.fluent.dao.person.Person;
+import com.umar.simply.jdbc.fluent.dao.person.PersonQueryService;
 import java.net.URL;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +43,7 @@ public class PersonViewController implements Initializable {
     @FXML
     private TableColumn<Person, Boolean> adultColumn;
     @FXML
-    private TableColumn<Person, Timestamp> createdColumn;
+    private TableColumn<Person, LocalDateTime> createdColumn;
     @FXML
     private TableColumn<Person, Integer> ageColumn;
     @FXML
@@ -50,7 +51,7 @@ public class PersonViewController implements Initializable {
     
 
     public static ObservableList<Person> getPeople(){
-        PersonQueryService pqs = new PersonQueryService();
+        PersonQueryService pqs = new PersonQueryService(JdbcUtilService.getConnection());
         return FXCollections.<Person>observableArrayList(pqs.people());
     }
     
@@ -72,7 +73,7 @@ public class PersonViewController implements Initializable {
         countryColumn.setCellValueFactory(countryCellValueFactory);
         PropertyValueFactory<Person,Boolean> adultCellValueFactory = new PropertyValueFactory<>("adult");
         adultColumn.setCellValueFactory(adultCellValueFactory);
-        PropertyValueFactory<Person,Timestamp> createdCellValueFactory = new PropertyValueFactory<>("created");
+        PropertyValueFactory<Person,LocalDateTime> createdCellValueFactory = new PropertyValueFactory<>("created");
         createdColumn.setCellValueFactory(createdCellValueFactory);
         PropertyValueFactory<Person,Integer> ageCellValueFactory = new PropertyValueFactory<>("age");
         ageColumn.setCellValueFactory(ageCellValueFactory);

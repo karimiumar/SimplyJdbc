@@ -1,14 +1,15 @@
 package com.umar.simply.jdbc.ui.javafx;
 
-import com.umar.simply.jdbc.dao.Person;
-import com.umar.simply.jdbc.dao.PersonQueryService;
-import com.umar.simply.jdbc.dao.PersonSaveService;
+import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
+import com.umar.simply.jdbc.fluent.dao.person.Person;
+import com.umar.simply.jdbc.fluent.dao.person.PersonQueryService;
+import com.umar.simply.jdbc.fluent.dao.person.PersonSaveService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class TabelViewHelper {
 
@@ -17,12 +18,12 @@ public class TabelViewHelper {
         PersonSaveService pss = new PersonSaveService();
         Person p1 = new Person("Lucy", "Liu", "lucy@gmail.com", true, "Shanghai", "China", 34);
         Person p2 = new Person("Tina", "Turner", "tina@gmail.com", true, "Dettorite", "US", 34);
-        //pss.save(p1).execute();
-        //pss.save(p2).execute();
+        pss.save(p1).execute();
+        pss.save(p2).execute();
     }
 
     public static ObservableList<Person> getPeople(){
-        PersonQueryService pqs = new PersonQueryService();
+        PersonQueryService pqs = new PersonQueryService(JdbcUtilService.getConnection());
         return FXCollections.<Person>observableArrayList(pqs.people());
     }
 
@@ -75,9 +76,9 @@ public class TabelViewHelper {
         return adultColumn;
     }
 
-    public static TableColumn<Person, Timestamp> createdColumn(){
-        TableColumn<Person, Timestamp> createdColumn = new TableColumn<>("Created");
-        PropertyValueFactory<Person,Timestamp> createdCellValueFactory = new PropertyValueFactory<>("created");
+    public static TableColumn<Person, LocalDateTime> createdColumn(){
+        TableColumn<Person, LocalDateTime> createdColumn = new TableColumn<>("Created");
+        PropertyValueFactory<Person,LocalDateTime> createdCellValueFactory = new PropertyValueFactory<>("created");
         createdColumn.setCellValueFactory(createdCellValueFactory);
         return createdColumn;
     }

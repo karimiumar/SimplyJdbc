@@ -1,7 +1,7 @@
-package com.umar.simply.jdbc.dao;
+package com.umar.simply.jdbc.fluent.dao;
 
 import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.dao.contract.FluentUpdatePersistenceService;
+import com.umar.simply.jdbc.fluent.dao.contract.FluentUpdatePersistenceService;
 import com.umar.simply.jdbc.dml.operations.UpdateOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
@@ -15,10 +15,14 @@ import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> implements FluentUpdatePersistenceService<T> {
 
-    private UpdateOp sql = new UpdateOp();
+    private final UpdateOp sql = new UpdateOp();
     private RowMapper<T> rowMapper;
-    private Long id;
+    private int id;
     private Table table;
+
+    public UpdatePersistenceService(final Connection connection) {
+        super(connection);
+    }
 
     @Override
     public UpdatePersistenceService update(Table table) {
@@ -46,19 +50,16 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public UpdatePersistenceService of(Long id) {
+    public UpdatePersistenceService of(int id) {
         this.id = id;
         return this;
     }
 
     @Override
-    public T execute() {
-        try(Connection connection = util.getConnection()){
-            getSavedResult(sql, connection);
-            Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
-            return optional.get();
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public Optional<T> execute() {
+        getSavedResult(sql);
+        Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
+        return optional;
+        
     }
 }

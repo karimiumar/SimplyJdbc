@@ -24,7 +24,7 @@ public class UpdateTest {
     @Test
     public void combineAndConditionWithValuesTest(){
         UpdateOp update = new UpdateOp();
-        update.table(person).setColumnValues(set(fname,"Eva")).where().not().columnValueEq(set(personId,123L))
+        update.table(person).setColumnValues(set(fname,"Eva")).where().not().columnValueEq(set(personId,123))
                 .and()
                 .beginComplex().columnValueEq(set(adult,false)).or().columnValueEq(set(email,"tina@123.com"))
                 .endComplex();
@@ -37,7 +37,7 @@ public class UpdateTest {
     @Test
     public void complexOrConditionTest() {
         UpdateOp update = new UpdateOp();
-        update.table("ORDER").setColumnValues(set(customerId,44L))
+        update.table("ORDER").setColumnValues(set(customerId,44))
                 .where()
                 .not()
                 .beginComplex()

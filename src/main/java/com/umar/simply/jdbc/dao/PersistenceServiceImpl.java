@@ -18,104 +18,68 @@ import java.util.Optional;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 @Deprecated
 public class PersistenceServiceImpl<T> implements PersistenceService<T>{
-    protected JdbcUtil util;
-    String driverClass = "org.h2.Driver";
-    String url = "jdbc:h2:file:./target/foobar";
-    String user = "sa";
-    String passwd = "sa";
+   
+    private final Connection connection;
 
-    public PersistenceServiceImpl(){
-        util = JdbcUtil.init(driverClass,url,user,passwd);
+    public PersistenceServiceImpl(Connection connection){
+        this.connection = connection;
     }
-
-    public PersistenceServiceImpl(final String driverClass, final String url, final String user, final String passwd){
-        util = JdbcUtil.init(driverClass,url,user,passwd);
-    }
-
 
     @Override
     public List<T> select(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create();
         sql.select().all().from(table).where().columnValueEq(getValuesArray(columnValues));
-        try(Connection connection = util.getConnection()){
-            getMappedResult(rowMapper, result, sql, connection);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        getMappedResult(rowMapper, result, sql);
         return result;
     }
 
     @Override
     public Optional<T> save(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
         InsertOp sql = InsertOp.create().intoTable(table).columnValues(columnValues);
-        try(Connection connection = util.getConnection()){
-            Long databaseId = getSavedResult(sql, connection);
-            Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),databaseId));
-            return optional;
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        int databaseId = getSavedResult(sql);
+        Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),databaseId));
+        return optional;
     }
 
     @Override
-    public T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, Long dbSequence) {
+    public T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
         UpdateOp sql = new UpdateOp().table(table).setColumnValues(getValuesArray(columnValuesToSet))
                 .where().columnValueEq(getValuesArray(clauseValues));
-        try(Connection connection = util.getConnection()){
-            getSavedResult(sql, connection);
-            Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),dbSequence));
-            return optional.get();
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        getSavedResult(sql);
+        Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),dbSequence));
+        return optional.get();
     }
 
     @Override
     public Optional<T> findById(Table table, RowMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().all().from(table).where().columnValueEq(idColumn);
-        try(Connection connection = util.getConnection()){
-            getMappedResult(rowMapper, result, sql, connection);
-            return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        getMappedResult(rowMapper, result, sql);
+        return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
 
     @Override
     public Optional<T> find(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().all().from(table).where().columnValueEq(getValuesArray(columnValues));
-        try(Connection connection = util.getConnection()){
-            getMappedResult(rowMapper, result, sql, connection);
-            return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        getMappedResult(rowMapper, result, sql);
+        return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
 
     @Override
     public List<T> getAll(Table table, RowMapper<T> rowMapper) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create().select().all().from(table);
-        try(Connection connection = util.getConnection()){
-            getMappedResult(rowMapper, result, sql, connection);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        getMappedResult(rowMapper, result, sql);
         return result;
     }
 
     @Override
-    public Integer count(Table table, RowMapper<T> rowMapper, Column column) {
+    public int count(Table table, RowMapper<T> rowMapper, Column column) {
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().count(column).from(table);
-        try(Connection connection = util.getConnection()){
-            getMappedResult(rowMapper, result, sql, connection);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
+        getMappedResult(rowMapper, result, sql);
         return result.size()>0 ? result.size() : 0;
     }
 
@@ -137,8 +101,8 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
         return vals;
     }
 
-    protected void getMappedResult(RowMapper<T> rowMapper, List<T> result, AbstractOp sql, Connection connection) {
-        try(PreparedStatement ps = prepareAndFill(sql, connection);
+    protected void getMappedResult(RowMapper<T> rowMapper, List<T> result, AbstractOp sql) {
+        try(PreparedStatement ps = prepareAndFill(sql);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
                 result.add(rowMapper.map(rs));
@@ -148,14 +112,14 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
         }
     }
 
-    protected Long getSavedResult(AbstractOp sql, Connection conn) {
-        Long key = -1L;
-        try(PreparedStatement ps = prepareAndFill(sql, conn)){
+    protected int getSavedResult(AbstractOp sql) {
+        int key = -1;
+        try(PreparedStatement ps = prepareAndFill(sql)){
             System.out.println(sql.getSQL());
             ps.executeUpdate();
             try(ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    key = (long)rs.getInt(1);
+                    key = rs.getInt(1);
                 }else{
                     //Its an update..
                 }
@@ -166,7 +130,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
         }
     }
 
-    private PreparedStatement prepareAndFill(AbstractOp sql, Connection connection) throws SQLException {
+    private PreparedStatement prepareAndFill(AbstractOp sql) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql.getSQL(), Statement.RETURN_GENERATED_KEYS);
         sql.fill(ps);
         return ps;

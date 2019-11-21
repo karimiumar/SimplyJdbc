@@ -1,9 +1,10 @@
-package com.umar.simply.jdbc.dao;
+package com.umar.simply.jdbc.fluent.dao.person;
 
 
+import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import java.util.List;
 
-import static com.umar.simply.jdbc.dao.Person.TblPerson.fname;
+import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.fname;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import static java.util.Arrays.asList;
 import java.util.stream.Collectors;
@@ -33,24 +34,26 @@ public class PersonPersistenceTest {
         Assertions.assertTrue(p1.getId() > 0);
         p2 = saveService.save(p2).execute();
         Assertions.assertTrue(p2.getId() > 0);
+        System.out.println(p1);
     }
 
     @Test
     @Order(2)
     public void updatePerson(){
         PersonUpdateService updateService = new PersonUpdateService();
-        PersonQueryService<Person> queryLucy = new PersonQueryService<>();
+        PersonQueryService<Person> queryLucy = new PersonQueryService<>(JdbcUtilService.getConnection());
         List<Person> people = queryLucy.people().stream().filter(p->p.getEmail().equals("lucy@gmail.com")).collect(Collectors.toList());
         Person p1 = people.get(0);
         Person p1NewVal = new Person("Lucy", "Liu", "lucy@gmail.com", true, "Beijing", "China", 34);
         p1 = updateService.update(p1).with(p1NewVal).execute();
         Assertions.assertEquals("Beijing", p1.getCity());
+        System.out.println(p1);
     }
 
     @Test
     @Order(3)
     public void listAll(){
-        PersonQueryService pqs = new PersonQueryService();
+        PersonQueryService pqs = new PersonQueryService(JdbcUtilService.getConnection());
         List<Person> people = pqs.people();
         Assertions.assertTrue(people.size() > 0);
         Assertions.assertEquals(2, people.size());

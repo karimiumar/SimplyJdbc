@@ -1,13 +1,12 @@
-package com.umar.simply.jdbc.dao;
+package com.umar.simply.jdbc.fluent.dao;
 
 import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.dao.contract.FluentSavePersistenceService;
+import com.umar.simply.jdbc.fluent.dao.contract.FluentSavePersistenceService;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +14,13 @@ import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 public class SavePersistenceService<T> extends AbstractPersistenceService<T> implements FluentSavePersistenceService<T> {
 
-    private InsertOp sql = InsertOp.create();
+    private final InsertOp sql = InsertOp.create();
     private RowMapper<T> rowMapper;
     private Table table;
+
+    public SavePersistenceService(final Connection connection) {
+        super(connection);
+    }
 
     @Override
     public SavePersistenceService<T> save(Table table) {
@@ -34,13 +37,9 @@ public class SavePersistenceService<T> extends AbstractPersistenceService<T> imp
 
     @Override
     public T execute() {
-        try(Connection connection = util.getConnection()){
-            Long id = getSavedResult(sql, connection);
-            Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
-            return optional.get();
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        int id = getSavedResult(sql);
+        Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
+        return optional.get();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.umar.simply.jdbc.dml.nojdbc;
 
-import com.umar.simply.jdbc.dao.Person;
+import com.umar.simply.jdbc.fluent.dao.person.Person;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.sample.schema.metadata.ExSchema;
 

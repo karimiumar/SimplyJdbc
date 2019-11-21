@@ -1,14 +1,13 @@
-package com.umar.simply.jdbc.dao;
+package com.umar.simply.jdbc.fluent.dao;
 
 import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.dao.contract.FluentDeletePersistenceService;
+import com.umar.simply.jdbc.fluent.dao.contract.FluentDeletePersistenceService;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class DeletePersistenceService<T> extends AbstractPersistenceService<T> implements FluentDeletePersistenceService<T> {
@@ -16,6 +15,10 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
     private RowMapper<T> rowMapper;
 
     DeleteOp sql = DeleteOp.create();
+
+    public DeletePersistenceService(final Connection connection) {
+        super(connection);
+    }
 
     @Override
     public DeletePersistenceService from(Table table) {
@@ -49,10 +52,6 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public void execute() {
-        try(Connection connection = util.getConnection()){
-            getSavedResult(sql, connection);
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        getSavedResult(sql);
     }
 }

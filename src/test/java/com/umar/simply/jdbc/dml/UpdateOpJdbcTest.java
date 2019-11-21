@@ -10,7 +10,9 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 import java.sql.*;
 
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import com.umar.simply.jdbc.sample.schema.metadata.ExSchema;
 import static com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Person.TblPerson.*;
+import static com.umar.simply.jdbc.sample.schema.metadata.ExSchema.EX_SCHEMA;
 import static java.util.Arrays.asList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
@@ -27,7 +29,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class UpdateOpJdbcTest  {
 
     static String driverClass = "org.h2.Driver";
-    static String url = "jdbc:h2:file:./target/ex";
+    static String url = "jdbc:h2:./h2/db/ex;AUTO_SERVER=TRUE";
     static String user = "sa";
     static String passwd = "sa";
     static JdbcUtil util = JdbcUtil.init(driverClass, url, user, passwd);
@@ -45,7 +47,7 @@ public class UpdateOpJdbcTest  {
     @MethodSource("people")
     @Order(1)
     public void insertPeople(ColumnValue<String> fname, ColumnValue<String> lname, ColumnValue<String> email, ColumnValue<Boolean> isAdult){
-        InsertOp insert = InsertOp.create().intoTable(person).columnValues(asList(fname,lname, email, isAdult));
+        InsertOp insert = InsertOp.create().intoTable(EX_SCHEMA +"." +person).columnValues(asList(fname,lname, email, isAdult));
         try (Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
             insert.fill(ps).executeUpdate();
@@ -57,7 +59,7 @@ public class UpdateOpJdbcTest  {
     @AfterAll
     public static void clean() {
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(person).where().anyColumnValues(set(fname,"Tina"), set(fname,"Angelina"), set(fname,"Eva"), set(lname,"Ali Karimi"));
+        operation.deleteFrom(EX_SCHEMA +"." +person).where().anyColumnValues(set(fname,"Tina"), set(fname,"Angelina"), set(fname,"Eva"), set(lname,"Ali Karimi"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             operation.fill(ps).executeUpdate();
@@ -70,7 +72,7 @@ public class UpdateOpJdbcTest  {
     @Order(2)
     public void updateWhere() {
         UpdateOp operation = new UpdateOp();
-        operation.table(person).setColumnValues(set(fname,"Mohammad"),set(lname,"Ali Karimi")).where().columnValueEq(set(fname,"Tina"));
+        operation.table(EX_SCHEMA +"." +person).setColumnValues(set(fname,"Mohammad"),set(lname,"Ali Karimi")).where().columnValueEq(set(fname,"Tina"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL(), Statement.RETURN_GENERATED_KEYS)) {
             int result = operation.fill(ps).executeUpdate();
@@ -91,7 +93,7 @@ public class UpdateOpJdbcTest  {
     @Order(3)
     public void updateWhereAnd() {
         UpdateOp operation = new UpdateOp();
-        operation.table(person).setColumnValues(set(fname,"Mohammad Umar"), set(lname,"Ali Karimi"), set(email,"karimiumar@gmail.com"))
+        operation.table(EX_SCHEMA +"." +person).setColumnValues(set(fname,"Mohammad Umar"), set(lname,"Ali Karimi"), set(email,"karimiumar@gmail.com"))
                 .where().columnValueEq(set(fname,"Mohammad"), set(adult,true), set(email,"tina@rediffmail.com"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {

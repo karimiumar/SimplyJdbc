@@ -1,7 +1,7 @@
-package com.umar.simply.jdbc.dao.contract;
+package com.umar.simply.jdbc.fluent.dao.contract;
 
 import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.dao.QueryService;
+import com.umar.simply.jdbc.fluent.dao.QueryService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;

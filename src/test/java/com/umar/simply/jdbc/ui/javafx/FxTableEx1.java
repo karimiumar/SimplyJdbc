@@ -1,6 +1,6 @@
 package com.umar.simply.jdbc.ui.javafx;
 
-import com.umar.simply.jdbc.dao.Person;
+import com.umar.simply.jdbc.fluent.dao.person.Person;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

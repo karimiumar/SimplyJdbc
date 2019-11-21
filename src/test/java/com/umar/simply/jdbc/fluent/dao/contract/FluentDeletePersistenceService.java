@@ -1,7 +1,7 @@
-package com.umar.simply.jdbc.dao.contract;
+package com.umar.simply.jdbc.fluent.dao.contract;
 
 import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.dao.DeletePersistenceService;
+import com.umar.simply.jdbc.fluent.dao.DeletePersistenceService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
