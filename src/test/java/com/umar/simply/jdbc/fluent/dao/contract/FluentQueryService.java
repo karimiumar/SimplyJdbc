@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface FluentQueryService<T> {
     QueryService<T> all();
+    QueryService<T> all(List<String> aliases);
     QueryService<T> from(Table table);
     QueryService<T> where();
     QueryService<T> whereIn(Column<T> column, List<ColumnValue> values);
@@ -20,6 +21,7 @@ public interface FluentQueryService<T> {
     QueryService<T> column(List<Column> columns);
     QueryService<T> column(Column<T> column);
     QueryService<T> columnValueEq(List<ColumnValue> columnValues);
+    QueryService<T> columnValueEq(ColumnValue columnValue);
     QueryService<T> columnEq(Column<T> column);
     QueryService<T> ne(Column<T> condition);
     QueryService<T> not();
@@ -39,6 +41,7 @@ public interface FluentQueryService<T> {
     QueryService<T> ge();
     QueryService<T> eq(Column condition);
     QueryService<T> eq();
+    QueryService<T> eq(ColumnValue value);
     QueryService<T> gt(ColumnValue value);
     QueryService<T> lt(ColumnValue value);
     QueryService<T> ge(ColumnValue columnValue);
@@ -74,6 +77,7 @@ public interface FluentQueryService<T> {
     QueryService<T> minus();
     QueryService<T> inner();
     QueryService<T> join();
+    QueryService<T> join(Table table);
     QueryService<T> left();
     QueryService<T> right();
     QueryService<T> union();
@@ -81,6 +85,7 @@ public interface FluentQueryService<T> {
     QueryService<T> any();
     QueryService<T> some();
     QueryService<T> select(Column column);
+    QueryService<T> table(Table table);
     QueryService<T> select(List<Column> columns);
     QueryService<T> select();
     QueryService<T> withIndex(Index index);

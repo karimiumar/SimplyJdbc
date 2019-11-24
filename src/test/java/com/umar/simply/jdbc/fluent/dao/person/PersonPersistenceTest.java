@@ -4,9 +4,6 @@ package com.umar.simply.jdbc.fluent.dao.person;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.fname;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
-import static java.util.Arrays.asList;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +18,8 @@ public class PersonPersistenceTest {
     @AfterAll 
     public static void clean() {
         DeletePersonService dps = new DeletePersonService();
-        dps.delete().where().anyColumnValues(asList(set(fname,"Lucy"))).execute();
+        //dps.delete().where().anyColumnValues(asList(set(fname,"Lucy"))).execute();
+        dps.delete().execute();
     }
 
     @Test
@@ -35,6 +33,8 @@ public class PersonPersistenceTest {
         p2 = saveService.save(p2).execute();
         Assertions.assertTrue(p2.getId() > 0);
         System.out.println(p1);
+        Person umar = new Person("Mohammad Umar", "Ali Karimi", "karimiumar@hotmail.com", true, "India", "Nainital", 37);
+        saveService.save(umar).execute();
     }
 
     @Test
@@ -56,7 +56,124 @@ public class PersonPersistenceTest {
         PersonQueryService pqs = new PersonQueryService(JdbcUtilService.getConnection());
         List<Person> people = pqs.people();
         Assertions.assertTrue(people.size() > 0);
-        Assertions.assertEquals(2, people.size());
+        Assertions.assertEquals(3, people.size());
+    }
+    
+    @Test
+    public void findByNameLucy() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Lucy";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.size() > 0);
+        Assertions.assertEquals(2, result.size());
+    }
+    
+    @Test
+    public void findByNamePinder() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Pinder";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.size() > 0);
+        Assertions.assertEquals(1, result.size());
+    }
+    
+    @Test
+    public void findByNameLucyPinder() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Lucy Pinder";
+        List<Person> result = query.findByName(name); //search result will return two Lucy ->{Lucy Liu, Lucy Pinder}
+        Assertions.assertTrue(result.size() > 0);
+        Assertions.assertEquals(2, result.size());
+    }
+    
+    @Test
+    public void findByNameLucyLiu() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Lucy Liu";
+        List<Person> result = query.findByName(name); //search result will return two Lucy ->{Lucy Liu, Lucy Pinder}
+        Assertions.assertTrue(result.size() > 0);
+        Assertions.assertEquals(2, result.size());
+    }
+    
+    @Test
+    public void findByNameGeorgeMichael() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "George Michael";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void findByNameGeorgeLeeMichael() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "George Lee Michael";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void findByNameDonGeorgeLeeMichael() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Don George Lee Michael";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void findByNameBlank() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = " ";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void findByNameEmpty() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void findByNameNull() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = null;
+        Exception assertThrows = Assertions.assertThrows(RuntimeException.class, ()->query.findByName(name));
+        Assertions.assertTrue(assertThrows.getMessage().contains("parameter <name> is required"));
+    }
+    
+    /**
+     * Given query results in a single result because firstName column contains "Mohammad Umar"
+     * and lastName contains "Ali Karimi". However the search query will split the name into
+     * following indexes and search only [0]th and [1]st index with the 'like' keyword.
+     * [0]=Mohammad
+     * [1]=Umar
+     * [2]=Ali
+     * [3]=Karimi
+     */
+    @Test
+    public void findUmarByFullName() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Mohammad Umar Ali Karimi";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(!result.isEmpty());
+    }
+    
+    /**
+     * Given query results in a single result because firstName column contains "Mohammad Umar"
+     * and lastName contains "Ali Karimi". However the search query will split the name into
+     * following indexes and search only [0]th and [1]st index with the 'like' keyword.
+     * [0]=Mohammad
+     * [1]=Umar
+     * 
+     */
+    @Test
+    public void findUmarByMohammdUmar() {
+        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        String name = "Mohammad Umar";
+        List<Person> result = query.findByName(name);
+        Assertions.assertTrue(!result.isEmpty());
     }
 
 }

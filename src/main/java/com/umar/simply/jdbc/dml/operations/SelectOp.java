@@ -2,7 +2,6 @@ package com.umar.simply.jdbc.dml.operations;
 
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +25,18 @@ public class SelectOp extends AbstractOp<SelectOp> {
      */
     public SelectOp all() {
         op().append("*");
+        return this;
+    }
+    
+    public SelectOp all(List<String> aliases) {
+        int len = aliases.size();
+        int cnt = 1;
+        for(String alias:aliases) {
+            op().append(alias);
+            if(cnt++ < len) {
+                op().append(",");
+            }
+        }
         return this;
     }
 

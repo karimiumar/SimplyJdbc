@@ -38,6 +38,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     public PreparedStatement fill(PreparedStatement ps){
         try {
             populate(ps, getValuesArray());
+            reset();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -779,6 +780,12 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append("=");
         return (T) this;
     }
+    
+    public T eq(ColumnValue value) {
+        op().append("=?");
+        getValues().add(value);
+        return (T) this;
+    }
 
     /**
      * SQL GROUP BY clause. 'GROUP BY' operator is appended followed by columns to group.
@@ -886,6 +893,16 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      */
     public T join() {
         op().append(" JOIN ");
+        return (T) this;
+    }
+    /**
+     * SQL JOIN operation
+     * @param table The JOIN table 
+     * @return Returns this object
+     */
+    public T join(Table table) {
+        op().append(" JOIN ");
+        op().append(table);
         return (T) this;
     }
 
@@ -1075,5 +1092,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
                 throw new IllegalArgumentException(String.format("Unknown type of the param is found. [param: %s, paramIndex:%s]", param, paramIndex));
             }
         }
+    }
+    
+    private void reset() {
+        op().setLength(0); //clear StringBuilder
+        getValues().clear();//clear the List
     }
 }

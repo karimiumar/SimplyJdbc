@@ -115,7 +115,6 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     protected int getSavedResult(AbstractOp sql) {
         int key = -1;
         try(PreparedStatement ps = prepareAndFill(sql)){
-            System.out.println(sql.getSQL());
             ps.executeUpdate();
             try(ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {

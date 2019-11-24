@@ -19,6 +19,7 @@ public class PersonUpdateService implements FluentPersonUpdateService {
     private Integer id = -1;
     UpdatePersistenceService<Person> ups = new UpdatePersistenceService<>(JdbcUtilService.getConnection());
 
+    @Override
     public PersonUpdateService update(Person existing) {
         existingVals = asList(
                 //same logic as equals()
@@ -31,6 +32,7 @@ public class PersonUpdateService implements FluentPersonUpdateService {
         return this;
     }
 
+    @Override
     public PersonUpdateService with(Person newVal) {
         newVals = asList(
                 set(fname, newVal.getFirstName())

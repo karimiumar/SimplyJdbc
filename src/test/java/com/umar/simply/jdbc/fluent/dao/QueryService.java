@@ -9,7 +9,6 @@ import com.umar.simply.jdbc.meta.Index;
 import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     @Override
     public QueryService<T> all() {
         sql.all();
+        return this;
+    }
+    
+    @Override
+    public QueryService<T> all(List<String> aliases) {
+        sql.all(aliases);
         return this;
     }
 
@@ -73,6 +78,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     @Override
     public QueryService<T> columnValueEq(List<ColumnValue> columnValues) {
         sql.columnValueEq(getValuesArray(columnValues));
+        return this;
+    }
+
+    @Override
+    public QueryService<T> columnValueEq(ColumnValue columnValue) {
+        sql.columnValueEq(columnValue);
         return this;
     }
 
@@ -187,6 +198,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     @Override
     public QueryService<T> eq() {
         sql.eq();
+        return this;
+    }
+
+    @Override
+    public QueryService<T> eq(ColumnValue value) {
+        sql.eq(value);
         return this;
     }
 
@@ -383,6 +400,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
+    public QueryService<T> table(Table table) {
+        sql.table(table);
+        return this;
+    }
+
+    @Override
     public QueryService<T> minus() {
         sql.minus();
         return this;
@@ -397,6 +420,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     @Override
     public QueryService<T> join() {
         sql.join();
+        return this;
+    }
+    
+    @Override
+    public QueryService<T> join(Table table) {
+        sql.join(table);
         return this;
     }
 
