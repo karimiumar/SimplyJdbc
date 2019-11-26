@@ -26,10 +26,10 @@ public class SqlQueryTest {
         select.select()
                 .distinct(ExSchema.Person.TblPerson.country)
                 .from("supplier")
-                .orderBy("country")
+                .orderBy(ExSchema.Person.TblPerson.country)
                 .asc();
         String result = select.getSQL();
-        String expected = "SELECT DISTINCT country FROM supplier ORDER BY country ASC";
+        String expected = "SELECT  DISTINCT country FROM supplier ORDER BY country ASC";
         Assertions.assertEquals(result, expected);
     }
 
@@ -38,7 +38,7 @@ public class SqlQueryTest {
         SelectOp sql = create();
         sql.select().count(create().distinct("country")).from("supplier");
         String result = sql.getSQL();
-        String expected = "SELECT COUNT(DISTINCT country) FROM supplier";
+        String expected = "SELECT  COUNT(DISTINCT country) FROM supplier";
         Assertions.assertEquals(result, expected);
     }
 
@@ -137,7 +137,7 @@ public class SqlQueryTest {
         SelectOp sql = create();
         sql.select().avg(unitprice).from(product);
         String result = sql.getSQL();
-        String expected = "SELECT AVG(unit_price) FROM product";
+        String expected = "SELECT  AVG(unit_price) FROM product";
         Assertions.assertEquals(result,expected);
     }
 
@@ -146,7 +146,7 @@ public class SqlQueryTest {
         SelectOp sql = create();
         sql.select().max(unitprice).from(prd1);
         String result = sql.getSQL();
-        String expected = "SELECT MAX(unit_price) FROM product prd1";
+        String expected = "SELECT  MAX(unit_price) FROM product prd1";
         Assertions.assertEquals(result,expected);
     }
 
@@ -155,7 +155,7 @@ public class SqlQueryTest {
         SelectOp sql = create();
         sql.select().min(column("price")).from("product");
         String result = sql.getSQL();
-        String expected = "SELECT MIN(price) FROM product";
+        String expected = "SELECT  MIN(price) FROM product";
         Assertions.assertEquals(result,expected);
     }
 
@@ -164,7 +164,7 @@ public class SqlQueryTest {
         SelectOp sql = create();
         sql.select().sum(unitprice).from("product");
         String result = sql.getSQL();
-        String expected = "SELECT SUM(unit_price) FROM product";
+        String expected = "SELECT  SUM(unit_price) FROM product";
         Assertions.assertEquals(result,expected);
     }
 
@@ -294,7 +294,7 @@ public class SqlQueryTest {
     public void orderBy(){
         SelectOp sql = create().select().column(asList(productId, prd_name, unitprice))
                 .from("product").where().column(unitprice).eq().values(set(20))
-                .orderBy("product_name");
+                .orderBy().column(prd_name);
         String result = sql.getSQL();
         String expected = "SELECT id,product_name,unit_price FROM product WHERE unit_price=? ORDER BY product_name";
         Assertions.assertEquals(result,expected);
@@ -306,7 +306,7 @@ public class SqlQueryTest {
                 .with(c1_cuntry)
                 .from("customer c1").groupBy(c1_cuntry);
         String result = sql.getSQL();
-        String expected = "SELECT COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country";
+        String expected = "SELECT  COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country";
         Assertions.assertEquals(result,expected);
     }
 
@@ -317,10 +317,24 @@ public class SqlQueryTest {
                 .with(c1_cuntry)
                 .from("customer c1")
                 .groupBy(c1_cuntry)
-                .orderBy(create().count(c1_id).getSQL()).desc();
+                .orderBy().count(c1_id).desc();
         String result = sql.getSQL();
-        String expected = "SELECT COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country ORDER BY COUNT(c1.id) DESC";
+        String expected = "SELECT  COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country ORDER BY  COUNT(c1.id) DESC";
         Assertions.assertEquals(result,expected);
+    }
+    
+    @Test
+    public void subQuerySelectOrderByDesc(){
+        SelectOp sql = create().select().all().from(customer)
+                .left().join()
+                .beginComplex()
+                .select().sum(totalAmount).as("TOTAL_AMOUNT").with(asList(o1_customerId))
+                .from(o1).groupBy(o1_customerId)
+                .endComplex()
+                .as("CUSTOMER_TOTALS")
+                .on().column(o1_customerId).eq("CUSTOMER_TOTALS.CUSTOMER_ID")
+                .orderBy().column("CUSTOMER_TOTALS.TOTAL_AMOUNT").desc();
+        System.out.println(sql.getSQL());
     }
 
     @Test
@@ -330,9 +344,10 @@ public class SqlQueryTest {
                 .join().table(c1)
                 .on().column(o1_customerId).eq().column(c1_id)
                 .groupBy(asList(c1_fname,c1_lname))
-                .orderBy(create().sum(o1_totalAmount).getSQL()).desc();
+                .orderBy().sum(o1_totalAmount)
+                .desc();
         String result = sql.getSQL();
-        String expected = "SELECT SUM(o1.total_amount),c1.first_name,c1.last_name FROM order o1 JOIN customer c1 ON o1.customer_id=c1.id GROUP BY c1.first_name,c1.last_name ORDER BY SUM(o1.total_amount) DESC";
+        String expected = "SELECT  SUM(o1.total_amount),c1.first_name,c1.last_name FROM order o1 JOIN customer c1 ON o1.customer_id=c1.id GROUP BY c1.first_name,c1.last_name ORDER BY  SUM(o1.total_amount) DESC";
         Assertions.assertEquals(result,expected);
     }
 
@@ -347,7 +362,7 @@ public class SqlQueryTest {
                 .groupBy(c1_cuntry)
                 .having().count(c1_id).gt(set(10));
         String result = sql.getSQL();
-        String expected = "SELECT COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country HAVING COUNT(c1.id)>?";
+        String expected = "SELECT  COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country HAVING  COUNT(c1.id)>?";
         Assertions.assertEquals(result,expected);
     }
 
@@ -405,7 +420,7 @@ public class SqlQueryTest {
         /*Simulate INTERSECT operator in MySQL using DISTINCT and INNER JOIN*/
         SelectOp sql = SelectOp.create().select().distinct().column("id").from("t1").inner().join().table("t2").using("id");
         String result = sql.getSQL();
-        String expected = "SELECT DISTINCT id FROM t1 INNER JOIN t2 USING(id)";
+        String expected = "SELECT  DISTINCT id FROM t1 INNER JOIN t2 USING(id)";
         Assertions.assertEquals(result,expected);
     }
 
@@ -415,7 +430,7 @@ public class SqlQueryTest {
         SelectOp sql = SelectOp.create().select().distinct().column("id").from("t1").where()
                 .column("id").in(create().select().column("id").from("t2"));
         String result = sql.getSQL();
-        String expected = "SELECT DISTINCT id FROM t1 WHERE id IN (SELECT id FROM t2)";
+        String expected = "SELECT  DISTINCT id FROM t1 WHERE id IN (SELECT id FROM t2)";
         Assertions.assertEquals(result,expected);
     }
 
@@ -441,7 +456,7 @@ public class SqlQueryTest {
         SelectOp sql = SelectOp.create().select().count(email).with(email)
                 .from(person).groupBy(email).having().count(email).gt().values(set(1));
         String result = sql.getSQL();
-        String expected = "SELECT COUNT(email), email FROM person GROUP BY email HAVING COUNT(email)>?";
+        String expected = "SELECT  COUNT(email), email FROM person GROUP BY email HAVING  COUNT(email)>?";
         Assertions.assertEquals(result,expected);
     }
 
@@ -461,7 +476,7 @@ public class SqlQueryTest {
                         .where(prd1_suppid).eq(s1_Id).and(prd1_unitprice).lt().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier s1 WHERE EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
+        String expected = "SELECT * FROM supplier s1 WHERE  EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
         Assertions.assertEquals(result,expected);
     }
 
@@ -473,7 +488,7 @@ public class SqlQueryTest {
                         .where(prd1_suppid).eq(s1_Id).and(prd1_unitprice).lt().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier s1 WHERE  NOT EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
+        String expected = "SELECT * FROM supplier s1 WHERE  NOT  EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
         Assertions.assertEquals(result,expected);
     }
 

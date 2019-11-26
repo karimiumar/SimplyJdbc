@@ -10,20 +10,35 @@ import java.util.Objects;
 
 public class Order {
 
-    private int id;
-    private LocalDateTime orderDate;
-    private int orderNo;
-    private int customerId;
-    private double totalAmount;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    int id;
+    LocalDateTime orderDate;
+    int orderNo;
+    int customerId;
+    double totalAmount;
+    LocalDateTime created;
+    LocalDateTime updated;
+    
+    private Order() {
+        
+    }
+
+    public Order(LocalDateTime orderDate, int orderNo, int customerId, double totalAmount) {
+        this.orderDate = orderDate;
+        this.orderNo = orderNo;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+    }
+        
+    public static Order emptyOrder() {
+        return new Order();
+    }
 
     public interface TblOrder {
 
         Column<Integer> orderId = column("id");
         Column<LocalDateTime> orderDate = column("order_date");
         Column<Integer> orderNo = column("order_number");
-        Column<Integer> customerId = column("customer_id");
+        Column<Integer> orderCustomerId = column("customer_id");
         Column<Double> totalAmount = column("total_amount");
         Column<LocalDateTime> created = column("created");
         Column<LocalDateTime> updated = column("updated");
@@ -67,7 +82,7 @@ public class Order {
             rowOrder.id = rs.getInt(orderId.getColumnName());
             rowOrder.orderDate = rs.getTimestamp(orderDate.getColumnName()).toLocalDateTime();
             rowOrder.orderNo = rs.getInt(orderNo.getColumnName());
-            rowOrder.customerId = rs.getInt(customerId.getColumnName());
+            rowOrder.customerId = rs.getInt(orderCustomerId.getColumnName());
             rowOrder.totalAmount = rs.getDouble(totalAmount.getColumnName());
             rowOrder.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
             if(rs.getTimestamp(updated.getColumnName()) != null) {

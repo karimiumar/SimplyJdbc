@@ -6,6 +6,7 @@ import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Customer {
 
@@ -14,11 +15,21 @@ public class Customer {
     String lastName;
     String country;
     String city;
+    transient double totalAmount; //this is not a database column but is required for joining with orders table.
     LocalDateTime created;
     LocalDateTime updated;
+
+    /*
+    CUSTOMER_TOTALS is an alias for a subquery as given:
+    (SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id) AS CUSTOMER_TOTALS
+     */
+    static final String CUSTOMER_TOTALS = "CUSTOMER_TOTALS";
+    static final String TOTAL_AMOUNT = "TOTAL_AMOUNT";
+    static final Column<Integer> CUSTOMER_TOTALS_CustomerId = Column.column(CUSTOMER_TOTALS + ".CUSTOMER_ID");
+    static final Column<Double> CUSTOMER_TOTALS_TotalAmount = Column.column(CUSTOMER_TOTALS +"."+TOTAL_AMOUNT);
     
     private Customer() {
-        
+
     }
 
     public Customer(String firstName, String lastName, String country, String city) {
@@ -27,7 +38,11 @@ public class Customer {
         this.country = country;
         this.city = city;
     }
-    
+
+    public static Customer emptyCustomer() {
+        return new Customer();
+    }
+
     public interface TblCustomer {
 
         Column<Integer> customerId = column("id");
@@ -38,12 +53,12 @@ public class Customer {
         Column<LocalDateTime> created = column("created");
         Column<LocalDateTime> updated = column("updated");
         Table customer = Table.table("ex.customer", customerId);
-        
+
         /**
-         * If the returning SQL ResultSet consist of joins of two or more
-         * tables then the given Mapping should be used by the RowMapper.map(ResultSet) as the ResultSetMetaData
-         * only has information about actual table column names and all the aliases
-         * created to are lost. 
+         * If the returning SQL ResultSet consist of joins of two or more tables
+         * then the given Mapping should be used by the RowMapper.map(ResultSet)
+         * as the ResultSetMetaData only has information about actual table
+         * column names and all the aliases created to are lost.
          */
         Table customer_rsmd = Table.table("customer", customerId);
         Column<Integer> customer_id_rsmd = as("id", customer_rsmd.getTableName());
@@ -71,7 +86,7 @@ public class Customer {
         Column<LocalDateTime> c2_created = as("created", "c2");
         Column<LocalDateTime> c2_updated = as("updated", "c2");
         Table c2 = Table.as("ex.customer", "c2", customerId);
-        
+
         RowMapper<Customer> CUSTOMER_ROW_MAPPER = (rs) -> {
             Customer customerRow = new Customer();
             customerRow.id = rs.getInt(customerId.getColumnName());
@@ -80,16 +95,57 @@ public class Customer {
             customerRow.city = rs.getString(city.getColumnName());
             customerRow.country = rs.getString(country.getColumnName());
             customerRow.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
-            if(rs.getTimestamp(updated.getColumnName()) != null) {
+            if (rs.getTimestamp(updated.getColumnName()) != null) {
                 customerRow.updated = rs.getTimestamp(updated.getColumnName()).toLocalDateTime();
             }
+            return customerRow;
+        };
+
+        public static RowMapper<Customer> TotalAmtOrderedByEachCustomerMap = (rs) -> {
+            Customer customerRow = new Customer();
+            customerRow.id = rs.getInt(customer_id_rsmd.getColumnName());
+            customerRow.firstName = rs.getString(customer_fname_rsmd.getColumnName());
+            customerRow.lastName = rs.getString(customer_lname_rsmd.getColumnName());
+            customerRow.city = rs.getString(customer_city_rsmd.getColumnName());
+            customerRow.country = rs.getString(customer_cuntry_rsmd.getColumnName());
+            customerRow.created = rs.getTimestamp(customer_created_rsmd.getColumnName()).toLocalDateTime();
+            if (rs.getTimestamp(customer_updated_rsmd.getColumnName()) != null) {
+                customerRow.updated = rs.getTimestamp(customer_updated_rsmd.getColumnName()).toLocalDateTime();
+            }
+            customerRow.totalAmount = rs.getDouble(TOTAL_AMOUNT);
             return customerRow;
         };
     }
 
     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.firstName);
+        hash = 53 * hash + Objects.hashCode(this.lastName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Customer other = (Customer) obj;
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        return Objects.equals(this.lastName, other.lastName);
+    }
+    
+    @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", country=" + country + ", city=" + city + ", created=" + created + ", updated=" + updated + '}';
+        return "Customer{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", country=" + country + ", city=" + city + ", totalAmount=" + totalAmount + ", created=" + created + ", updated=" + updated + '}';
     }
 
     public int getId() {
@@ -147,6 +203,4 @@ public class Customer {
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
     }
-    
-    
 }

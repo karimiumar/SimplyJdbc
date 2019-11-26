@@ -412,7 +412,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T distinct() {
-        op().append("DISTINCT ");
+        op().append(" DISTINCT ");
         return (T) this;
     }
 
@@ -422,7 +422,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T distinct(String column) {
-        op().append("DISTINCT ");
+        op().append(" DISTINCT ");
         op().append(column);
         return (T)this;
     }
@@ -433,7 +433,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T distinct(Column column) {
-        op().append("DISTINCT ");
+        op().append(" DISTINCT ");
         op().append(column);
         return (T)this;
     }
@@ -444,7 +444,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T count(String column) {
-        op().append("COUNT(");
+        op().append(" COUNT(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -456,7 +456,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T count(Column column) {
-        op().append("COUNT(");
+        op().append(" COUNT(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -468,7 +468,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T count(T op) {
-        op().append("COUNT(");
+        op().append(" COUNT(");
         op().append(op);
         op().append(")");
         return (T) this;
@@ -480,7 +480,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T max(Column column) {
-        op().append("MAX(");
+        op().append(" MAX(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -492,7 +492,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T min(Column column) {
-        op().append("MIN(");
+        op().append(" MIN(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -504,7 +504,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T avg(Column column) {
-        op().append("AVG(");
+        op().append(" AVG(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -516,7 +516,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T sum(Column column) {
-        op().append("SUM(");
+        op().append(" SUM(");
         op().append(column);
         op().append(")");
         return (T) this;
@@ -528,7 +528,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return The current object
      */
     public T exists(T op) {
-        op().append("EXISTS");
+        op().append(" EXISTS");
         op().append(" (");
         op().append(op);
         op().append(" )");
@@ -631,12 +631,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL ORDER BY clause
-     * @param column The column on which ORDER BY to apply
      * @return Returns this object
      */
-    public T orderBy(String column) {
+    public T orderBy() {
         op().append(" ORDER BY ");
-        op().append(column);
         return (T) this;
     }
     
@@ -1021,7 +1019,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T withIndex(Index index) {
-        op().append("WITH(");
+        op().append(" WITH(");
         op().append("INDEX(");
         op().append(index);
         op().append("))");

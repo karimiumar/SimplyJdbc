@@ -42,6 +42,7 @@ public interface FluentQueryService<T> {
     QueryService<T> eq(Column condition);
     QueryService<T> eq();
     QueryService<T> eq(ColumnValue value);
+    QueryService<T> eq(String condition);
     QueryService<T> gt(ColumnValue value);
     QueryService<T> lt(ColumnValue value);
     QueryService<T> ge(ColumnValue columnValue);
@@ -58,6 +59,7 @@ public interface FluentQueryService<T> {
     QueryService<T> min(Column column);
     QueryService<T> avg(Column column);
     QueryService<T> sum(Column column);
+    Column<T> sumOfColumn(Column column);
     QueryService<T> exists(SelectOp op);
     QueryService<T> between(List<ColumnValue> columnValues);
     QueryService<T> between(SelectOp op);
@@ -67,6 +69,7 @@ public interface FluentQueryService<T> {
     QueryService<T> offset(int n);
     QueryService<T> as(String alias);
     QueryService<T> orderBy(Column column);
+    QueryService<T> orderBy();
     QueryService<T> asc();
     QueryService<T> desc();
     QueryService<T> groupBy(List<Column> columns);

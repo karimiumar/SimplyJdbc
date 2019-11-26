@@ -21,6 +21,10 @@ public class Supplier {
         
     }
     
+    public static Supplier emptySupplier() {
+        return new Supplier();
+    }
+    
     public Supplier(String supplierName, String contactName, String supplierAddress) {
         this.supplierName = supplierName;
         this.contactName = contactName;
@@ -28,7 +32,6 @@ public class Supplier {
     }
     
     public interface TblSupplier {
-
         Column<Integer> supplierId = column("id");
         Column<String> supplierName = column("supplier_name");
         Column<String> contactName = column("contact_name");

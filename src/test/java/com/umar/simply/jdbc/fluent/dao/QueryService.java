@@ -196,6 +196,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
+    public QueryService<T> eq(String condition) {
+        sql.eq(condition);
+        return this;
+    }
+
+    @Override
     public QueryService<T> eq() {
         sql.eq();
         return this;
@@ -304,6 +310,13 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
+    public Column<T> sumOfColumn(Column column) {
+        Column c = Column.column(column.getColumnName());
+        sql.sum(column);
+        return c;
+    }
+
+    @Override
     public QueryService<T> exists(SelectOp op) {
         sql.exists(op);
         return this;
@@ -357,6 +370,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
         return this;
     }
 
+    @Override
+    public QueryService<T> orderBy() {
+        sql.orderBy();
+        return this;
+    }
+    
     @Override
     public QueryService<T> asc() {
         sql.asc();

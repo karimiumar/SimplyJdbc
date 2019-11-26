@@ -22,6 +22,10 @@ public class Product {
     private Product() {
         
     }
+    
+    public static Product emptyProduct() {
+        return new Product();
+    }
 
     public Product(String productName, int supplierId, double pricePerUnit, boolean discontinued, int categoryId) {
         this.productName = productName;
