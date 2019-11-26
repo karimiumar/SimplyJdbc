@@ -12,7 +12,17 @@ LEFT JOIN
 	SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id
 ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY  SUM(total_amount) DESC
 ```
-then the corresponding SimplyJDBC statement would be:
+It results in the following result:
+
+|CUSTOMER_TOTALS|first_name|last_name|
+|---------------|:---------:|:--------:|
+|6500.0	        |Ashley    |Stevens|
+| 2200.0	|Jennifer|Aniston|
+| 1100.0	|Brian|Adams|
+| 700.0	        |Jennifer|Stevens|
+
+
+The corresponding SimplyJDBC statement would be:
 ```
 List<Customer> customerOrders = select().all().from(customer)
                 .left().join()
