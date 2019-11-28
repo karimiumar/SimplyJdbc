@@ -37,7 +37,7 @@ public class UpdateTest {
     @Test
     public void complexOrConditionTest() {
         UpdateOp update = new UpdateOp();
-        update.table("ORDER").setColumnValues(set(customerId,44))
+        update.table("ORDER").setColumnValues(set(orderCustomerId,44))
                 .where()
                 .not()
                 .beginComplex()

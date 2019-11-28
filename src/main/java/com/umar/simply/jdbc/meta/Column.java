@@ -27,6 +27,14 @@ public class Column<T> {
     }
 
     public static <T>Column <T> as(String columnName, String alias) {
-        return new Column<>(alias+"."+columnName);
+        return new Column<>(columnName+"."+alias);
+    }
+    
+    public static <T>Column <T> as(Table tableName, String alias) {
+        return new Column<>(tableName.getTableName()+"."+ alias);
+    }
+    
+    public static <T>Column <T> as(Column columnName, String alias) {
+        return new Column<>(columnName.columnName + " AS " + alias);
     }
 }

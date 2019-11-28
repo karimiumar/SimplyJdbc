@@ -252,8 +252,7 @@ public class SqlQueryTest {
 
    @Test
     public void betweenWithIn(){
-        SelectOp sql = create().select().all().from("product").where()
-                .beginComplex().column(unitprice).between(asList(set(10), set(20))).endComplex()
+        SelectOp sql = create().select().all().from("product").where(create().column(unitprice).between(asList(set(10), set(20))))
                 .and().not().column(cat_id).in(create().values(set(1), set(2), set(3)));
         String result = sql.getSQL();
         //"SELECT * FROM product WHERE (unit_price BETWEEN '10' AND '20') AND  NOT category_id IN ('1','2','3')"
@@ -263,8 +262,7 @@ public class SqlQueryTest {
 
     @Test
     public void betweenVariant(){
-        SelectOp sql = create().select().all().from("product").where()
-                .beginComplex().column(unitprice).between(asList(set(10), set(20), set(30))).endComplex()
+        SelectOp sql = create().select().all().from("product").where(create().column(unitprice).between(asList(set(10), set(20), set(30))))
                 .and().not().column(cat_id).in(create().values(set(1), set(2), set(3)));
         String result = sql.getSQL();
         //"SELECT * FROM product WHERE (unit_price BETWEEN 10 AND 20 AND 30) AND  NOT category_id IN (1,2,3)";
@@ -313,11 +311,11 @@ public class SqlQueryTest {
     @Test
     public void groupByOrderByDesc(){
         SelectOp sql = create()
-                .select().count(c1_id)
-                .with(c1_cuntry)
+                .select().count(column("c1.id"))
+                .with(column("c1.country"))
                 .from("customer c1")
-                .groupBy(c1_cuntry)
-                .orderBy().count(c1_id).desc();
+                .groupBy(column("c1.country"))
+                .orderBy().count(column("c1.id")).desc();
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(c1.id), c1.country FROM customer c1 GROUP BY c1.country ORDER BY  COUNT(c1.id) DESC";
         Assertions.assertEquals(result,expected);
@@ -326,15 +324,15 @@ public class SqlQueryTest {
     @Test
     public void subQuerySelectOrderByDesc(){
         SelectOp sql = create().select().all().from(customer)
-                .left().join()
-                .beginComplex()
+                .left().join(create()
                 .select().sum(totalAmount).as("TOTAL_AMOUNT").with(asList(o1_customerId))
-                .from(o1).groupBy(o1_customerId)
-                .endComplex()
+                .from(o1).groupBy(o1_customerId))
                 .as("CUSTOMER_TOTALS")
                 .on().column(o1_customerId).eq("CUSTOMER_TOTALS.CUSTOMER_ID")
                 .orderBy().column("CUSTOMER_TOTALS.TOTAL_AMOUNT").desc();
-        System.out.println(sql.getSQL());
+        String result = sql.getSQL();
+        String expected = "SELECT * FROM customer LEFT JOIN (SELECT  SUM(total_amount) AS TOTAL_AMOUNT ,o1.customer_id FROM order o1 GROUP BY o1.customer_id ) AS CUSTOMER_TOTALS  ON o1.customer_id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC";
+        Assertions.assertEquals(result,expected);
     }
 
     @Test
@@ -470,25 +468,25 @@ public class SqlQueryTest {
 
     @Test
     public void testExists(){
-        SelectOp sql = create().select().all().from(s1_supplier).where()
+        SelectOp sql = create().select().all().from(supplier).as("s1").where()
                 .exists(
-                        create().select(prd1_productname).from(prd1)
-                        .where(prd1_suppid).eq(s1_Id).and(prd1_unitprice).lt().values(set(20))
+                        create().select(prd_name).as("prd_name").from(product)
+                        .where(suppid).eq(column("s1.id")).and(unitprice).lt().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier s1 WHERE  EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
+        String expected = "SELECT * FROM supplier AS s1  WHERE  EXISTS (SELECT product_name AS prd_name  FROM product WHERE supplier_id=s1.id AND unit_price<? )";
         Assertions.assertEquals(result,expected);
     }
 
     @Test
     public void testNotExists(){
-        SelectOp sql = create().select().all().from(s1_supplier).where().not()
+        SelectOp sql = create().select().all().from(supplier).as("s1").where().not()
                 .exists(
-                        create().select(prd1_productname).from(prd1)
-                        .where(prd1_suppid).eq(s1_Id).and(prd1_unitprice).lt().values(set(20))
+                        create().select(prd_name).from(product).as("prd1")
+                        .where(suppid).eq(column("s1.id")).and(unitprice).lt().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier s1 WHERE  NOT  EXISTS (SELECT prd1.product_name FROM product prd1 WHERE prd1.supplier_id=s1.id AND prd1.unit_price<? )";
+        String expected = "SELECT * FROM supplier AS s1  WHERE  NOT  EXISTS (SELECT product_name FROM product AS prd1  WHERE supplier_id=s1.id AND unit_price<? )";
         Assertions.assertEquals(result,expected);
     }
 

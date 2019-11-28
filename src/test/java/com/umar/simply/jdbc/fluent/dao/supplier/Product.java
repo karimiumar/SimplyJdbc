@@ -37,25 +37,16 @@ public class Product {
     
     public interface TblProduct {
 
-        Column<Integer> productId = column("id");
-        Column<String> prd_name = column("product_name");
-        Column<Integer> productSupplierId = column("supplier_id");
-        Column<Double> productUnitPrice = column("unit_price");
-        Column<Boolean> discontinued = column("is_discontinued");
-        Column<Integer> productCategoryId = column("category_id");
+        Column<Integer> tblProductId = column("id");
+        Column<String> tblProductName = column("product_name");
+        Column<Integer> tblProductSupplierId = column("supplier_id");
+        Column<Double> tblProductUnitPrice = column("unit_price");
+        Column<Boolean> tblProductDiscontinued = column("is_discontinued");
+        Column<Integer> tblProductCategoryId = column("category_id");
         Column<LocalDateTime> productCreatedOn = column("created");
         Column<LocalDateTime> productUpdatedOn = column("updated");
-        Table product = Table.table("ex.product", productId);
+        Table tblProduct = Table.table("ex.product", tblProductId);
 
-        Column<Integer> prd1_id = as("id", "prd1");
-        Column<String> prd1_productname = as("product_name", "prd1");
-        Column<Integer> prd1_suppid = as("supplier_id", "prd1");
-        Column<Double> prd1_unitprice = as("unit_price", "prd1");
-        Column<Boolean> prd1_discontinued = as("is_discontinued", "prd1");
-        Column<Integer> prd1_cat_id = as("category_id", "prd1");
-        Column<LocalDateTime> prd1_created = as("created", "prd1");
-        Column<LocalDateTime> prd1_updated = as("updated", "prd1");
-        Table prd1 = Table.as("ex.product", "prd1", productId);
         
         /*
         This is additionally need as the ResultSetMtaData removes all aliases from the
@@ -68,34 +59,24 @@ public class Product {
          * only has information about actual table column names and all the aliases
          * created to are lost. 
          */
-        Table prd_rsmd = Table.table("product", productId);
-        Column<Integer> prd_id_rsmd = as("id", prd_rsmd.getTableName());
-        Column<String> prd_name_rsmd = as("product_name", prd_rsmd.getTableName());
-        Column<Integer> prd_suppid_rsmd = as("supplier_id", prd_rsmd.getTableName());
-        Column<Double> prd_unitprice_rsmd = as("unit_price", prd_rsmd.getTableName());
-        Column<Boolean> prd_discontinued_rsmd = as("is_discontinued", prd_rsmd.getTableName());
-        Column<Integer> prd_cat_id_rsmd = as("category_id", prd_rsmd.getTableName());
-        Column<LocalDateTime> prd_created_rsmd = as("created", prd_rsmd.getTableName());
-        Column<LocalDateTime> prd_updated_rsmd = as("updated", prd_rsmd.getTableName());
-       
-        Column<Integer> prd2_id = as("id", "prd2");
-        Column<String> prd2_productname = as("product_name", "prd2");
-        Column<Integer> prd2_suppid = as("supplier_id", "prd2");
-        Column<Double> prd2_unitprice = as("unit_price", "prd2");
-        Column<Boolean> prd2_discontinued = as("is_discontinued", "prd2");
-        Column<Integer> prd2_cat_id = as("category_id", "prd2");
-        Column<LocalDateTime> prd2_created = as("created", "prd2");
-        Column<LocalDateTime> prd2_updated = as("updated", "prd2");
-        Table prd2 = Table.as("ex.product", "prd2", productId);
+        Table prd_rsmd = Table.table("product", tblProductId);
+        Column<Integer> prd_id_rsmd = as(prd_rsmd.getTableName(), "id" );
+        Column<String> prd_name_rsmd = as(prd_rsmd.getTableName(),"product_name");
+        Column<Integer> prd_suppid_rsmd = as(prd_rsmd.getTableName(),"supplier_id");
+        Column<Double> prd_unitprice_rsmd = as(prd_rsmd.getTableName(),"unit_price");
+        Column<Boolean> prd_discontinued_rsmd = as(prd_rsmd.getTableName(),"is_discontinued");
+        Column<Integer> prd_cat_id_rsmd = as(prd_rsmd.getTableName(),"category_id");
+        Column<LocalDateTime> prd_created_rsmd = as(prd_rsmd.getTableName(),"created");
+        Column<LocalDateTime> prd_updated_rsmd = as(prd_rsmd.getTableName(), "updated");
         
         RowMapper<Product> PRODUCT_ROW_MAPPER = (rs) -> {
             final Product rowProduct = new Product();
-            rowProduct.id = rs.getInt(productId.getColumnName());
-            rowProduct.productName = rs.getString(prd_name.getColumnName());
-            rowProduct.supplierId = rs.getInt(productSupplierId.getColumnName());
-            rowProduct.pricePerUnit = rs.getDouble(productUnitPrice.getColumnName());
-            rowProduct.discontinued = rs.getBoolean(discontinued.getColumnName());
-            rowProduct.categoryId = rs.getInt(productCategoryId.getColumnName());
+            rowProduct.id = rs.getInt(tblProductId.getColumnName());
+            rowProduct.productName = rs.getString(tblProductName.getColumnName());
+            rowProduct.supplierId = rs.getInt(tblProductSupplierId.getColumnName());
+            rowProduct.pricePerUnit = rs.getDouble(tblProductUnitPrice.getColumnName());
+            rowProduct.discontinued = rs.getBoolean(tblProductDiscontinued.getColumnName());
+            rowProduct.categoryId = rs.getInt(tblProductCategoryId.getColumnName());
             rowProduct.created = rs.getTimestamp(productCreatedOn.getColumnName()).toLocalDateTime();
             if(rs.getTimestamp(productUpdatedOn.getColumnName()) != null) {
                 rowProduct.updated = rs.getTimestamp(productUpdatedOn.getColumnName()).toLocalDateTime();

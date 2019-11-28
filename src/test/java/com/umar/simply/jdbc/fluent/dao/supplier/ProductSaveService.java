@@ -19,11 +19,11 @@ public class ProductSaveService implements FluentProductSaveService {
     @Override
     public ProductSaveService save(Product product) {
         newValues = asList(
-                set(prd_name, product.productName)
-                ,set(productSupplierId, product.supplierId)
-                ,set(productUnitPrice, product.pricePerUnit)
-                ,set(discontinued, product.discontinued)
-                ,set(productCategoryId, product.categoryId)
+                set(tblProductName, product.productName)
+                ,set(tblProductSupplierId, product.supplierId)
+                ,set(tblProductUnitPrice, product.pricePerUnit)
+                ,set(tblProductDiscontinued, product.discontinued)
+                ,set(tblProductCategoryId, product.categoryId)
                 ,set(productCreatedOn, LocalDateTime.now())
         );
         return this;
@@ -32,7 +32,7 @@ public class ProductSaveService implements FluentProductSaveService {
     @Override
     public Product execute() {
         SavePersistenceService<Product> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Product saved = sps.save(product).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
+        Product saved = sps.save(tblProduct).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
         return saved;
     }
 }

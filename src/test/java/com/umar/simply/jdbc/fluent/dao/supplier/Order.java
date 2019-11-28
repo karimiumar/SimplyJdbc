@@ -51,31 +51,13 @@ public class Order {
          * created to are lost. 
          */
         Table orders_rsmd = Table.table("orders", orderId);
-        Column<Integer> order_id_rsmd = as("id", orders_rsmd.getTableName());
-        Column<LocalDateTime> order_orderDate_rsmd = as("order_date", orders_rsmd.getTableName());
-        Column<Long> order_orderNo_rsmd = as("order_number", orders_rsmd.getTableName());
-        Column<Integer> order_customerId_rsmd = as("customer_id", orders_rsmd.getTableName());
-        Column<Double> order_totalAmount_rsmd = as("total_amount", orders_rsmd.getTableName());
-        Column<LocalDateTime> order_created_rsmd = as("created", orders_rsmd.getTableName());
-        Column<LocalDateTime> order_updated_rsmd = as("updated", orders_rsmd.getTableName());
-        
-        Column<Integer> o1_id = as("id", "o1");
-        Column<LocalDateTime> o1_orderDate = as("order_date", "o1");
-        Column<Long> o1_orderNo = as("order_number", "o1");
-        Column<Integer> o1_customerId = as("customer_id", "o1");
-        Column<Double> o1_totalAmount = as("total_amount", "o1");
-        Column<LocalDateTime> o1_created = as("created", "o1");
-        Column<LocalDateTime> o1_updated = as("updated", "o1");
-        Table o1 = Table.as("ex.orders", "o1", orderId);
-
-        Column<Integer> o2_id = as("id", "o2");
-        Column<LocalDateTime> o2_orderDate = as("order_date", "o2");
-        Column<Integer> o2_orderNo = as("order_number", "o2");
-        Column<Integer> o2_customerId = as("customer_id", "o2");
-        Column<Double> o2_totalAmount = as("total_amount", "o2");
-        Column<LocalDateTime> o2_created = as("created", "o2");
-        Column<LocalDateTime> o2_updated = as("updated", "o2");
-        Table o2 = Table.as("ex.orders", "o2", orderId);
+        Column<Integer> order_id_rsmd = as(orders_rsmd.getTableName(),"id");
+        Column<LocalDateTime> order_orderDate_rsmd = as(orders_rsmd.getTableName(),"order_date");
+        Column<Long> order_orderNo_rsmd = as(orders_rsmd.getTableName(),"order_number");
+        Column<Integer> order_customerId_rsmd = as(orders_rsmd.getTableName(),"customer_id");
+        Column<Double> order_totalAmount_rsmd = as(orders_rsmd.getTableName(),"total_amount");
+        Column<LocalDateTime> order_created_rsmd = as(orders_rsmd.getTableName(),"created");
+        Column<LocalDateTime> order_updated_rsmd = as(orders_rsmd.getTableName(),"updated");
         
         RowMapper<Order> ORDER_ROW_MAPPER = (rs)-> {
             final Order rowOrder = new Order();

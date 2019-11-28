@@ -1,8 +1,7 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
 import com.umar.simply.jdbc.RowMapper;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Product.TblProduct.*;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.*;
+import com.umar.simply.jdbc.meta.Column;
 
 /**
  * Resembles Supplier supplying Products/ Or Products of suppliers
@@ -12,7 +11,23 @@ public class ProductSupplier {
 
     private Supplier supplier;
     private Product product;
-
+    
+    public static final String PRODUCT = "PRD";
+    public static final String PRODUCT_ID = "ID";
+    public static final String PRODUCT_PRODUCT_ID = PRODUCT +"_"+PRODUCT_ID;
+    public static final String NAME = "NAME";
+    public static final String PRODUCT_PRODUCT_NAME = PRODUCT +"_"+ NAME;
+    public static final String PRODUCT_UNIT_PRICE = PRODUCT +"_"+ "UNIT_PRICE";
+    public static final String PRODUCT_CATEGORY_ID = PRODUCT +"_"+ "CAT_ID";
+    public static final String PRODUCT_DISCONTINUED = PRODUCT + "_" + "DISCONTINUED";
+    public static final String SUPPLIER_ID = "ID";
+    public static final String SUPPLIER = "SUPPLIER";
+    public static final String SUPPLIER_SUPPLIER_ID = SUPPLIER + "_" + SUPPLIER_ID;
+    public static final String PRODUCT_SUPPLIER_ID = PRODUCT + "_" + SUPPLIER + "_"+ SUPPLIER_ID;
+    public static final String SUPPLIER_SUPPLIER_NAME = SUPPLIER +"_"+ NAME;
+    public static final String SUPPLIER_ADDRESS = SUPPLIER +"_"+ "ADDRESS";
+    public static final String SUPPLIER_CONTACT = SUPPLIER +"_" + "CONTACT";
+    
     public static RowMapper<ProductSupplier> PRD_SUPP_ROW_MAPPER = (rs) -> {
         
         final ProductSupplier psRow = new ProductSupplier();
@@ -23,26 +38,18 @@ public class ProductSupplier {
             String tableAlias = rsmd.getTableName(index);
             System.out.println(tableAlias + "." + columnName);
         }*/
-        psRow.product = new Product("", 0, 0, false, 0);
-        psRow.supplier = new Supplier("", "", "");
-        psRow.product.id = rs.getInt(prd_id_rsmd.getColumnName());
-        psRow.product.productName = rs.getString(prd_name_rsmd.getColumnName());
-        psRow.product.supplierId = rs.getInt(prd_suppid_rsmd.getColumnName());
-        psRow.product.pricePerUnit = rs.getDouble(prd_unitprice_rsmd.getColumnName());
-        psRow.product.discontinued = rs.getBoolean(prd_discontinued_rsmd.getColumnName());
-        psRow.product.categoryId = rs.getInt(prd_cat_id_rsmd.getColumnName());
-        psRow.product.created = rs.getTimestamp(prd_created_rsmd.getColumnName()).toLocalDateTime();
-        if (rs.getTimestamp(prd_updated_rsmd.getColumnName()) != null) {
-            psRow.product.updated = rs.getTimestamp(prd_updated_rsmd.getColumnName()).toLocalDateTime();
-        }
-        psRow.supplier.id = rs.getInt(s_id_rsmd.getColumnName());
-        psRow.supplier.supplierName = rs.getString(s_supplierName_rsmd.getColumnName());
-        psRow.supplier.contactName = rs.getString(s_contactName_rsmd.getColumnName());
-        psRow.supplier.supplierAddress = rs.getString(s_supplierAddr_rsmd.getColumnName());
-        psRow.supplier.created = rs.getTimestamp(s_created_rsmd.getColumnName()).toLocalDateTime();
-        if (rs.getTimestamp(s_updated_rsmd.getColumnName()) != null) {
-            psRow.supplier.updated = rs.getTimestamp(s_updated_rsmd.getColumnName()).toLocalDateTime();
-        }
+        psRow.product = Product.emptyProduct();
+        psRow.supplier = Supplier.emptySupplier();
+        psRow.product.id = rs.getInt(PRODUCT_PRODUCT_ID);
+        psRow.product.productName = rs.getString(PRODUCT_PRODUCT_NAME);
+        psRow.product.supplierId = rs.getInt(PRODUCT_SUPPLIER_ID);
+        psRow.product.pricePerUnit = rs.getDouble(PRODUCT_UNIT_PRICE);
+        psRow.product.discontinued = rs.getBoolean(PRODUCT_DISCONTINUED);
+        psRow.product.categoryId = rs.getInt(PRODUCT_CATEGORY_ID);
+        psRow.supplier.id = rs.getInt(SUPPLIER_SUPPLIER_ID);
+        psRow.supplier.supplierName = rs.getString(SUPPLIER_SUPPLIER_NAME);
+        psRow.supplier.contactName = rs.getString(SUPPLIER_CONTACT);
+        psRow.supplier.supplierAddress = rs.getString(SUPPLIER_ADDRESS);
         return psRow;
     };
 

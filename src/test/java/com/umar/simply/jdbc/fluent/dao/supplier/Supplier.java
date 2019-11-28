@@ -32,13 +32,13 @@ public class Supplier {
     }
     
     public interface TblSupplier {
-        Column<Integer> supplierId = column("id");
-        Column<String> supplierName = column("supplier_name");
-        Column<String> contactName = column("contact_name");
-        Column<String> supplierAddr = column("supplier_address");
+        Column<Integer> tblSupplierId = column("id");
+        Column<String> tblSupplierName = column("supplier_name");
+        Column<String> tblContactName = column("supplier_contact");
+        Column<String> tblSupplierAddr = column("supplier_address");
         Column<LocalDateTime> supplierCreatedOn = column("created");
         Column<LocalDateTime> supplierUpdatedOn = column("updated");
-        Table supplier = Table.table("ex.supplier", supplierId);
+        Table tblSupplier = Table.table("ex.supplier", tblSupplierId);
         
         /**
          * If the returning SQL ResultSet consist of joins of two or more
@@ -46,36 +46,20 @@ public class Supplier {
          * only has information about actual table column names and all the aliases
          * created to are lost. 
          */
-        Table supplier_rsmd = Table.table("supplier", supplierId);
-        Column<Integer> s_id_rsmd = as("id", supplier_rsmd.getTableName());
-        Column<String> s_supplierName_rsmd = as("supplier_name", supplier_rsmd.getTableName());
-        Column<String> s_contactName_rsmd = as("contact_name", supplier_rsmd.getTableName());
-        Column<String> s_supplierAddr_rsmd = as("supplier_address", supplier_rsmd.getTableName());
-        Column<LocalDateTime> s_created_rsmd = as("created", supplier_rsmd.getTableName());
-        Column<LocalDateTime> s_updated_rsmd = as("updated", supplier_rsmd.getTableName());
-        
-        Column<Integer> s1_id = as("id", "s1");
-        Column<String> s1_supplierName = as("supplier_name", "s1");
-        Column<String> s1_contactName = as("contact_name", "s1");
-        Column<String> s1_supplierAddr = as("supplier_address", "s1");
-        Column<LocalDateTime> s1_created = as("created", "s1");
-        Column<LocalDateTime> s1_updated = as("updated", "s1");
-        Table s1_supplier = Table.as("ex.supplier", "s1", supplierId);
-
-        Column<Integer> s2_Id = as("id", "s2");
-        Column<String> s2_supplierName = as("supplier_name", "s2");
-        Column<String> s2_contactName = as("contact_name", "s2");
-        Column<String> s2_suppplierAddr = as("supplier_address", "s2");
-        Column<LocalDateTime> s2_created = as("created", "s2");
-        Column<LocalDateTime> s2_updated = as("updated", "s2");
-        Table s2_supplier = Table.as("ex.supplier", "s2", supplierId);
+        Table supplier_rsmd = Table.table("supplier", tblSupplierId);
+        Column<Integer> s_id_rsmd = as(supplier_rsmd.getTableName(),"id");
+        Column<String> s_supplierName_rsmd = as(supplier_rsmd.getTableName(),"supplier_name");
+        Column<String> s_contactName_rsmd = as(supplier_rsmd.getTableName(),"supplier_contact");
+        Column<String> s_supplierAddr_rsmd = as(supplier_rsmd.getTableName(),"supplier_address");
+        Column<LocalDateTime> s_created_rsmd = as(supplier_rsmd.getTableName(),"created");
+        Column<LocalDateTime> s_updated_rsmd = as(supplier_rsmd.getTableName(),"updated");
         
         RowMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
             final Supplier rowSupplier = new Supplier();
-            rowSupplier.id = rs.getInt(supplierId.getColumnName());
-            rowSupplier.supplierName = rs.getString(supplierName.getColumnName());
-            rowSupplier.contactName = rs.getString(contactName.getColumnName());
-            rowSupplier.supplierAddress = rs.getString(supplierAddr.getColumnName());
+            rowSupplier.id = rs.getInt(tblSupplierId.getColumnName());
+            rowSupplier.supplierName = rs.getString(tblSupplierName.getColumnName());
+            rowSupplier.contactName = rs.getString(tblContactName.getColumnName());
+            rowSupplier.supplierAddress = rs.getString(tblSupplierAddr.getColumnName());
             rowSupplier.created = rs.getTimestamp(supplierCreatedOn.getColumnName()).toLocalDateTime();
             if(rs.getTimestamp(supplierUpdatedOn.getColumnName()) != null) {
                 rowSupplier.updated = rs.getTimestamp(supplierUpdatedOn.getColumnName()).toLocalDateTime();

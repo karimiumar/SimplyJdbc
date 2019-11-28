@@ -5,6 +5,7 @@ import java.util.List;
 import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.PERSON_ROW_MAPPER;
 import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.*;
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class PersonQueryService<Person> extends QueryService {
@@ -20,8 +21,8 @@ public class PersonQueryService<Person> extends QueryService {
     
     public List<Person> findByName(String name) {
         Objects.requireNonNull(name, "parameter <name> is required");
-        List<Person> result = List.of();
-        if(name.isBlank() || name.isEmpty()) return result;
+        List<Person> result = Arrays.asList();
+        if(name.equals(" ") || name.isEmpty()) return result;
         String [] names = name.trim().split("\\s");     
         if(names.length > 1) {
             String firstName = names[0];

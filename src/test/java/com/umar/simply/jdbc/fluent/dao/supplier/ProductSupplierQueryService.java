@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.util.List;
 import static java.util.Arrays.asList;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSupplierQueryService;
+import com.umar.simply.jdbc.meta.Column;
 
 public class ProductSupplierQueryService extends QueryService implements FluentProductSupplierQueryService {
     
@@ -21,8 +22,8 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     @Override
     public List<Product> listProductsSuppliedBy(Supplier supplier) {
         List<Product> productsSupplied = select().all()
-                .from(product).where()
-                .column(productSupplierId).eq(set(supplier.id))
+                .from(tblProduct).where()
+                .column(tblProductSupplierId).eq(set(supplier.id))
                 .using(PRODUCT_ROW_MAPPER)
                 .execute();
         return productsSupplied;
@@ -30,13 +31,24 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
 
     @Override
     public List<ProductSupplier> listAllProductsOfSuppliers_Order_By_Supplier() {
+        Column PRD_ID = Column.as(Column.column(PRODUCT +"."  + PRODUCT_ID), PRODUCT_PRODUCT_ID);
+        Column SUPP_ID = Column.as(Column.column("SUPPLIER" +"."  + SUPPLIER_ID), SUPPLIER_SUPPLIER_ID);
         List<ProductSupplier> productSuppliers = 
-                select().column(asList(prd1_id, prd1_productname, prd1_unitprice, prd1_cat_id,prd1_suppid, prd1_created, prd1_updated, prd1_discontinued,
-                        s1_id, s1_supplierName, s1_contactName, s1_created,s1_updated, s1_supplierAddr))
-                .from(product).as("prd1")
-                .join(supplier).as("s1")
-                .on().column(s1_id).eq(prd1_suppid)
-                .groupBy(asList(s1_id, prd1_id))
+                select(asList(
+                        PRD_ID
+                        ,Column.as(tblProductName, PRODUCT_PRODUCT_NAME)
+                        ,Column.as(tblProductUnitPrice, PRODUCT_UNIT_PRICE)
+                        ,Column.as(tblProductCategoryId, PRODUCT_CATEGORY_ID)
+                        ,Column.as(tblProductSupplierId, PRODUCT_SUPPLIER_ID)
+                        ,Column.as(tblProductDiscontinued, PRODUCT_DISCONTINUED)
+                        ,SUPP_ID
+                        ,Column.as(tblSupplierName, SUPPLIER_SUPPLIER_NAME)
+                        ,Column.as(tblContactName, SUPPLIER_CONTACT)
+                        ,Column.as(tblSupplierAddr, SUPPLIER_ADDRESS)))
+                .from(tblProduct).as(PRODUCT)
+                .join(tblSupplier).as(SUPPLIER)
+                .on().column(Column.column(SUPPLIER+"."+SUPPLIER_ID)).eq(tblProductSupplierId)
+                .groupBy(asList(Column.column(SUPPLIER+"."+SUPPLIER_ID), Column.column(PRODUCT +"."  + PRODUCT_ID)))
                 .using(PRD_SUPP_ROW_MAPPER)
                 .execute();
         return productSuppliers;
@@ -45,9 +57,9 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     @Override
     public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
         List<Supplier> suppliersOf = select().all()
-                .from(supplier)
-                .join().table(product)
-                .on().column(supplierId).eq(set(queryProduct.supplierId))
+                .from(tblSupplier)
+                .join().table(tblProduct)
+                .on().column(tblSupplierId).eq(set(queryProduct.supplierId))
                 .using(SUPPLIER_ROW_MAPPER)
                 .execute();
         return suppliersOf;

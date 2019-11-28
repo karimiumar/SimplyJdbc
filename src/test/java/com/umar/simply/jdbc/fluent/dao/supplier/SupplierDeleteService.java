@@ -3,10 +3,10 @@ package com.umar.simply.jdbc.fluent.dao.supplier;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.fluent.dao.DeletePersistenceService;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.supplier;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentSupplierDeleteService;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
+import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.tblSupplier;
 
 public class SupplierDeleteService implements FluentSupplierDeleteService {
 
@@ -14,7 +14,7 @@ public class SupplierDeleteService implements FluentSupplierDeleteService {
     
     @Override
     public SupplierDeleteService delete() {
-        dps.from(supplier);
+        dps.from(tblSupplier);
         return this;
     }
 

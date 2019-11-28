@@ -41,32 +41,6 @@ public class Person {
         Column<Integer> age = column("age");
         Table person = table(EX_SCHEMA +".person", personId);
 
-        //Some column and table aliases comes handy for self joins
-
-        Column<Integer> p1_id = as("id", "p1");
-        Column<String> p1_fname = as("firstname", "p1");
-        Column<String> p1_lname = as("lastname", "p1");
-        Column<String> p1_email = as("email", "p1");
-        Column<Boolean> p1_adult = as("adult", "p1");
-        Column<LocalDateTime> p1_created = as("created", "p1");
-        Column<LocalDateTime> p1_updated = as("updated", "p1");
-        Column<String> p1_city = as("city", "p1");
-        Column<String> p1_country = as("country", "p1");
-        Column<Integer> p1_age = as("age", "p1");
-        Table p1 = Table.as(EX_SCHEMA+".person", "p1", personId);
-
-        Column<Integer> p2_id = as("id", "p2");
-        Column<String> p2_fname = as("firstname", "p2");
-        Column<String> p2_lname = as("lastname", "p2");
-        Column<String> p2_email = as("email", "p2");
-        Column<Boolean> p2_adult = as("adult", "p2");
-        Column<LocalDateTime> p2_created = as("created", "p2");
-        Column<LocalDateTime> p2_updated = as("updated", "p2");
-        Column<String> p2_city = as("city", "p2");
-        Column<String> p2_country = as("country", "p2");
-        Column<Integer> p2_age = as("age", "p2");
-        Table p2 = Table.as(EX_SCHEMA + ".person", "p2", personId);
-
         RowMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
             final Person personRow = new Person();
             personRow.id = rs.getInt(personId.getColumnName());

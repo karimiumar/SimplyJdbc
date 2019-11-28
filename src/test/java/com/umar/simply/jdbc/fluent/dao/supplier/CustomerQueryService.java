@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
+import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentCustomerQueryService;
 import java.sql.Connection;
@@ -17,18 +18,26 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
     }
 
     @Override
-    public List<Customer> totalAmtOrderedByEachCustomerUsingInnerQuery() {
-
+    public List<Customer> findTotalAmtOrderedByEachCustomer() {
+        /*
+         * The SQL query 
+         *---------------------------------------------------------------------------------------
+         * SELECT * FROM customer 
+         * LEFT JOIN 
+         * (
+	 *      SELECT customer_id, SUM(amount) AS TOTAL_AMOUNT  FROM orders GROUP BY customer_id
+         * ) AS CUSTOMER_TOTALS  
+         * ON id = CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC
+         * --------------------------------------------------------------------------------------
+         */
         List<Customer> customerOrders = select().all().from(customer)
-                .left().join()
-                .beginComplex()
-                .select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId))
-                .from(orders).groupBy(orderCustomerId)
-                .endComplex()
+                .left().join(
+                    SelectOp.create().select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId))
+                .from(orders).groupBy(orderCustomerId))
                 .as(CUSTOMER_TOTALS)
-                .on().column(customerId).eq(CUSTOMER_TOTALS_CustomerId)
-                .orderBy().column(CUSTOMER_TOTALS_TotalAmount).desc()
-                .using(TotalAmtOrderedByEachCustomerMap).execute();
+                .on().column(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
+                .using(CUSTOMER_ROW_MAPPER).execute();
         return customerOrders;
     }
 

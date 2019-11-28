@@ -171,7 +171,7 @@ public class CreateTablesInH2db {
         ddlBuilder.append("  timestamp, ");
         ddlBuilder.append(TblOrder.orderNo);
         ddlBuilder.append("  bigint, " );
-        ddlBuilder.append(TblOrder.customerId); // references Customer.id
+        ddlBuilder.append(TblOrder.orderCustomerId); // references Customer.id
         ddlBuilder.append("  bigint, " ); 
         ddlBuilder.append(TblOrder.totalAmount);
         ddlBuilder.append("  decimal, " );

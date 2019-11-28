@@ -331,6 +331,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL WHERE clause.
+     * @param op The inner query to use
      * @return Returns this object
      */
     public T where(SelectOp op) {
@@ -891,6 +892,18 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      */
     public T join() {
         op().append(" JOIN ");
+        return (T) this;
+    }
+    
+    /**
+     * SQL JOIN operation with inner SELECT query
+     * @param query The inner query to use with join
+     * @return Returns this object
+     */
+    public T join(SelectOp query) {
+        op().append(" JOIN (");
+        op().append(query);
+        op().append(" )");
         return (T) this;
     }
     /**

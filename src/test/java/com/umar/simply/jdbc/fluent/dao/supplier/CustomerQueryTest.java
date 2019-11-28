@@ -76,9 +76,9 @@ public class CustomerQueryTest {
      */
     @Test
     @org.junit.jupiter.api.Order(3)
-    public void totalAmtOrderedByEachCustomerUsingInnerQuery() {
+    public void findTotalAmtOrderedByEachCustomer() {
         CustomerQueryService coqs = new CustomerQueryService(JdbcUtilService.getConnection());
-        List<Customer> customerOrders = coqs.totalAmtOrderedByEachCustomerUsingInnerQuery();
+        List<Customer> customerOrders = coqs.findTotalAmtOrderedByEachCustomer();
         Assertions.assertFalse(customerOrders.isEmpty());
         Assertions.assertTrue(customerOrders.size() == 4); // the size should be 4 for the data saveCustomerOrders();
         
