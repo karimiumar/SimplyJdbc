@@ -24,16 +24,17 @@ It results in the following result:
 
 The corresponding SimplyJDBC statement would be:
 ```
-List<Customer> customerOrders = select().all().from(customer)
-                .left().join()
-                .beginComplex()
-                .select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId))
-                .from(orders).groupBy(orderCustomerId)
-                .endComplex()
-                .as(CUSTOMER_TOTALS)
-                .on().column(customerId).eq(CUSTOMER_TOTALS_CustomerId)
-                .orderBy().column(CUSTOMER_TOTALS_TotalAmount).desc()
-                .using(TotalAmtOrderedByEachCustomerMap).execute();
+List<Customer> customerOrders = select().all()
+	.from(customer)
+        .left().join(
+             SelectOp.create().select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId)
+	 )
+         .from(orders).groupBy(orderCustomerId))
+         .as(CUSTOMER_TOTALS)
+         .on().column(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+         .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
+         .using(CUSTOMER_ROW_MAPPER).execute();
+return customerOrders;
 ```
 And the ```TotalAmtOrderedByEachCustomerMap ``` is a JDBC ResultSet map as:
 ```
