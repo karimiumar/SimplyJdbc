@@ -14,7 +14,7 @@ LEFT JOIN
 ```
 It results in the following result:
 
-|CUSTOMER_TOTALS|first_name|last_name|
+|CUSTOMER_TOTALS|FIRST_NAME|LAST_NAME|
 |---------------|:---------:|:--------:|
 |6500.0	        |Ashley    |Stevens|
 | 2200.0	|Jennifer|Aniston|
