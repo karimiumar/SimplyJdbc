@@ -465,6 +465,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
         sql.on();
         return this;
     }
+    
+    @Override
+    public QueryService<T> on(Column column) {
+        sql.on(column);
+        return this;
+    }
 
     @Override
     public QueryService<T> any() {

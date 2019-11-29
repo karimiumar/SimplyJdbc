@@ -952,6 +952,18 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" ON ");
         return (T) this;
     }
+    
+    /**
+     * SQL ON clause used in conjunction with JOIN
+     * @param column The column to JOIN ON
+     * @return Returns this object
+     */
+    public T on(Column column) {
+        op().append(" ON ");
+        op().append(column);
+        op().append(" ");
+        return (T) this;
+    }
 
     /**
      * SQL ANY clause

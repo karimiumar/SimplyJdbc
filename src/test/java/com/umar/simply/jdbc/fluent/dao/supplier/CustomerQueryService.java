@@ -35,7 +35,7 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
                     SelectOp.create().select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId))
                 .from(orders).groupBy(orderCustomerId))
                 .as(CUSTOMER_TOTALS)
-                .on().column(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .on(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
                 .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
                 .using(CUSTOMER_ROW_MAPPER).execute();
         return customerOrders;

@@ -1,6 +1,8 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
 import com.umar.simply.jdbc.RowMapper;
+import static com.umar.simply.jdbc.fluent.dao.supplier.Product.TblProduct.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.*;
 import com.umar.simply.jdbc.meta.Column;
 
 /**
@@ -27,6 +29,21 @@ public class ProductSupplier {
     public static final String SUPPLIER_SUPPLIER_NAME = SUPPLIER +"_"+ NAME;
     public static final String SUPPLIER_ADDRESS = SUPPLIER +"_"+ "ADDRESS";
     public static final String SUPPLIER_CONTACT = SUPPLIER +"_" + "CONTACT";
+    
+    public static final Column PRD_ID = Column.column(PRODUCT +"."+ PRODUCT_ID);
+    public static final Column PRD_ID_ALIAS = Column.as(PRD_ID, PRODUCT_PRODUCT_ID);
+    public static final Column SUPP_ID = Column.column("SUPPLIER" +"."+ SUPPLIER_ID);
+    public static final Column SUPP_ID_ALIAS = Column.as(SUPP_ID, SUPPLIER_SUPPLIER_ID);
+    
+    public static final Column PRD_NAME_ALIAS = Column.as(tblProductName, PRODUCT_PRODUCT_NAME);
+    public static final Column PRD_UNIT_PRICE_ALIAS = Column.as(tblProductUnitPrice, PRODUCT_UNIT_PRICE);
+    public static final Column PRD_CAT_ID_ALIAS = Column.as(tblProductCategoryId, PRODUCT_CATEGORY_ID);
+    public static final Column PRD_SUPP_ID_ALIAS = Column.as(tblProductSupplierId, PRODUCT_SUPPLIER_ID);
+    public static final Column PRD_DISCONTINUED_ALIAS = Column.as(tblProductDiscontinued, PRODUCT_DISCONTINUED);
+    
+    public static final Column SUPP_NAME_ALIAS = Column.as(tblSupplierName, SUPPLIER_SUPPLIER_NAME);
+    public static final Column SUPP_CONTACT_ALIAS = Column.as(tblContactName, SUPPLIER_CONTACT);
+    public static final Column SUPP_ADDRESS_ALIAS = Column.as(tblSupplierAddr, SUPPLIER_ADDRESS);
     
     public static RowMapper<ProductSupplier> PRD_SUPP_ROW_MAPPER = (rs) -> {
         

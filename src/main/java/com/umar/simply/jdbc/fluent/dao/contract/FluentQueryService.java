@@ -84,6 +84,7 @@ public interface FluentQueryService<T> {
     QueryService<T> right();
     QueryService<T> union();
     QueryService<T> on();
+    QueryService<T> on(Column column);
     QueryService<T> any();
     QueryService<T> some();
     QueryService<T> select(Column column);
