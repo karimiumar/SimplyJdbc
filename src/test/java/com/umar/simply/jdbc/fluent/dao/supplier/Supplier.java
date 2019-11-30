@@ -6,6 +6,8 @@ import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Supplier {
@@ -16,6 +18,7 @@ public class Supplier {
     String supplierAddress;
     LocalDateTime created;
     LocalDateTime updated;
+    List<Product> supplierOfProducts = new ArrayList<>();
     
     private Supplier() {
         
@@ -32,13 +35,13 @@ public class Supplier {
     }
     
     public interface TblSupplier {
-        Column<Integer> tblSupplierId = column("id");
-        Column<String> tblSupplierName = column("supplier_name");
-        Column<String> tblContactName = column("supplier_contact");
-        Column<String> tblSupplierAddr = column("supplier_address");
-        Column<LocalDateTime> supplierCreatedOn = column("created");
-        Column<LocalDateTime> supplierUpdatedOn = column("updated");
-        Table tblSupplier = Table.table("ex.supplier", tblSupplierId);
+        Column<Integer> SUPPLIER_ID_COL = column("id");
+        Column<String> SUPPLIER_NAME_COL = column("supplier_name");
+        Column<String> SUPPLIER_CONTACT_COL = column("supplier_contact");
+        Column<String> SUPPLIER_ADDR_COL = column("supplier_address");
+        Column<LocalDateTime> SUPPLIER_CREATED_COL = column("created");
+        Column<LocalDateTime> SUPPLIER_UPDATED_COL = column("updated");
+        Table TBL_SUPPLIER = Table.table("ex.supplier", SUPPLIER_ID_COL);
         
         /**
          * If the returning SQL ResultSet consist of joins of two or more
@@ -46,7 +49,7 @@ public class Supplier {
          * only has information about actual table column names and all the aliases
          * created to are lost. 
          */
-        Table supplier_rsmd = Table.table("supplier", tblSupplierId);
+        Table supplier_rsmd = Table.table("supplier", SUPPLIER_ID_COL);
         Column<Integer> s_id_rsmd = as(supplier_rsmd.getTableName(),"id");
         Column<String> s_supplierName_rsmd = as(supplier_rsmd.getTableName(),"supplier_name");
         Column<String> s_contactName_rsmd = as(supplier_rsmd.getTableName(),"supplier_contact");
@@ -56,13 +59,13 @@ public class Supplier {
         
         RowMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
             final Supplier rowSupplier = new Supplier();
-            rowSupplier.id = rs.getInt(tblSupplierId.getColumnName());
-            rowSupplier.supplierName = rs.getString(tblSupplierName.getColumnName());
-            rowSupplier.contactName = rs.getString(tblContactName.getColumnName());
-            rowSupplier.supplierAddress = rs.getString(tblSupplierAddr.getColumnName());
-            rowSupplier.created = rs.getTimestamp(supplierCreatedOn.getColumnName()).toLocalDateTime();
-            if(rs.getTimestamp(supplierUpdatedOn.getColumnName()) != null) {
-                rowSupplier.updated = rs.getTimestamp(supplierUpdatedOn.getColumnName()).toLocalDateTime();
+            rowSupplier.id = rs.getInt(SUPPLIER_ID_COL.getColumnName());
+            rowSupplier.supplierName = rs.getString(SUPPLIER_NAME_COL.getColumnName());
+            rowSupplier.contactName = rs.getString(SUPPLIER_CONTACT_COL.getColumnName());
+            rowSupplier.supplierAddress = rs.getString(SUPPLIER_ADDR_COL.getColumnName());
+            rowSupplier.created = rs.getTimestamp(SUPPLIER_CREATED_COL.getColumnName()).toLocalDateTime();
+            if(rs.getTimestamp(SUPPLIER_UPDATED_COL.getColumnName()) != null) {
+                rowSupplier.updated = rs.getTimestamp(SUPPLIER_UPDATED_COL.getColumnName()).toLocalDateTime();
             }
             return rowSupplier;
         };
@@ -101,6 +104,14 @@ public class Supplier {
             return false;
         }
         return Objects.equals(this.contactName, other.contactName);
+    }
+
+    public void add(Product product) {
+        supplierOfProducts.add(product);
+    }
+    
+    public List<Product> getSupplierOfProducts() {
+        return supplierOfProducts;
     }
 
     public int getId() {

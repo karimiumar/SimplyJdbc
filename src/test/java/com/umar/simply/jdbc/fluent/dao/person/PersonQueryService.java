@@ -2,8 +2,8 @@ package com.umar.simply.jdbc.fluent.dao.person;
 
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 import java.util.List;
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.PERSON_ROW_MAPPER;
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.*;
+import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.PERSON_ROW_MAPPER;
+import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,7 +15,7 @@ public class PersonQueryService<Person> extends QueryService {
     }
 
     public List<Person> people() {
-        List<Person> people = select().all().from(person).using(PERSON_ROW_MAPPER).execute();
+        List<Person> people = select().all().from(PERSON).using(PERSON_ROW_MAPPER).execute();
         return people;
     }
     
@@ -44,9 +44,9 @@ public class PersonQueryService<Person> extends QueryService {
 
     private List<Person> searchCriteria(String name) {
         String nameCriteria = "%" + name + "%";
-        List<Person> result = select().all().from(person).where().column(fname).like(nameCriteria).using(PERSON_ROW_MAPPER).execute();
+        List<Person> result = select().all().from(PERSON).where().column(FIRST_NAME).like(nameCriteria).using(PERSON_ROW_MAPPER).execute();
         if(result.isEmpty()) {
-            result = select().all().from(person).where().column(lname).like(nameCriteria).using(PERSON_ROW_MAPPER).execute();
+            result = select().all().from(PERSON).where().column(LAST_NAME).like(nameCriteria).using(PERSON_ROW_MAPPER).execute();
         }
         return result;
     }

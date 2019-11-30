@@ -5,7 +5,7 @@ public class Table {
     private final String tableName;
     private final Column<Integer> idColumn;
 
-    private Table(String tableName, Column<Integer> idColumn) {
+    public Table(String tableName, Column<Integer> idColumn) {
         this.tableName = tableName;
         this.idColumn = idColumn;
     }

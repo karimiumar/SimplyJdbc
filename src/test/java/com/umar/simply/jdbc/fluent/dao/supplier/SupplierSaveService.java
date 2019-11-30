@@ -20,10 +20,10 @@ public class SupplierSaveService implements FluentSupplierSaveService {
     public SupplierSaveService save(Supplier supplier) {
         
         newValues = asList(
-                set(tblSupplierName, supplier.supplierName)
-                ,set(tblContactName, supplier.contactName)
-                ,set(tblSupplierAddr, supplier.supplierAddress)
-                ,set(supplierCreatedOn, LocalDateTime.now())
+                set(SUPPLIER_NAME_COL, supplier.supplierName)
+                ,set(SUPPLIER_CONTACT_COL, supplier.contactName)
+                ,set(SUPPLIER_ADDR_COL, supplier.supplierAddress)
+                ,set(SUPPLIER_CREATED_COL, LocalDateTime.now())
         );
         return this;
     }
@@ -31,7 +31,7 @@ public class SupplierSaveService implements FluentSupplierSaveService {
     @Override
     public Supplier execute() {
        SavePersistenceService<Supplier> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-       Supplier saved = sps.save(tblSupplier).withValues(newValues).using(SUPPLIER_ROW_MAPPER).execute();
+       Supplier saved = sps.save(TBL_SUPPLIER).withValues(newValues).using(SUPPLIER_ROW_MAPPER).execute();
        return saved;
     }
     

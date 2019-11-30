@@ -7,7 +7,7 @@ import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductDeleteServ
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.supplier.Product.TblProduct.tblProduct;
+import static com.umar.simply.jdbc.fluent.dao.supplier.ProductTable.TBL_PRODUCT;
 
 public class ProductDeleteService implements FluentProductDeleteService {
     
@@ -15,7 +15,7 @@ public class ProductDeleteService implements FluentProductDeleteService {
 
     @Override
     public ProductDeleteService delete() {
-        dps.from(tblProduct);
+        dps.from(TBL_PRODUCT);
         return this;
     }
 

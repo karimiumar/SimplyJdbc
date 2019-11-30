@@ -2,6 +2,7 @@ package com.umar.simply.jdbc.fluent.dao.supplier;
 
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -128,8 +129,11 @@ public class ProductSupplierQueryTest {
     @org.junit.jupiter.api.Order(4)
     public void listSuppliersOrders(){
         ProductSupplierQueryService psqs = new ProductSupplierQueryService(JdbcUtilService.getConnection());
-        List<ProductSupplier> productSuppliers = psqs.listAllProductsOfSuppliers_Order_By_Supplier();
-        Assertions.assertFalse(productSuppliers.isEmpty());
-        productSuppliers.forEach(System.out::println);
+        Map<Supplier, List<Product>> productsSuppliersWise = psqs.listProductsSupplierwise();
+        Assertions.assertFalse(productsSuppliersWise.isEmpty());
+        Assertions.assertTrue(5 == productsSuppliersWise.size());
+        productsSuppliersWise.entrySet().forEach((entry) -> {
+            System.out.println(entry.getKey() +"->" + entry.getValue());
+        });
     }
 }

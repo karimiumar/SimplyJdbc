@@ -6,7 +6,7 @@ import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentSupplierDeleteService;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.tblSupplier;
+import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.TBL_SUPPLIER;
 
 public class SupplierDeleteService implements FluentSupplierDeleteService {
 
@@ -14,7 +14,7 @@ public class SupplierDeleteService implements FluentSupplierDeleteService {
     
     @Override
     public SupplierDeleteService delete() {
-        dps.from(tblSupplier);
+        dps.from(TBL_SUPPLIER);
         return this;
     }
 

@@ -7,7 +7,7 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.supplier.Product.TblProduct.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.ProductTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import java.time.LocalDateTime;
 import static java.util.Arrays.asList;
@@ -19,12 +19,12 @@ public class ProductSaveService implements FluentProductSaveService {
     @Override
     public ProductSaveService save(Product product) {
         newValues = asList(
-                set(tblProductName, product.productName)
-                ,set(tblProductSupplierId, product.supplierId)
-                ,set(tblProductUnitPrice, product.pricePerUnit)
-                ,set(tblProductDiscontinued, product.discontinued)
-                ,set(tblProductCategoryId, product.categoryId)
-                ,set(productCreatedOn, LocalDateTime.now())
+                set(PRODUCT_NAME_COL, product.productName)
+                ,set(PRODUCT_SUPPLIERID_COL, product.supplierId)
+                ,set(PRODUCT_UNIT_PRICE_COL, product.pricePerUnit)
+                ,set(PRODUCT_DISCONTINUED_COL, product.discontinued)
+                ,set(PRODUCT_CAT_ID_COL, product.categoryId)
+                ,set(PRODUCT_CREATED_COL, LocalDateTime.now())
         );
         return this;
     }
@@ -32,7 +32,7 @@ public class ProductSaveService implements FluentProductSaveService {
     @Override
     public Product execute() {
         SavePersistenceService<Product> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Product saved = sps.save(tblProduct).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
+        Product saved = sps.save(TBL_PRODUCT).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
         return saved;
     }
 }

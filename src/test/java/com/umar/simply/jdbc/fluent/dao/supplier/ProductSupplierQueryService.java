@@ -2,15 +2,16 @@ package com.umar.simply.jdbc.fluent.dao.supplier;
 
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.*;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Product.TblProduct.*;
-import static com.umar.simply.jdbc.fluent.dao.supplier.ProductSupplier.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.ProductTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 import java.sql.Connection;
 import java.util.List;
 import static java.util.Arrays.asList;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSupplierQueryService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductSupplierQueryService extends QueryService implements FluentProductSupplierQueryService {
     
@@ -21,16 +22,52 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     @Override
     public List<Product> listProductsSuppliedBy(Supplier supplier) {
         List<Product> productsSupplied = select().all()
-                .from(tblProduct).where()
-                .column(tblProductSupplierId).eq(set(supplier.id))
+                .from(TBL_PRODUCT).where()
+                .column(PRODUCT_SUPPLIERID_COL).eq(set(supplier.id))
                 .using(PRODUCT_ROW_MAPPER)
                 .execute();
         return productsSupplied;
     }
 
     @Override
-    public List<ProductSupplier> listAllProductsOfSuppliers_Order_By_Supplier() {
-        List<ProductSupplier> productSuppliers = 
+    public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
+        List<Supplier> suppliersOf = select().all()
+                .from(Supplier.TblSupplier.TBL_SUPPLIER)
+                .join().table(TBL_PRODUCT)
+                .on(SUPP_ID).eq(set(queryProduct.supplierId))
+                .using(SUPPLIER_ROW_MAPPER)
+                .execute();
+        return suppliersOf;
+    }    
+
+    @Override
+    public Map<Supplier, List<Product>> listProductsSupplierwise() {
+        List<ProductTable.ProductSupplier> productSuppliers = listAllProductsOfSuppliers_Order_By_Supplier();
+        Map<Supplier, List<Product>> productsSupplierwiseMap = new HashMap<>(); //replace with a SortedMap
+        List<Supplier> suppliers = new ArrayList<>();
+        for(int i=0; i<productSuppliers.size(); i++) {
+            ProductTable.ProductSupplier ps = productSuppliers.get(i);
+            Supplier supplier = ps.supplier;
+            suppliers.add(supplier);
+        }
+        for(int i=0; i<productSuppliers.size(); i++) {
+            ProductTable.ProductSupplier ps = productSuppliers.get(i);
+            Product product = ps.product;
+            suppliers.forEach((supplier) ->  {
+                if(supplier.id == product.supplierId) {
+                    supplier.add(product);
+                }
+            });
+        }
+        
+        suppliers.forEach((supplier) -> {
+            productsSupplierwiseMap.put(supplier, supplier.getSupplierOfProducts());
+        });
+        return productsSupplierwiseMap;
+    }
+    
+    private List<ProductTable.ProductSupplier> listAllProductsOfSuppliers_Order_By_Supplier() {
+        List<ProductTable.ProductSupplier> productSuppliers = 
                 select(asList(
                         PRD_ID_ALIAS
                         ,PRD_NAME_ALIAS
@@ -42,23 +79,13 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
                         ,SUPP_NAME_ALIAS
                         ,SUPP_CONTACT_ALIAS
                         ,SUPP_ADDRESS_ALIAS))
-                .from(tblProduct).as(PRODUCT)
-                .join(tblSupplier).as(SUPPLIER)
-                .on(SUPP_ID).eq(tblProductSupplierId)
+                .from(TBL_PRODUCT).as(PRODUCT)
+                .join(Supplier.TblSupplier.TBL_SUPPLIER).as(SUPPLIER)
+                .on(SUPP_ID).eq(PRODUCT_SUPPLIERID_COL)
                 .groupBy(asList(SUPP_ID, PRD_ID))
+                .orderBy(SUPP_ID)
                 .using(PRD_SUPP_ROW_MAPPER)
                 .execute();
         return productSuppliers;
     }
-
-    @Override
-    public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
-        List<Supplier> suppliersOf = select().all()
-                .from(tblSupplier)
-                .join().table(tblProduct)
-                .on(tblSupplierId).eq(set(queryProduct.supplierId))
-                .using(SUPPLIER_ROW_MAPPER)
-                .execute();
-        return suppliersOf;
-    }    
 }
