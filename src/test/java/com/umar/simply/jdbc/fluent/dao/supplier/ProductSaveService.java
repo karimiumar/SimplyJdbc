@@ -6,10 +6,10 @@ import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSaveServic
 import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.util.List;
-
-import static com.umar.simply.jdbc.fluent.dao.supplier.ProductTable.*;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import java.time.LocalDateTime;
+
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
+import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import static java.util.Arrays.asList;
 
 public class ProductSaveService implements FluentProductSaveService {

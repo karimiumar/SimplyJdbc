@@ -16,11 +16,11 @@ import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Customer.TblCustomer
 import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Order.TblOrder;
 import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Supplier.TblSupplier;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreateTablesInH2db {
-    final static String EX_SCHEMA = "ex";
+    /*final static String EX_SCHEMA = "ex";
    
-    @Test
+    //@Test
     @Order(1)
     public void dropSchemaSchemaEx() {
         StringBuilder ddlBuilder = new StringBuilder();
@@ -31,7 +31,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);        
     }
     
-    @Test
+    //@Test
     @Order(2)
     public void createSchemaEx() {
         StringBuilder ddlBuilder = new StringBuilder();
@@ -42,7 +42,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);
     }
     
-    @Test
+    //@Test
     @Order(3)
     public void createPerson() {
         StringBuilder ddlBuilder = new StringBuilder();
@@ -76,7 +76,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);
     }
     
-    @Test
+    //@Test
     public void createSupplier() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
@@ -101,7 +101,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);
     }
     
-    @Test
+    //@Test
     public void createCustomer() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
@@ -128,7 +128,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);
     }
     
-    @Test
+    //@Test
     public void createProduct() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
@@ -157,7 +157,7 @@ public class CreateTablesInH2db {
         executeDDL(ddl);
     }
     
-    @Test
+    //@Test
     public void createOrder() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
@@ -191,5 +191,5 @@ public class CreateTablesInH2db {
         } catch (SQLException ex) {
             Logger.getLogger(CreateTablesInH2db.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 }

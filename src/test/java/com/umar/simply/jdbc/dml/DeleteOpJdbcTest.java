@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 public class DeleteOpJdbcTest {
 
-    static String driverClass = "org.h2.Driver";
+    /*static String driverClass = "org.h2.Driver";
     static String url = "jdbc:h2:./h2/db/ex;AUTO_SERVER=TRUE";
     static String user = "sa";
     static String passwd = "sa";
@@ -51,5 +51,5 @@ public class DeleteOpJdbcTest {
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }

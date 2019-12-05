@@ -12,7 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductSupplierQueryTest {
     
-    @AfterAll 
+   // @AfterAll 
     public static void clean() {
         ProductDeleteService pds = new ProductDeleteService();
         SupplierDeleteService sds = new SupplierDeleteService();
@@ -20,8 +20,8 @@ public class ProductSupplierQueryTest {
         sds.delete().execute();
     }
     
-    @Test
-    @org.junit.jupiter.api.Order(1)
+    //@Test
+    //@org.junit.jupiter.api.Order(1)
     public void saveProductsAndSuppliers(){
         Product p1 = new Product("Smart Phones",1, 345.00, false, 2);
         Product p2 = new Product("Electric Kettles",1, 495.00, false, 2);
@@ -104,7 +104,7 @@ public class ProductSupplierQueryTest {
     }
     
     @Test
-    @org.junit.jupiter.api.Order(2)
+    //@org.junit.jupiter.api.Order(2)
     public void listProductsOfSupplier2() {
         ProductSupplierQueryService psqs = new ProductSupplierQueryService(JdbcUtilService.getConnection());
         Supplier s2 = new Supplier("", "", "");
@@ -115,7 +115,7 @@ public class ProductSupplierQueryTest {
     }
     
     @Test
-    @org.junit.jupiter.api.Order(3)
+    //@org.junit.jupiter.api.Order(3)
     public void listProductsOfSupplier5() {
         ProductSupplierQueryService psqs = new ProductSupplierQueryService(JdbcUtilService.getConnection());
         Supplier s5 = new Supplier("", "", "");
@@ -126,7 +126,7 @@ public class ProductSupplierQueryTest {
     }
     
     @Test
-    @org.junit.jupiter.api.Order(4)
+    //@org.junit.jupiter.api.Order(4)
     public void listSuppliersOrders(){
         ProductSupplierQueryService psqs = new ProductSupplierQueryService(JdbcUtilService.getConnection());
         Map<Supplier, List<Product>> productsSuppliersWise = psqs.listProductsSupplierwise();

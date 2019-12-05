@@ -43,7 +43,7 @@ public class UpdateOpJdbcTest  {
         );
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("people")
     @Order(1)
     public void insertPeople(ColumnValue<String> fname, ColumnValue<String> lname, ColumnValue<String> email, ColumnValue<Boolean> isAdult){
@@ -102,5 +102,5 @@ public class UpdateOpJdbcTest  {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-    }
+    }*/
 }

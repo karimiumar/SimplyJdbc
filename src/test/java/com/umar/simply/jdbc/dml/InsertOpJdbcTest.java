@@ -40,7 +40,7 @@ public class InsertOpJdbcTest  {
 
     //String driverClass = "com.mysql.cj.jdbc.Driver";
     //String url = "jdbc:mysql://localhost:3306/ex";
-    static String driverClass = "org.h2.Driver";
+    /*static String driverClass = "org.h2.Driver";
     static String url = "jdbc:h2:./h2/db/ex;AUTO_SERVER=TRUE";
     static String user = "sa";
     static String passwd = "sa";
@@ -72,5 +72,5 @@ public class InsertOpJdbcTest  {
             throw new RuntimeException(ex);
         }
 
-    }
+    }*/
 }

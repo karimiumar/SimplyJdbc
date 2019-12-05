@@ -1,17 +1,22 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
+import com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable;
 import com.umar.simply.jdbc.fluent.dao.QueryService;
-
-import static com.umar.simply.jdbc.fluent.dao.supplier.ProductTable.*;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 import java.sql.Connection;
 import java.util.List;
-import static java.util.Arrays.asList;
-import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSupplierQueryService;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSupplierQueryService;
+
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
+import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import static java.util.Arrays.asList;
 
 public class ProductSupplierQueryService extends QueryService implements FluentProductSupplierQueryService {
     
@@ -32,7 +37,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     @Override
     public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
         List<Supplier> suppliersOf = select().all()
-                .from(Supplier.TblSupplier.TBL_SUPPLIER)
+                .from(TBL_SUPPLIER)
                 .join().table(TBL_PRODUCT)
                 .on(SUPP_ID).eq(set(queryProduct.supplierId))
                 .using(SUPPLIER_ROW_MAPPER)
@@ -43,16 +48,16 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     @Override
     public Map<Supplier, List<Product>> listProductsSupplierwise() {
         List<ProductTable.ProductSupplier> productSuppliers = listAllProductsOfSuppliers_Order_By_Supplier();
-        Map<Supplier, List<Product>> productsSupplierwiseMap = new HashMap<>(); //replace with a SortedMap
-        List<Supplier> suppliers = new ArrayList<>();
+        SortedMap<Supplier, List<Product>> productsSupplierwiseMap = new TreeMap<>((Supplier o1, Supplier o2) -> o1.id < o2.id ? -1 : (o1.id == o2.id) ? 0 :1);
+        Set<Supplier> suppliers = new HashSet<>();
         for(int i=0; i<productSuppliers.size(); i++) {
             ProductTable.ProductSupplier ps = productSuppliers.get(i);
-            Supplier supplier = ps.supplier;
+            Supplier supplier = ps.getSupplier();
             suppliers.add(supplier);
         }
         for(int i=0; i<productSuppliers.size(); i++) {
             ProductTable.ProductSupplier ps = productSuppliers.get(i);
-            Product product = ps.product;
+            Product product = ps.getProduct();
             suppliers.forEach((supplier) ->  {
                 if(supplier.id == product.supplierId) {
                     supplier.add(product);
@@ -80,7 +85,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
                         ,SUPP_CONTACT_ALIAS
                         ,SUPP_ADDRESS_ALIAS))
                 .from(TBL_PRODUCT).as(PRODUCT)
-                .join(Supplier.TblSupplier.TBL_SUPPLIER).as(SUPPLIER)
+                .join(TBL_SUPPLIER).as(SUPPLIER)
                 .on(SUPP_ID).eq(PRODUCT_SUPPLIERID_COL)
                 .groupBy(asList(SUPP_ID, PRD_ID))
                 .orderBy(SUPP_ID)

@@ -7,7 +7,7 @@ import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentOrderDeleteServic
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.supplier.Order.TblOrder.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
 
 public class OrderDeleteService implements FluentOrderDeleteService {
     
@@ -15,7 +15,7 @@ public class OrderDeleteService implements FluentOrderDeleteService {
 
     @Override
     public OrderDeleteService delete() {
-        dps.from(orders);
+        dps.from(TBL_ORDERS);
         return this;
     }
 

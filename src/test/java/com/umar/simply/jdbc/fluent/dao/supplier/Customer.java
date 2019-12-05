@@ -1,34 +1,18 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
-import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.meta.Column;
-import static com.umar.simply.jdbc.meta.Column.as;
-import static com.umar.simply.jdbc.meta.Column.column;
-import com.umar.simply.jdbc.meta.Table;
-import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Customer {
 
-    int id;
-    String firstName;
-    String lastName;
-    String country;
-    String city;
-    transient double totalAmount; //this is not a database column but is required for joining with orders table.
-    LocalDateTime created;
-    LocalDateTime updated;
-
-    /*
-    CUSTOMER_TOTALS is an alias for a subquery as given:
-    (SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id) AS CUSTOMER_TOTALS
-     */
-    static final String CUSTOMER_TOTALS = "CUSTOMER_TOTALS";
-    static final String CUSTOMER_ID = "CUSTOMER_ID";
-    static final String TOTAL_AMOUNT = "TOTAL_AMOUNT";
-    static final Column<Integer> CUSTOMER_TOTALS_CUSTOMER_ID = Column.column(CUSTOMER_TOTALS + "." +CUSTOMER_ID);
-    static final Column<Double> CUSTOMER_TOTALS_TOTAL_AMOUNT = Column.column(CUSTOMER_TOTALS + "." +TOTAL_AMOUNT);
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String country;
+    private String city;
+    private double totalAmount; //this is not a database column but is required for joining with orders table.
+    private LocalDateTime created;
+    private LocalDateTime updated;
     
     private Customer() {
 
@@ -43,41 +27,6 @@ public class Customer {
 
     public static Customer emptyCustomer() {
         return new Customer();
-    }
-
-    public interface TblCustomer {
-
-        Column<Integer> customerId = column("id");
-        Column<String> country = column("country");
-        Column<String> city = column("city");
-        Column<String> fname = column("first_name");
-        Column<String> lname = column("last_name");
-        Column<LocalDateTime> created = column("created");
-        Column<LocalDateTime> updated = column("updated");
-        Table customer = Table.table("ex.customer", customerId);
-        
-        RowMapper<Customer> CUSTOMER_ROW_MAPPER = (rs) -> {
-            Customer customerRow = new Customer();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-            for (int index = 1; index <= columnCount; index++) {
-                String columnName = rsmd.getColumnLabel(index);
-                String tableAlias = rsmd.getTableName(index);
-                if(columnName.equals(TOTAL_AMOUNT)) {
-                    customerRow.totalAmount = rs.getDouble(TOTAL_AMOUNT);
-                }
-            }
-            customerRow.id = rs.getInt(customerId.getColumnName());
-            customerRow.firstName = rs.getString(fname.getColumnName());
-            customerRow.lastName = rs.getString(lname.getColumnName());
-            customerRow.city = rs.getString(city.getColumnName());
-            customerRow.country = rs.getString(country.getColumnName());
-            customerRow.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
-            if (rs.getTimestamp(updated.getColumnName()) != null) {
-                customerRow.updated = rs.getTimestamp(updated.getColumnName()).toLocalDateTime();
-            }
-            return customerRow;
-        };
     }
 
     @Override
@@ -165,5 +114,13 @@ public class Customer {
 
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
     }
 }

@@ -8,8 +8,8 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.*;
 import static java.util.Arrays.asList;
 
 public class SupplierSaveService implements FluentSupplierSaveService {

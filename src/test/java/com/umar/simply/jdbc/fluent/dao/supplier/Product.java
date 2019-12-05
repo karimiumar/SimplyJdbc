@@ -1,10 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
-import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.meta.Column;
-import static com.umar.simply.jdbc.meta.Column.as;
-import static com.umar.simply.jdbc.meta.Column.column;
-import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +60,7 @@ public class Product {
         if (this.supplierId != other.supplierId) {
             return false;
         }
-        if (!Objects.equals(this.productName, other.productName)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.productName, other.productName);
     }
 
     @Override

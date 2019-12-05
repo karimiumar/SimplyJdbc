@@ -1,10 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
-import com.umar.simply.jdbc.RowMapper;
-import com.umar.simply.jdbc.meta.Column;
-import static com.umar.simply.jdbc.meta.Column.as;
-import static com.umar.simply.jdbc.meta.Column.column;
-import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,47 +26,6 @@ public class Order {
         
     public static Order emptyOrder() {
         return new Order();
-    }
-
-    public interface TblOrder {
-
-        Column<Integer> orderId = column("id");
-        Column<LocalDateTime> orderDate = column("order_date");
-        Column<Integer> orderNo = column("order_number");
-        Column<Integer> orderCustomerId = column("customer_id");
-        Column<Double> totalAmount = column("total_amount");
-        Column<LocalDateTime> created = column("created");
-        Column<LocalDateTime> updated = column("updated");
-        Table orders = Table.table("ex.orders", orderId); //ORDER can't be a table identifier. Its a command type
-        
-        /**
-         * If the returning SQL ResultSet consist of joins of two or more
-         * tables then the given Mapping should be used by the RowMapper.map(ResultSet) as the ResultSetMetaData
-         * only has information about actual table column names and all the aliases
-         * created to are lost. 
-         */
-        Table orders_rsmd = Table.table("orders", orderId);
-        Column<Integer> order_id_rsmd = as(orders_rsmd.getTableName(),"id");
-        Column<LocalDateTime> order_orderDate_rsmd = as(orders_rsmd.getTableName(),"order_date");
-        Column<Long> order_orderNo_rsmd = as(orders_rsmd.getTableName(),"order_number");
-        Column<Integer> order_customerId_rsmd = as(orders_rsmd.getTableName(),"customer_id");
-        Column<Double> order_totalAmount_rsmd = as(orders_rsmd.getTableName(),"total_amount");
-        Column<LocalDateTime> order_created_rsmd = as(orders_rsmd.getTableName(),"created");
-        Column<LocalDateTime> order_updated_rsmd = as(orders_rsmd.getTableName(),"updated");
-        
-        RowMapper<Order> ORDER_ROW_MAPPER = (rs)-> {
-            final Order rowOrder = new Order();
-            rowOrder.id = rs.getInt(orderId.getColumnName());
-            rowOrder.orderDate = rs.getTimestamp(orderDate.getColumnName()).toLocalDateTime();
-            rowOrder.orderNo = rs.getInt(orderNo.getColumnName());
-            rowOrder.customerId = rs.getInt(orderCustomerId.getColumnName());
-            rowOrder.totalAmount = rs.getDouble(totalAmount.getColumnName());
-            rowOrder.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
-            if(rs.getTimestamp(updated.getColumnName()) != null) {
-                rowOrder.updated = rs.getTimestamp(updated.getColumnName()).toLocalDateTime();
-            }
-            return rowOrder;
-        };
     }
 
     public int getId() {

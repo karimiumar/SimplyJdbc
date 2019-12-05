@@ -5,11 +5,11 @@ import com.umar.simply.jdbc.fluent.dao.SavePersistenceService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentOrderSaveService;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
-
-import static com.umar.simply.jdbc.fluent.dao.supplier.Order.TblOrder.*;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import java.time.LocalDateTime;
 import static java.util.Arrays.asList;
+
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
+import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 public class OrderSaveService implements FluentOrderSaveService {
 
@@ -18,11 +18,11 @@ public class OrderSaveService implements FluentOrderSaveService {
     @Override
     public OrderSaveService save(Order transientOrder) {
         values = asList(
-                set(orderDate, transientOrder.orderDate)
-                ,set(orderCustomerId, transientOrder.customerId)
-                ,set(orderNo, transientOrder.orderNo)
-                ,set(totalAmount, transientOrder.totalAmount)
-                ,set(created, LocalDateTime.now())
+                set(ORDER_DATE, transientOrder.orderDate)
+                ,set(ORDER_CUSTOMERID, transientOrder.customerId)
+                ,set(ORDER_NO, transientOrder.orderNo)
+                ,set(ORDER_TOTAL_AMT, transientOrder.totalAmount)
+                ,set(ORDER_CREATED, LocalDateTime.now())
         );
         return this;
     }
@@ -30,7 +30,7 @@ public class OrderSaveService implements FluentOrderSaveService {
     @Override
     public Order execute() {
         SavePersistenceService<Order> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Order saved = sps.save(orders).withValues(values).using(ORDER_ROW_MAPPER).execute();
+        Order saved = sps.save(TBL_ORDERS).withValues(values).using(ORDER_ROW_MAPPER).execute();
         return saved;
     }
     

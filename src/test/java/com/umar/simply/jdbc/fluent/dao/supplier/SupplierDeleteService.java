@@ -6,7 +6,8 @@ import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentSupplierDeleteService;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Supplier.TblSupplier.TBL_SUPPLIER;
+
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.TBL_SUPPLIER;
 
 public class SupplierDeleteService implements FluentSupplierDeleteService {
 

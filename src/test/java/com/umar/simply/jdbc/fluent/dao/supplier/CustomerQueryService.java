@@ -6,9 +6,8 @@ import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentCustomerQueryServ
 import java.sql.Connection;
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.supplier.Customer.TblCustomer.*;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Customer.*;
-import static com.umar.simply.jdbc.fluent.dao.supplier.Order.TblOrder.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
 import static java.util.Arrays.asList;
 
 public class CustomerQueryService extends QueryService implements FluentCustomerQueryService {
@@ -30,14 +29,22 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
          * ON id = CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC
          * --------------------------------------------------------------------------------------
          */
-        List<Customer> customerOrders = select().all().from(customer)
+        List<Customer> customerOrders = select().all().from(CUSTOMERS)
                 .left().join(
-                    SelectOp.create().select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId))
-                .from(orders).groupBy(orderCustomerId))
+                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
+                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
                 .as(CUSTOMER_TOTALS)
-                .on(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
                 .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
                 .using(CUSTOMER_ROW_MAPPER).execute();
+        String sql = select().all().from(CUSTOMERS)
+                .left().join(
+                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
+                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
+                .as(CUSTOMER_TOTALS)
+                .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc().getSQL().getSQL();
+        System.out.println(sql);
         return customerOrders;
     }
 

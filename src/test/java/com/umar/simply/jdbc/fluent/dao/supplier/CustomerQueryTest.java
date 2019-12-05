@@ -12,7 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerQueryTest {
     
-    @AfterAll
+    //@AfterAll
     public static void clean() {
         OrderDeleteService ods = new OrderDeleteService();
         ods.delete().execute();
@@ -20,7 +20,7 @@ public class CustomerQueryTest {
         cds.delete().execute();
     }
     
-    @Test
+    //@Test
     @org.junit.jupiter.api.Order(1)
     public void saveCustomerOrders() {
         CustomerSaveService css = new CustomerSaveService();
@@ -34,16 +34,16 @@ public class CustomerQueryTest {
         c3 = css.save(c3).execute();
         c4 = css.save(c4).execute();
         
-        Order o1 = new Order(LocalDateTime.now(), 12, c1.id, 4500.00);
-        Order o2 = new Order(LocalDateTime.now(), 12, c1.id, 1500.00);
-        Order o3 = new Order(LocalDateTime.now(), 12, c1.id, 500.00);
+        Order o1 = new Order(LocalDateTime.now(), 12, c1.getId(), 4500.00);
+        Order o2 = new Order(LocalDateTime.now(), 12, c1.getId(), 1500.00);
+        Order o3 = new Order(LocalDateTime.now(), 12, c1.getId(), 500.00);
         
-        Order o4 = new Order(LocalDateTime.now(), 13, c3.id, 500.00);
-        Order o5 = new Order(LocalDateTime.now(), 13, c3.id, 1200.00);
-        Order o6 = new Order(LocalDateTime.now(), 13, c3.id, 500.00);
+        Order o4 = new Order(LocalDateTime.now(), 13, c3.getId(), 500.00);
+        Order o5 = new Order(LocalDateTime.now(), 13, c3.getId(), 1200.00);
+        Order o6 = new Order(LocalDateTime.now(), 13, c3.getId(), 500.00);
         
-        Order o7 = new Order(LocalDateTime.now(), 23, c4.id, 1100.00);
-        Order o8 = new Order(LocalDateTime.now(), 33, c2.id, 700.00);
+        Order o7 = new Order(LocalDateTime.now(), 23, c4.getId(), 1100.00);
+        Order o8 = new Order(LocalDateTime.now(), 33, c2.getId(), 700.00);
         oss.save(o1).execute();
         oss.save(o2).execute();
         oss.save(o3).execute();
@@ -75,7 +75,7 @@ public class CustomerQueryTest {
      *  ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY  CUSTOMER_TOTALS.TOTAL_AMOUNT desc
      */
     @Test
-    @org.junit.jupiter.api.Order(3)
+    @org.junit.jupiter.api.Order(1)
     public void findTotalAmtOrderedByEachCustomer() {
         CustomerQueryService coqs = new CustomerQueryService(JdbcUtilService.getConnection());
         List<Customer> customerOrders = coqs.findTotalAmtOrderedByEachCustomer();
@@ -85,25 +85,25 @@ public class CustomerQueryTest {
         Customer c0 = customerOrders.get(0);
         Customer ashleyStevens = new Customer("Ashley", "Stevens", "", "");
         Assertions.assertEquals(ashleyStevens, c0);
-        ashleyStevens.totalAmount = 6500;
-        Assertions.assertEquals(ashleyStevens.totalAmount, c0.totalAmount);
+        ashleyStevens.setTotalAmount(6500.00);
+        Assertions.assertEquals(ashleyStevens.getTotalAmount(), c0.getTotalAmount());
         
         Customer c1 = customerOrders.get(1);
         Customer jenniferAniston = new Customer("Jennifer", "Aniston", "", "");
-        jenniferAniston.totalAmount = 2200;
+        jenniferAniston.setTotalAmount(2200);
         Assertions.assertEquals(jenniferAniston, c1);
-        Assertions.assertEquals(jenniferAniston.totalAmount, c1.totalAmount);
+        Assertions.assertEquals(jenniferAniston.getTotalAmount(), c1.getTotalAmount());
         
         Customer c2 = customerOrders.get(2);
         Customer brianAdams = new Customer("Brian", "Adams", "", "");
-        brianAdams.totalAmount = 1100;
+        brianAdams.setTotalAmount(1100);
         Assertions.assertEquals(brianAdams, c2);
-        Assertions.assertEquals(brianAdams.totalAmount, c2.totalAmount);
+        Assertions.assertEquals(brianAdams.getTotalAmount(), c2.getTotalAmount());
         
         Customer c3 = customerOrders.get(3);
         Customer jenniferStevens = new Customer("Jennifer", "Stevens", "", "");
-        jenniferStevens.totalAmount = 700;
+        jenniferStevens.setTotalAmount(700);
         Assertions.assertEquals(jenniferStevens, c3);
-        Assertions.assertEquals(jenniferStevens.totalAmount, c3.totalAmount);
+        Assertions.assertEquals(jenniferStevens.getTotalAmount(), c3.getTotalAmount());
     }
 }

@@ -110,6 +110,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" NOT ");
         return (T) this;
     }
+    
+    public T not(SelectOp sql) {
+        op().append(" NOT( ");
+        op().append(sql);
+        op().append(" )");
+        return (T) this;
+    }
 
     /**
      * SQL IS statement
@@ -148,14 +155,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(column);
         return (T) this;
     }
-
-    /**
-     * Marks the beginning of a complex statement
-     *
-     * @return Returns this object
-     */
-    public T beginComplex() {
-        op().append("(");
+    
+    public T and(SelectOp sql) {
+        op().append(" AND (");
+        op().append(sql);
+        op().append(" )");
         return (T) this;
     }
 
@@ -165,16 +169,6 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      */
     public T or() {
         op().append(" OR ");
-        return (T) this;
-    }
-
-    /**
-     * Ends a complex statement that was begun by <code>beginComplex()</code> method
-     *
-     * @return Returns this object
-     */
-    public T endComplex() {
-        op().append(")");
         return (T) this;
     }
 
