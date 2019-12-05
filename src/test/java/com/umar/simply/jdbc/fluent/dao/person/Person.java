@@ -4,7 +4,6 @@ import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.Table;
 
-import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
 import static com.umar.simply.jdbc.meta.Table.table;
 import java.time.LocalDateTime;
@@ -28,33 +27,33 @@ public class Person {
         Type safe column names declared here
      */
     public interface TblPerson {
-        final String EX_SCHEMA = "ex";
-        Column<Integer> personId = column("id");
-        Column<String> fname = column("firstname");
-        Column<String> lname = column("lastname");
-        Column<String> email = column("email");
-        Column<Boolean> adult = column("adult");
-        Column<LocalDateTime> created = column("created");
-        Column<LocalDateTime> updated = column("updated");
-        Column<String> city = column("city");
-        Column<String> country = column("country");
-        Column<Integer> age = column("age");
-        Table person = table(EX_SCHEMA +".person", personId);
+        
+        Column<Integer> PERSON_ID = column("id");
+        Column<String> FIRST_NAME = column("firstname");
+        Column<String> LAST_NAME = column("lastname");
+        Column<String> EMAIL = column("email");
+        Column<Boolean> ADULT = column("adult");
+        Column<LocalDateTime> CREATED = column("created");
+        Column<LocalDateTime> UPDATED = column("updated");
+        Column<String> CITY = column("city");
+        Column<String> COUNTRY = column("country");
+        Column<Integer> AGE = column("age");
+        Table TBL_PERSON = table("person", PERSON_ID);
 
         RowMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
             final Person personRow = new Person();
-            personRow.id = rs.getInt(personId.getColumnName());
-            personRow.firstName = rs.getString(fname.getColumnName());
-            personRow.lastName = rs.getString(lname.getColumnName());
-            personRow.email = rs.getString(email.getColumnName());
-            personRow.adult = rs.getBoolean(adult.getColumnName());
-            personRow.created = rs.getTimestamp(created.getColumnName()).toLocalDateTime();
-            if(rs.getTimestamp(updated.getColumnName()) != null) {
-                personRow.updated = rs.getTimestamp(updated.getColumnName()).toLocalDateTime();
+            personRow.id = rs.getInt(PERSON_ID.getColumnName());
+            personRow.firstName = rs.getString(FIRST_NAME.getColumnName());
+            personRow.lastName = rs.getString(LAST_NAME.getColumnName());
+            personRow.email = rs.getString(EMAIL.getColumnName());
+            personRow.adult = rs.getBoolean(ADULT.getColumnName());
+            personRow.created = rs.getTimestamp(CREATED.getColumnName()).toLocalDateTime();
+            if(rs.getTimestamp(UPDATED.getColumnName()) != null) {
+                personRow.updated = rs.getTimestamp(UPDATED.getColumnName()).toLocalDateTime();
             }
-            personRow.city = rs.getString(city.getColumnName());
-            personRow.country = rs.getString(country.getColumnName());
-            personRow.age = rs.getInt(age.getColumnName());
+            personRow.city = rs.getString(CITY.getColumnName());
+            personRow.country = rs.getString(COUNTRY.getColumnName());
+            personRow.age = rs.getInt(AGE.getColumnName());
             return personRow;
         };
     }

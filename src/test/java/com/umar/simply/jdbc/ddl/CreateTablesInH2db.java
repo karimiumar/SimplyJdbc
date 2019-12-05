@@ -10,174 +10,191 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.*;
-import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Product.TblProduct;
-import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Customer.TblCustomer;
-import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Order.TblOrder;
-import com.umar.simply.jdbc.sample.schema.metadata.ExSchema.Supplier.TblSupplier;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
+import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
+import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreateTablesInH2db {
-    /*final static String EX_SCHEMA = "ex";
    
-    //@Test
+    @Test
     @Order(1)
-    public void dropSchemaSchemaEx() {
+    public void dropTablesInPublicSchema() {
         StringBuilder ddlBuilder = new StringBuilder();
-        ddlBuilder.append("DROP SCHEMA IF EXISTS ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(" CASCADE ;");
+        ddlBuilder.append("DROP TABLE IF EXISTS ");
+        ddlBuilder.append(TBL_PERSON);
+        ddlBuilder.append(";");
         String ddl = ddlBuilder.toString();
-        executeDDL(ddl);        
+        executeDDL(ddl);  
+        
+        ddlBuilder = new StringBuilder();
+        ddlBuilder.append("DROP TABLE IF EXISTS ");
+        ddlBuilder.append(TBL_CUSTOMERS);
+        ddlBuilder.append(";");
+        ddl = ddlBuilder.toString();
+        executeDDL(ddl);  
+        
+        ddlBuilder = new StringBuilder();
+        ddlBuilder.append("DROP TABLE IF EXISTS ");
+        ddlBuilder.append(TBL_PRODUCT);
+        ddlBuilder.append(";");
+        ddl = ddlBuilder.toString();
+        executeDDL(ddl);  
+        
+        ddlBuilder = new StringBuilder();
+        ddlBuilder.append("DROP TABLE IF EXISTS ");
+        ddlBuilder.append(TBL_SUPPLIER);
+        ddlBuilder.append(";");
+        ddl = ddlBuilder.toString();
+        executeDDL(ddl);  
+        
+        ddlBuilder = new StringBuilder();
+        ddlBuilder.append("DROP TABLE IF EXISTS ");
+        ddlBuilder.append(TBL_ORDERS);
+        ddlBuilder.append(";");
+        ddl = ddlBuilder.toString();
+        executeDDL(ddl);  
     }
     
-    //@Test
-    @Order(2)
-    public void createSchemaEx() {
-        StringBuilder ddlBuilder = new StringBuilder();
-        ddlBuilder.append("CREATE SCHEMA IF NOT EXISTS ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(" AUTHORIZATION  sa;");
-        String ddl = ddlBuilder.toString();
-        executeDDL(ddl);
-    }
-    
-    //@Test
-    @Order(3)
+    @Test
+    //@Order(3)
     public void createPerson() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(".");
-        ddlBuilder.append(person);
+        //ddlBuilder.append(EX_SCHEMA);
+        //ddlBuilder.append(".");
+        ddlBuilder.append(TBL_PERSON);
         ddlBuilder.append("(");
-        ddlBuilder.append(personId);
+        ddlBuilder.append(PERSON_ID);
         ddlBuilder.append("  bigint auto_increment primary key, ");
-        ddlBuilder.append(fname);
+        ddlBuilder.append(PERSON_FIRST_NAME);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(lname);
+        ddlBuilder.append(PERSON_LAST_NAME);
         ddlBuilder.append("  varchar(20), " );
-        ddlBuilder.append(adult);
+        ddlBuilder.append(PERSON_IS_ADULT);
         ddlBuilder.append("  tinyint(1), " );
-        ddlBuilder.append(age);
+        ddlBuilder.append(PERSON_AGE);
         ddlBuilder.append("  int(3), " );
-        ddlBuilder.append(email);
+        ddlBuilder.append(PERSON_EMAIL);
         ddlBuilder.append("  varchar(25), " );
-        ddlBuilder.append(city);
+        ddlBuilder.append(PERSON_CITY);
         ddlBuilder.append("  varchar(15), " );
-        ddlBuilder.append(country);
+        ddlBuilder.append(PERSON_COUNTRY);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(created);
+        ddlBuilder.append(PERSON_CREATED);
         ddlBuilder.append("  timestamp,  " );
-        ddlBuilder.append(updated);
+        ddlBuilder.append(PERSON_UPDATED);
         ddlBuilder.append("  timestamp  " );
         ddlBuilder.append(");");
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
     
-    //@Test
+    @Test
     public void createSupplier() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(".");
-        ddlBuilder.append(TblSupplier.supplier);
+        //ddlBuilder.append(EX_SCHEMA);
+       // ddlBuilder.append(".");
+        ddlBuilder.append(TBL_SUPPLIER);
         ddlBuilder.append("(");
-        ddlBuilder.append(TblSupplier.supplierId);
+        ddlBuilder.append(SUPPLIER_ID_COL);
         ddlBuilder.append("  bigint auto_increment primary key, ");
-        ddlBuilder.append(TblSupplier.supplierName);
+        ddlBuilder.append(SUPPLIER_NAME_COL);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(TblSupplier.contactName);
+        ddlBuilder.append(SUPPLIER_CONTACT_COL);
         ddlBuilder.append("  varchar(20), " );
-        ddlBuilder.append(TblSupplier.supplierAddr);
+        ddlBuilder.append(SUPPLIER_ADDR_COL);
         ddlBuilder.append("  varchar(30), " );
-        ddlBuilder.append(TblSupplier.created);
+        ddlBuilder.append(SUPPLIER_CREATED_COL);
         ddlBuilder.append("  timestamp  , " );
-        ddlBuilder.append(TblSupplier.updated);
+        ddlBuilder.append(SUPPLIER_UPDATED_COL);
         ddlBuilder.append(" timestamp  " );
         ddlBuilder.append(");");
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
     
-    //@Test
+    @Test
     public void createCustomer() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(".");
-        ddlBuilder.append(TblCustomer.customer);
+        //ddlBuilder.append(EX_SCHEMA);
+        //ddlBuilder.append(".");
+        ddlBuilder.append(TBL_CUSTOMERS);
         ddlBuilder.append("(");
-        ddlBuilder.append(TblCustomer.customerId);
+        ddlBuilder.append(CUSTOMER_ID);
         ddlBuilder.append("  bigint auto_increment primary key, ");
-        ddlBuilder.append(TblCustomer.fname);
+        ddlBuilder.append(CUSTOMER_FIRST_NAME);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(TblCustomer.lname);
+        ddlBuilder.append(CUSTOMER_LAST_NAME);
         ddlBuilder.append("  varchar(20), " );        
-        ddlBuilder.append(TblCustomer.city);
+        ddlBuilder.append(CUSTOMER_CITY);
         ddlBuilder.append("  varchar(15), " );
-        ddlBuilder.append(TblCustomer.country);
+        ddlBuilder.append(CUSTOMER_COUNTRY);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(TblCustomer.created);
-        ddlBuilder.append("  timestamp  DEFAULT CURRENT_TIMESTAMP, " );
-        ddlBuilder.append(TblCustomer.updated);
+        ddlBuilder.append(CUSTOMER_CREATED);
+        ddlBuilder.append("  timestamp, " );
+        ddlBuilder.append(CUSTOMER_UPDATED);
         ddlBuilder.append(" timestamp " );
         ddlBuilder.append(");");
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
     
-    //@Test
+    @Test
     public void createProduct() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(".");
-        ddlBuilder.append(TblProduct.product);
+        //ddlBuilder.append(EX_SCHEMA);
+        //ddlBuilder.append(".");
+        ddlBuilder.append(TBL_PRODUCT);
         ddlBuilder.append("(");
-        ddlBuilder.append(TblProduct.productId);
+        ddlBuilder.append(PRODUCT_ID_COL);
         ddlBuilder.append("  bigint auto_increment primary key, ");
-        ddlBuilder.append(TblProduct.prd_name);
+        ddlBuilder.append(PRODUCT_NAME_COL);
         ddlBuilder.append("  varchar(20), ");
-        ddlBuilder.append(TblProduct.suppid); //references Supplier.id
+        ddlBuilder.append(PRODUCT_SUPPLIERID_COL); //references Supplier.id
         ddlBuilder.append("  bigint, " ); 
-        ddlBuilder.append(TblProduct.unitprice);
+        ddlBuilder.append(PRODUCT_UNIT_PRICE_COL);
         ddlBuilder.append("  decimal, " );
-        ddlBuilder.append(TblProduct.discontinued);
+        ddlBuilder.append(PRODUCT_DISCONTINUED_COL);
         ddlBuilder.append("  tinyint(1), " );
-        ddlBuilder.append(TblProduct.cat_id); //references Category.id. Table not yet available
+        ddlBuilder.append(PRODUCT_CAT_ID_COL); //references Category.id. Table not yet available
         ddlBuilder.append("  bigint, " ); 
-        ddlBuilder.append(created);
-        ddlBuilder.append("  timestamp  DEFAULT CURRENT_TIMESTAMP, " );
-        ddlBuilder.append(TblSupplier.updated);
+        ddlBuilder.append(PRODUCT_CREATED_COL);
+        ddlBuilder.append("  timestamp, " );
+        ddlBuilder.append(PRODUCT_UPDATED_COL);
         ddlBuilder.append(" timestamp " );
         ddlBuilder.append(");");
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
     
-    //@Test
+    @Test
     public void createOrder() {
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
-        ddlBuilder.append(EX_SCHEMA);
-        ddlBuilder.append(".");
-        ddlBuilder.append(TblOrder.order);
+        //ddlBuilder.append(EX_SCHEMA);
+        //ddlBuilder.append(".");
+        ddlBuilder.append(TBL_ORDERS);
         ddlBuilder.append("(");
-        ddlBuilder.append(TblOrder.orderId);
+        ddlBuilder.append(ORDER_ID);
         ddlBuilder.append("  bigint auto_increment primary key, ");
-        ddlBuilder.append(TblOrder.orderDate);
+        ddlBuilder.append(ORDER_DATE);
         ddlBuilder.append("  timestamp, ");
-        ddlBuilder.append(TblOrder.orderNo);
+        ddlBuilder.append(ORDER_NO);
         ddlBuilder.append("  bigint, " );
-        ddlBuilder.append(TblOrder.orderCustomerId); // references Customer.id
+        ddlBuilder.append(ORDER_CUSTOMERID); // references Customer.id
         ddlBuilder.append("  bigint, " ); 
-        ddlBuilder.append(TblOrder.totalAmount);
+        ddlBuilder.append(ORDER_TOTAL_AMT);
         ddlBuilder.append("  decimal, " );
-        ddlBuilder.append(created);
-        ddlBuilder.append("  timestamp  DEFAULT CURRENT_TIMESTAMP, " );
-        ddlBuilder.append(TblSupplier.updated);
+        ddlBuilder.append(ORDER_CREATED);
+        ddlBuilder.append("  timestamp, " );
+        ddlBuilder.append(ORDER_UPDATED);
         ddlBuilder.append(" timestamp  " );
         ddlBuilder.append(");");
         String ddl = ddlBuilder.toString();
@@ -191,5 +208,5 @@ public class CreateTablesInH2db {
         } catch (SQLException ex) {
             Logger.getLogger(CreateTablesInH2db.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+    }
 }

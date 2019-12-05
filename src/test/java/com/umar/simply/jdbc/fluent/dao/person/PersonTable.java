@@ -13,37 +13,36 @@ import java.time.LocalDateTime;
  */
 public class PersonTable extends Table {
 
-    public static final String EX_SCHEMA = "ex";
     public static final Column<Integer> PERSON_ID = column("id");
-    public static final Column<String> FIRST_NAME = column("firstname");
-    public static final Column<String> LAST_NAME = column("lastname");
-    public static final Column<String> EMAIL = column("email");
-    public static final Column<Boolean> ADULT = column("adult");
-    public static final Column<LocalDateTime> CREATED = column("created");
-    public static final Column<LocalDateTime> UPDATED = column("updated");
-    public static final Column<String> CITY = column("city");
-    public static final Column<String> COUNTRY = column("country");
-    public static final Column<Integer> AGE = column("age");
-    public static final Table PERSON = table(EX_SCHEMA + ".person", PERSON_ID);
+    public static final Column<String> PERSON_FIRST_NAME = column("firstname");
+    public static final Column<String> PERSON_LAST_NAME = column("lastname");
+    public static final Column<String> PERSON_EMAIL = column("email");
+    public static final Column<Boolean> PERSON_IS_ADULT = column("adult");
+    public static final Column<LocalDateTime> PERSON_CREATED = column("created");
+    public static final Column<LocalDateTime> PERSON_UPDATED = column("updated");
+    public static final Column<String> PERSON_CITY = column("city");
+    public static final Column<String> PERSON_COUNTRY = column("country");
+    public static final Column<Integer> PERSON_AGE = column("age");
+    public static final Table TBL_PERSON = table( "person", PERSON_ID);
 
     public PersonTable(String tableName, Column<Integer> idColumn) {
-        super(PERSON.getTableName(), PERSON_ID);
+        super(TBL_PERSON.getTableName(), PERSON_ID);
     }
 
     public static final RowMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
         final Person personRow = new Person();
         personRow.setId(rs.getInt(PERSON_ID.getColumnName()));
-        personRow.setFirstName(rs.getString(FIRST_NAME.getColumnName()));
-        personRow.setLastName(rs.getString(LAST_NAME.getColumnName()));
-        personRow.setEmail(rs.getString(EMAIL.getColumnName()));
-        personRow.setAdult(rs.getBoolean(ADULT.getColumnName()));
-        personRow.setCreated(rs.getTimestamp(CREATED.getColumnName()).toLocalDateTime());
-        if (rs.getTimestamp(UPDATED.getColumnName()) != null) {
-            personRow.setUpdated(rs.getTimestamp(UPDATED.getColumnName()).toLocalDateTime());
+        personRow.setFirstName(rs.getString(PERSON_FIRST_NAME.getColumnName()));
+        personRow.setLastName(rs.getString(PERSON_LAST_NAME.getColumnName()));
+        personRow.setEmail(rs.getString(PERSON_EMAIL.getColumnName()));
+        personRow.setAdult(rs.getBoolean(PERSON_IS_ADULT.getColumnName()));
+        personRow.setCreated(rs.getTimestamp(PERSON_CREATED.getColumnName()).toLocalDateTime());
+        if (rs.getTimestamp(PERSON_UPDATED.getColumnName()) != null) {
+            personRow.setUpdated(rs.getTimestamp(PERSON_UPDATED.getColumnName()).toLocalDateTime());
         }
-        personRow.setCity(rs.getString(CITY.getColumnName()));
-        personRow.setCountry(rs.getString(COUNTRY.getColumnName()));
-        personRow.setAge(rs.getInt(AGE.getColumnName()));
+        personRow.setCity(rs.getString(PERSON_CITY.getColumnName()));
+        personRow.setCountry(rs.getString(PERSON_COUNTRY.getColumnName()));
+        personRow.setAge(rs.getInt(PERSON_AGE.getColumnName()));
         return personRow;
     };
 }

@@ -9,14 +9,14 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.util.List;
 
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.person;
+import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.TBL_PERSON;
 
 public class DeletePersonService implements FluentDeletePersonService {
     DeletePersistenceService<Person> dps = new DeletePersistenceService<>(JdbcUtilService.getConnection());
 
     @Override
     public DeletePersonService delete() {
-        dps.from(person);
+        dps.from(TBL_PERSON);
         return this;
     }
 

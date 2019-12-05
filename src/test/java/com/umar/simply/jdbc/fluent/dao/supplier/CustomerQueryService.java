@@ -29,7 +29,7 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
          * ON id = CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC
          * --------------------------------------------------------------------------------------
          */
-        List<Customer> customerOrders = select().all().from(CUSTOMERS)
+        List<Customer> customerOrders = select().all().from(TBL_CUSTOMERS)
                 .left().join(
                     SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
                 .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
@@ -37,7 +37,7 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
                 .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
                 .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
                 .using(CUSTOMER_ROW_MAPPER).execute();
-        String sql = select().all().from(CUSTOMERS)
+        String sql = select().all().from(TBL_CUSTOMERS)
                 .left().join(
                     SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
                 .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))

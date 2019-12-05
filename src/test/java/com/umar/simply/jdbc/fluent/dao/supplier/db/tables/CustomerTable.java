@@ -21,18 +21,18 @@ public class CustomerTable {
      */
     public static final String CUSTOMER_TOTALS = "CUSTOMER_TOTALS";
     public static final String ID = "CUSTOMER_ID";
-    public static final String TOTAL_AMOUNT = "TOTAL_AMOUNT";
+    public static final String TOTAL_AMOUNT = "total_amount";
     public static final Column<Integer> CUSTOMER_TOTALS_CUSTOMER_ID = Column.column(CUSTOMER_TOTALS + "." +ID);
     public static final Column<Double> CUSTOMER_TOTALS_TOTAL_AMOUNT = Column.column(CUSTOMER_TOTALS + "." +TOTAL_AMOUNT);
 
     public static final Column<Integer> CUSTOMER_ID = column("id");
-    public static final Column<String> COUNTRY = column("country");
-    public static final Column<String> CITY = column("city");
-    public static final Column<String> FIRST_NAME = column("first_name");
-    public static final Column<String> LAST_NAME = column("last_name");
-    public static final Column<LocalDateTime> CREATED = column("created");
-    public static final Column<LocalDateTime> UPDATED = column("updated");
-    public static final Table CUSTOMERS = Table.table("customer", CUSTOMER_ID);
+    public static final Column<String> CUSTOMER_COUNTRY = column("country");
+    public static final Column<String> CUSTOMER_CITY = column("city");
+    public static final Column<String> CUSTOMER_FIRST_NAME = column("first_name");
+    public static final Column<String> CUSTOMER_LAST_NAME = column("last_name");
+    public static final Column<LocalDateTime> CUSTOMER_CREATED = column("created");
+    public static final Column<LocalDateTime> CUSTOMER_UPDATED = column("updated");
+    public static final Table TBL_CUSTOMERS = Table.table("customer", CUSTOMER_ID);
 
     public static final RowMapper<Customer> CUSTOMER_ROW_MAPPER = (rs) -> {
         Customer customerRow = Customer.emptyCustomer();
@@ -41,18 +41,18 @@ public class CustomerTable {
         for (int index = 1; index <= columnCount; index++) {
             String columnName = rsmd.getColumnLabel(index);
             String tableAlias = rsmd.getTableName(index);
-            if (columnName.equals(TOTAL_AMOUNT.toLowerCase())) {
+            if (columnName.toLowerCase().equals(TOTAL_AMOUNT.toLowerCase())) {
                 customerRow.setTotalAmount(rs.getDouble(TOTAL_AMOUNT.toLowerCase()));
             }
         }
-        customerRow.setId(rs.getInt(CUSTOMER_ID.getColumnName().toLowerCase()));
-        customerRow.setFirstName(rs.getString(FIRST_NAME.getColumnName().toLowerCase()));
-        customerRow.setLastName(rs.getString(LAST_NAME.getColumnName().toLowerCase()));
-        customerRow.setCity(rs.getString(CITY.getColumnName().toLowerCase()));
-        customerRow.setCountry(rs.getString(COUNTRY.getColumnName().toLowerCase()));
-        customerRow.setCreated(rs.getTimestamp(CREATED.getColumnName().toLowerCase()).toLocalDateTime());
-        if (rs.getTimestamp(UPDATED.getColumnName().toLowerCase()) != null) {
-            customerRow.setUpdated(rs.getTimestamp(UPDATED.getColumnName().toLowerCase()).toLocalDateTime());
+        customerRow.setId(rs.getInt(CUSTOMER_ID.getColumnName()));
+        customerRow.setFirstName(rs.getString(CUSTOMER_FIRST_NAME.getColumnName()));
+        customerRow.setLastName(rs.getString(CUSTOMER_LAST_NAME.getColumnName()));
+        customerRow.setCity(rs.getString(CUSTOMER_CITY.getColumnName()));
+        customerRow.setCountry(rs.getString(CUSTOMER_COUNTRY.getColumnName()));
+        customerRow.setCreated(rs.getTimestamp(CUSTOMER_CREATED.getColumnName()).toLocalDateTime());
+        if (rs.getTimestamp(CUSTOMER_UPDATED.getColumnName()) != null) {
+            customerRow.setUpdated(rs.getTimestamp(CUSTOMER_UPDATED.getColumnName()).toLocalDateTime());
         }
         return customerRow;
     };

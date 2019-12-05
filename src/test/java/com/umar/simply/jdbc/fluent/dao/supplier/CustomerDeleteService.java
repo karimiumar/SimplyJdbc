@@ -15,7 +15,7 @@ public class CustomerDeleteService implements FluentCustomerDeleteService {
     
     @Override
     public CustomerDeleteService delete() {
-        dps.from(CUSTOMERS);
+        dps.from(TBL_CUSTOMERS);
         return this;
     }
 

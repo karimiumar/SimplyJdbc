@@ -24,9 +24,9 @@ public class PersonUpdateService implements FluentPersonUpdateService {
         existingVals = asList(
                 //same logic as equals()
                 set(PERSON_ID, existing.getId())
-                ,set(FIRST_NAME, existing.getFirstName())
-                ,set(LAST_NAME, existing.getLastName())
-                ,set(EMAIL, existing.getEmail())
+                ,set(PERSON_FIRST_NAME, existing.getFirstName())
+                ,set(PERSON_LAST_NAME, existing.getLastName())
+                ,set(PERSON_EMAIL, existing.getEmail())
         );
         id = existing.getId();
         return this;
@@ -35,21 +35,21 @@ public class PersonUpdateService implements FluentPersonUpdateService {
     @Override
     public PersonUpdateService with(Person newVal) {
         newVals = asList(
-                set(FIRST_NAME, newVal.getFirstName())
-                ,set(LAST_NAME, newVal.getLastName())
-                ,set(EMAIL, newVal.getEmail())
-                ,set(ADULT, newVal.getAdult())
-                ,set(CITY, newVal.getCity())
-                ,set(COUNTRY, newVal.getCountry())
-                ,set(AGE, newVal.getAge())
-                ,set(UPDATED, LocalDateTime.now())
+                set(PERSON_FIRST_NAME, newVal.getFirstName())
+                ,set(PERSON_LAST_NAME, newVal.getLastName())
+                ,set(PERSON_EMAIL, newVal.getEmail())
+                ,set(PERSON_IS_ADULT, newVal.getAdult())
+                ,set(PERSON_CITY, newVal.getCity())
+                ,set(PERSON_COUNTRY, newVal.getCountry())
+                ,set(PERSON_AGE, newVal.getAge())
+                ,set(PERSON_UPDATED, LocalDateTime.now())
         );
         return this;
     }
 
     @Override
     public Person execute(){
-        Optional<Person> optionalResult = ups.update(PERSON).assignNewValues(newVals).where(existingVals).of(id).using(PERSON_ROW_MAPPER).execute();
+        Optional<Person> optionalResult = ups.update(TBL_PERSON).assignNewValues(newVals).where(existingVals).of(id).using(PERSON_ROW_MAPPER).execute();
         if(!optionalResult.isPresent()){
             throw new RuntimeException(String.format("Could not find Person with id:%d in the database.", id));
         }

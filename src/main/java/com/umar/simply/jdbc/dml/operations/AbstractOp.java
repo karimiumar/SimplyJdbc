@@ -713,9 +713,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL GREATER OR EQUAL TO clause.
+     * @param value The ColumnValue
      * @return Returns this object
      */
     public T ge(ColumnValue value) {
+        op().append(value.getColumnName());
         op().append(">=");
         op().append("?");
         getValues().add(value);
@@ -724,10 +726,12 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL LESS OR EQUAL TO clause.
+     * @param value The ColumnValue
      * @return Returns this object
      */
     public T le(ColumnValue value) {
-        op().append(">=");
+        op().append(value.getColumnName());
+        op().append("<=");
         op().append("?");
         getValues().add(value);
         return (T) this;

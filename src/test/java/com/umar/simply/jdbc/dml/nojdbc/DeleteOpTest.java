@@ -3,10 +3,6 @@ package com.umar.simply.jdbc.dml.nojdbc;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-/*
-import org.testng.Assert;
-import org.testng.annotations.Test;
-*/
 
 public class DeleteOpTest {
 

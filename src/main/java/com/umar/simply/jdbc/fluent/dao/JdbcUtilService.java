@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class JdbcUtilService {
     public static Connection getConnection() {
         try {
-            final InputStream is = JdbcUtilService.class.getResourceAsStream("postgresdb.properties");
+            final InputStream is = JdbcUtilService.class.getResourceAsStream("h2db.properties");
             Properties properties = new Properties();
             properties.load(is);
             String driverClass = properties.getProperty("driverClass");

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerQueryTest {
     
-    //@AfterAll
+    @AfterAll
     public static void clean() {
         OrderDeleteService ods = new OrderDeleteService();
         ods.delete().execute();
@@ -20,7 +20,7 @@ public class CustomerQueryTest {
         cds.delete().execute();
     }
     
-    //@Test
+    @Test
     @org.junit.jupiter.api.Order(1)
     public void saveCustomerOrders() {
         CustomerSaveService css = new CustomerSaveService();
@@ -59,7 +59,7 @@ public class CustomerQueryTest {
      * The sum of total_amount is grouped by first_name, last_name and ordered by sum(total_amount) in descending order
      * The output for the saveCustomerOrders() above should be as below:
      * ________________________________________________
-     * CUSTOMER_TOTALS      first_name      last_name
+     * CUSTOMER_TOTALS      FIRST_NAME      LAST_NAME
      * ________________________________________________
      *      6500.0	      Ashley         Stevens
      *      2200.0	      Jennifer       Aniston
@@ -75,7 +75,7 @@ public class CustomerQueryTest {
      *  ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY  CUSTOMER_TOTALS.TOTAL_AMOUNT desc
      */
     @Test
-    @org.junit.jupiter.api.Order(1)
+    @org.junit.jupiter.api.Order(2)
     public void findTotalAmtOrderedByEachCustomer() {
         CustomerQueryService coqs = new CustomerQueryService(JdbcUtilService.getConnection());
         List<Customer> customerOrders = coqs.findTotalAmtOrderedByEachCustomer();

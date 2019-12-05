@@ -18,14 +18,14 @@ public class PersonSaveService implements FluentPersonSaveService {
     @Override
     public PersonSaveService save(Person newPerson) {
         newValues = asList(
-                set(FIRST_NAME, newPerson.getFirstName())
-                , set(LAST_NAME, newPerson.getLastName())
-                , set(EMAIL, newPerson.getEmail())
-                , set(ADULT, newPerson.getAdult())
-                , set(CITY, newPerson.getCity())
-                , set(COUNTRY, newPerson.getCountry())
-                , set(AGE, newPerson.getAge())
-                , set(CREATED, LocalDateTime.now())
+                set(PERSON_FIRST_NAME, newPerson.getFirstName())
+                , set(PERSON_LAST_NAME, newPerson.getLastName())
+                , set(PERSON_EMAIL, newPerson.getEmail())
+                , set(PERSON_IS_ADULT, newPerson.getAdult())
+                , set(PERSON_CITY, newPerson.getCity())
+                , set(PERSON_COUNTRY, newPerson.getCountry())
+                , set(PERSON_AGE, newPerson.getAge())
+                , set(PERSON_CREATED, LocalDateTime.now())
         );
         return this;
     }
@@ -33,7 +33,7 @@ public class PersonSaveService implements FluentPersonSaveService {
     @Override
     public Person execute() {
         SavePersistenceService<Person> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Person saved = sps.save(PERSON).withValues(newValues).using(PERSON_ROW_MAPPER).execute();
+        Person saved = sps.save(TBL_PERSON).withValues(newValues).using(PERSON_ROW_MAPPER).execute();
         return saved;
     }
 }

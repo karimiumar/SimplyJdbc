@@ -20,11 +20,11 @@ public class CustomerSaveService implements FluentCustomerSaveService {
     @Override
     public CustomerSaveService save(Customer transientCustomer) {
         columnValues = asList(
-                set(FIRST_NAME, transientCustomer.getFirstName())
-                ,set(LAST_NAME, transientCustomer.getLastName())
-                ,set(CITY, transientCustomer.getCity())
-                ,set(COUNTRY, transientCustomer.getCountry())
-                ,set(CREATED, LocalDateTime.now())
+                set(CUSTOMER_FIRST_NAME, transientCustomer.getFirstName())
+                ,set(CUSTOMER_LAST_NAME, transientCustomer.getLastName())
+                ,set(CUSTOMER_CITY, transientCustomer.getCity())
+                ,set(CUSTOMER_COUNTRY, transientCustomer.getCountry())
+                ,set(CUSTOMER_CREATED, LocalDateTime.now())
         );
         return this;
     }
@@ -32,7 +32,7 @@ public class CustomerSaveService implements FluentCustomerSaveService {
     @Override
     public Customer execute() {
         SavePersistenceService<Customer> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Customer saved = sps.save(CUSTOMERS).withValues(columnValues).using(CUSTOMER_ROW_MAPPER).execute();
+        Customer saved = sps.save(TBL_CUSTOMERS).withValues(columnValues).using(CUSTOMER_ROW_MAPPER).execute();
         return saved;
     }
     
