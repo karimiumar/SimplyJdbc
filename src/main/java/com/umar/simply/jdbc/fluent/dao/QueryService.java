@@ -76,20 +76,14 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> columnValueEq(List<ColumnValue> columnValues) {
-        sql.columnValueEq(getValuesArray(columnValues));
+    public QueryService<T> columnEq(List<ColumnValue> columnValues) {
+        sql.columnEq(getValuesArray(columnValues));
         return this;
     }
 
     @Override
-    public QueryService<T> columnValueEq(ColumnValue columnValue) {
-        sql.columnValueEq(columnValue);
-        return this;
-    }
-
-    @Override
-    public QueryService<T> columnEq(Column<T> column) {
-        sql.columnEq(column);
+    public QueryService<T> columnEq(ColumnValue columnValue) {
+        sql.columnEq(columnValue);
         return this;
     }
 
@@ -328,6 +322,12 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
         return this;
     }
 
+    @Override
+    public QueryService<T> in(List<ColumnValue> columnValues) {
+        sql.in(columnValues);
+        return this;
+    }
+    
     @Override
     public QueryService<T> in(SelectOp op) {
         sql.in(op);

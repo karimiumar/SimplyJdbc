@@ -29,7 +29,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     public List<T> select(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create();
-        sql.select().all().from(table).where().columnValueEq(getValuesArray(columnValues));
+        sql.select().all().from(table).where().columnEq(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result;
     }
@@ -45,7 +45,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
         UpdateOp sql = new UpdateOp().table(table).setColumnValues(getValuesArray(columnValuesToSet))
-                .where().columnValueEq(getValuesArray(clauseValues));
+                .where().columnEq(getValuesArray(clauseValues));
         getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),dbSequence));
         return optional.get();
@@ -54,7 +54,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> findById(Table table, RowMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().all().from(table).where().columnValueEq(idColumn);
+        SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
@@ -62,7 +62,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> find(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().all().from(table).where().columnValueEq(getValuesArray(columnValues));
+        SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }

@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Most of the SQL operators are defined here
- * @param <T> 
+ * @param <T> The Type of AbstractOp
  * @author umar
  */
 public abstract class AbstractOp<T extends AbstractOp<T>> {
@@ -54,7 +54,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
      */
-    public T columnValueEq(ColumnValue ...columnValues) {
+    public T columnEq(ColumnValue ...columnValues) {
         int len = columnValues.length;
         int cnt = 1;
         for(ColumnValue e: columnValues) {
@@ -81,17 +81,6 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL EQUAL condition.
-     * @param column The column to append
-     * @return Returns this object
-     */
-    public T columnEq(Column column) {
-        op().append(column);
-        op().append("=?");
-        return (T) this;
-    }
-    
-    /**
      * The NOT EQUAL operator
      * @param condition The condition to suffix with <> operator
      * @return Returns this object
@@ -115,6 +104,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" NOT( ");
         op().append(sql);
         op().append(" )");
+        getValues().addAll(sql.getValues());
         return (T) this;
     }
 
@@ -160,6 +150,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" AND (");
         op().append(sql);
         op().append(" )");
+        getValues().addAll(sql.getValues());
         return (T) this;
     }
 
@@ -303,14 +294,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     public T from(List<Table> tables) {
         int len = tables.size();
         int cnt = 1;
-        op().append(" FROM(");
+        op().append(" FROM ");
         for(Table table:tables){
             op().append(table);
             if(cnt++ < len){
                 op().append(",");
             }
         }
-        op().append(")");
         return (T) this;
     }
 
@@ -332,6 +322,9 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" WHERE (");
         op().append(op);
         op().append(")");
+        //explicitly add the SelectOp ColumnValues to the original getValues() to retain it for later use otherwise 
+        //it will be lost due to local variable scope of SelectOp parameter
+        getValues().addAll(op.getValues()); 
         return (T) this;
     }
 
@@ -462,10 +455,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op T type operation
      * @return Returns this object
      */
-    public T count(T op) {
+    public T count(SelectOp op) {
         op().append(" COUNT(");
         op().append(op);
         op().append(")");
+        getValues().addAll(op.getValues());
+        //explicitly add the SelectOp ColumnValues to the original getValues() to retain it for later use otherwise 
+        //it will be lost due to local variable scope of SelectOp parameter
         return (T) this;
     }
 
@@ -522,17 +518,21 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation
      * @return The current object
      */
-    public T exists(T op) {
+    public T exists(SelectOp op) {
         op().append(" EXISTS");
         op().append(" (");
         op().append(op);
         op().append(" )");
+        //explicitly add the SelectOp ColumnValues to the original getValues() to retain it for later use otherwise 
+        //it will be lost due to local variable scope of SelectOp parameter
+        getValues().addAll(op.getValues());
         return (T) this;
     }
 
     /**
      * SQL BETWEEN clause.
      *
+     * @param columnValues The ColumnValue. Contains column name and column value
      * @return Returns this object
      */
     public T between(List<ColumnValue> columnValues) {
@@ -554,10 +554,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation to wrap in 'BETWEEN' clause
      * @return Returns this object
      */
-    public T between(T op) {
+    public T between(SelectOp op) {
         op().append(" BETWEEN (");
         op().append(op);
         op().append(")");
+        //explicitly add the SelectOp ColumnValues to the original getValues() to retain it for later use otherwise 
+        //it will be lost due to local variable scope of SelectOp parameter
+        getValues().addAll(op.getValues());
         return (T) this;
     }
 
@@ -572,16 +575,39 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         getValues().add(ColumnValue.set(pattern));
         return (T) this;
     }
-
+    
     /**
      * The SQL IN() function. The 'IN' function is appended followed by the SQL operation
      *
      * @param op The SQL operation to wrap in 'IN' function
      * @return Returns this object
      */
-    public T in(T op) {
+    public T in(SelectOp op) {
         op().append(" IN (");
         op().append(op);
+        op().append(")");
+        //explicitly add the SelectOp ColumnValues to the original getValues() to retain it for later use otherwise 
+        //it will be lost due to local variable scope of SelectOp parameter
+        getValues().addAll(op.getValues());
+        return (T) this;
+    }
+
+    /**
+     * The SQL IN() function.The 'IN' function is appended followed by the SQL operation
+     * @param columnValues The ColumnValue for SQL IN clause
+     *@return Returns this object
+     */
+    public T in(List<ColumnValue> columnValues) {
+        int len = columnValues.size();
+        int cnt = 1;
+        op().append(" IN (");
+        for(ColumnValue cv: columnValues) {
+            op().append("?");
+            if(cnt++ < len){
+                op().append(",");
+            }
+            getValues().add(cv);
+        }
         op().append(")");
         return (T) this;
     }
@@ -673,6 +699,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL GREATER THAN clause.
+     * @param value
      * @return Returns this object
      */
     public T gt(ColumnValue value) {
@@ -693,6 +720,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL LESS THAN clause.
+     * @param value The ColumnValue
      * @return Returns this object
      */
     public T lt(ColumnValue value) {
@@ -1011,6 +1039,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SELECT clause
+     * @param columns List of columns to select
      * @return Returns this object
      */
     public T select(List<Column> columns) {
@@ -1028,6 +1057,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SELECT clause
+     * @param column The column to select
      * @return Returns this object
      */
     public T select(Column column) {

@@ -20,9 +20,8 @@ public interface FluentQueryService<T> {
     QueryService<T> values(List<ColumnValue> values);
     QueryService<T> column(List<Column> columns);
     QueryService<T> column(Column<T> column);
-    QueryService<T> columnValueEq(List<ColumnValue> columnValues);
-    QueryService<T> columnValueEq(ColumnValue columnValue);
-    QueryService<T> columnEq(Column<T> column);
+    QueryService<T> columnEq(List<ColumnValue> columnValues);
+    QueryService<T> columnEq(ColumnValue columnValue);
     QueryService<T> ne(Column<T> condition);
     QueryService<T> not();
     QueryService<T> is();
@@ -63,6 +62,7 @@ public interface FluentQueryService<T> {
     QueryService<T> between(SelectOp op);
     QueryService<T> like(String pattern);
     QueryService<T> in(SelectOp op);
+    QueryService<T> in(List<ColumnValue> columnValues);
     QueryService<T> limit(int n);
     QueryService<T> offset(int n);
     QueryService<T> as(String alias);

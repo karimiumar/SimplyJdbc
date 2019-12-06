@@ -45,7 +45,7 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public UpdatePersistenceService where(List<ColumnValue> existingVals) {
-        sql.where().columnValueEq(getValuesArray(existingVals));
+        sql.where().columnEq(getValuesArray(existingVals));
         return this;
     }
 

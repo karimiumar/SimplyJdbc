@@ -25,6 +25,10 @@ public class Table {
     public static Table as(String tableName, String alias, Column<Integer> idColumn) {
         return new Table(tableName +" "+alias, idColumn);
     }
+    
+     public static Table as(String tableName, String alias) {
+        return new Table(tableName +" "+alias, Column.column(""));
+    }
 
     @Override
     public String toString() {

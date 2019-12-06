@@ -71,7 +71,7 @@ public class UpdateOpJdbcTest  {
     @Order(2)
     public void updateWhere() {
         UpdateOp operation = new UpdateOp();
-        operation.table(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).where().columnValueEq(set(PERSON_FIRST_NAME,"Tina"));
+        operation.table(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).where().columnEq(set(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL(), Statement.RETURN_GENERATED_KEYS)) {
             int result = operation.fill(ps).executeUpdate();
@@ -93,7 +93,7 @@ public class UpdateOpJdbcTest  {
     public void updateWhereAnd() {
         UpdateOp operation = new UpdateOp();
         operation.table(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Mohammad Umar"), set(PERSON_LAST_NAME,"Ali Karimi"), set(PERSON_EMAIL,"karimiumar@gmail.com"))
-                .where().columnValueEq(set(PERSON_FIRST_NAME,"Mohammad"), set(PERSON_IS_ADULT,true), set(PERSON_EMAIL,"tina@rediffmail.com"));
+                .where().columnEq(set(PERSON_FIRST_NAME,"Mohammad"), set(PERSON_IS_ADULT,true), set(PERSON_EMAIL,"tina@rediffmail.com"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();

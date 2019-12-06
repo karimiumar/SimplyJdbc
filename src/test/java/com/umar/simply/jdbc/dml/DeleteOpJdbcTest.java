@@ -38,7 +38,7 @@ public class DeleteOpJdbcTest {
         }
     }
 
-    @Test
+   // @Test
     public void deleteWhereOrConditon(){
         DeleteOp operation = DeleteOp.create();
         operation.deleteFrom(TBL_PERSON).where().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_FIRST_NAME,"Angelina"));
@@ -46,6 +46,19 @@ public class DeleteOpJdbcTest {
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();
             Assertions.assertEquals(2, result);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Test
+    public void deleteWhereConditon(){
+        DeleteOp operation = DeleteOp.create();
+        operation.deleteFrom(TBL_PERSON).where().columnEq(set(PERSON_FIRST_NAME,"Tina")).and().columnEq(set(PERSON_LAST_NAME,"Turner"));
+        try(Connection connection = util.getConnection();
+            PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
+            int result = operation.fill(ps).executeUpdate();
+            Assertions.assertEquals(1, result);
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
