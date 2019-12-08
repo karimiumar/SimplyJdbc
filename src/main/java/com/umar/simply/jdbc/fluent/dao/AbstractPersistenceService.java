@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.dml.operations.AbstractOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
@@ -10,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public abstract class AbstractPersistenceService<T> {
     private final Connection connection;
@@ -18,7 +18,7 @@ public abstract class AbstractPersistenceService<T> {
         this.connection = connection;
     }
 
-    Optional<T> findById(Table table, RowMapper<T> rowMapper, ColumnValue idColumn){
+    Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(idColumn);
         getMappedResult(rowMapper, result, sql);
@@ -34,7 +34,7 @@ public abstract class AbstractPersistenceService<T> {
         return vals;
     }
 
-    protected void getMappedResult(RowMapper<T> rowMapper, List<T> result, AbstractOp sql) {
+    protected void getMappedResult(ResultSetMapper<T> rowMapper, List<T> result, AbstractOp sql) {
         try(PreparedStatement ps = prepareAndFill(sql);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {

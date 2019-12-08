@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao.contract;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
@@ -9,6 +8,7 @@ import com.umar.simply.jdbc.meta.Index;
 import com.umar.simply.jdbc.meta.Table;
 
 import java.util.List;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public interface FluentQueryService<T> {
     QueryService<T> all();
@@ -93,6 +93,6 @@ public interface FluentQueryService<T> {
     QueryService<T> select();
     QueryService<T> withIndex(Index index);
     List<?> execute();
-    QueryService<T> using(RowMapper<T> rowMapper);
+    QueryService<T> using(ResultSetMapper<T> rowMapper);
     SelectOp getSQL();
 }

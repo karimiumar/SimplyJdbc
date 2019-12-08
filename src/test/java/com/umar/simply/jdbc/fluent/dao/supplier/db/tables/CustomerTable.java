@@ -1,12 +1,12 @@
 package com.umar.simply.jdbc.fluent.dao.supplier.db.tables;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.supplier.Customer;
 import com.umar.simply.jdbc.meta.Column;
 import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 /**
  * Represents database's CUSTOMER Table
@@ -34,7 +34,7 @@ public class CustomerTable {
     public static final Column<LocalDateTime> CUSTOMER_UPDATED = column("updated");
     public static final Table TBL_CUSTOMERS = Table.table("customer", CUSTOMER_ID);
 
-    public static final RowMapper<Customer> CUSTOMER_ROW_MAPPER = (rs) -> {
+    public static final ResultSetMapper<Customer> CUSTOMER_ROW_MAPPER = (rs) -> {
         Customer customerRow = Customer.emptyCustomer();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();

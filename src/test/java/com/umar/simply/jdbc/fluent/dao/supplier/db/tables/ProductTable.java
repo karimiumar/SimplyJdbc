@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao.supplier.db.tables;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.supplier.Product;
 import com.umar.simply.jdbc.fluent.dao.supplier.Supplier;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
@@ -9,6 +8,7 @@ import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 
 import static com.umar.simply.jdbc.meta.Column.column;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 /**
  * Represents database PRODUCT table
@@ -27,7 +27,7 @@ public class ProductTable extends Table {
     public static final Column<LocalDateTime> PRODUCT_UPDATED_COL = column("updated");
     public static final Table TBL_PRODUCT = Table.table("product", PRODUCT_ID_COL);
 
-    public static final RowMapper<Product> PRODUCT_ROW_MAPPER = (rs) -> {
+    public static final ResultSetMapper<Product> PRODUCT_ROW_MAPPER = (rs) -> {
         final Product rowProduct = Product.emptyProduct();
         rowProduct.setId(rs.getInt(PRODUCT_ID_COL.getColumnName()));
         rowProduct.setProductName(rs.getString(PRODUCT_NAME_COL.getColumnName()));
@@ -86,7 +86,7 @@ public class ProductTable extends Table {
         }
     }
     
-    public static final RowMapper<ProductSupplier> PRD_SUPP_ROW_MAPPER = (rs) -> {
+    public static final ResultSetMapper<ProductSupplier> PRD_SUPP_ROW_MAPPER = (rs) -> {
         
         final ProductSupplier productSupplierRecord = new ProductSupplier();
         /*ResultSetMetaData rsmd = rs.getMetaData();
@@ -117,7 +117,7 @@ public class ProductTable extends Table {
         super(tableName, idColumn);
     }
     
-    /*public static final RowMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
+    /*public static final ResultSetMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
             final Supplier rowSupplier = Supplier.emptySupplier();
             rowSupplier.setId(rs.getInt(SUPPLIER_ID_COL.getColumnName()));
             rowSupplier.setSupplierName(rs.getString(SUPPLIER_NAME_COL.getColumnName()));

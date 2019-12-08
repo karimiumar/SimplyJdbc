@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentQueryService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
@@ -11,11 +10,12 @@ import com.umar.simply.jdbc.meta.Table;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public class QueryService<T> extends AbstractPersistenceService<T> implements FluentQueryService<T> {
 
     private final SelectOp sql = SelectOp.create();
-    protected RowMapper<T> rowMapper;
+    protected ResultSetMapper<T> rowMapper;
 
     public QueryService(final Connection connection) {
         super(connection);
@@ -514,7 +514,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService using(RowMapper<T> rowMapper) {
+    public QueryService using(ResultSetMapper<T> rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }

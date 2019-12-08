@@ -1,7 +1,6 @@
 package com.umar.simply.jdbc.dao;
 
 import com.umar.simply.jdbc.JdbcUtil;
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.dml.operations.AbstractOp;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import com.umar.simply.jdbc.ResultSetMapper;
 @Deprecated
 public class PersistenceServiceImpl<T> implements PersistenceService<T>{
    
@@ -26,7 +26,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public List<T> select(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
+    public List<T> select(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create();
         sql.select().all().from(table).where().columnEq(getValuesArray(columnValues));
@@ -35,7 +35,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public Optional<T> save(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
+    public Optional<T> save(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         InsertOp sql = InsertOp.create().intoTable(table).columnValues(columnValues);
         int databaseId = getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),databaseId));
@@ -43,7 +43,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public T update(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
+    public T update(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
         UpdateOp sql = new UpdateOp().table(table).setColumnValues(getValuesArray(columnValuesToSet))
                 .where().columnEq(getValuesArray(clauseValues));
         getSavedResult(sql);
@@ -52,7 +52,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public Optional<T> findById(Table table, RowMapper<T> rowMapper, ColumnValue idColumn){
+    public Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(idColumn);
         getMappedResult(rowMapper, result, sql);
@@ -60,7 +60,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public Optional<T> find(Table table, RowMapper<T> rowMapper, List<ColumnValue> columnValues) {
+    public Optional<T> find(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
@@ -68,7 +68,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public List<T> getAll(Table table, RowMapper<T> rowMapper) {
+    public List<T> getAll(Table table, ResultSetMapper<T> rowMapper) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create().select().all().from(table);
         getMappedResult(rowMapper, result, sql);
@@ -76,7 +76,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     }
 
     @Override
-    public int count(Table table, RowMapper<T> rowMapper, Column column) {
+    public int count(Table table, ResultSetMapper<T> rowMapper, Column column) {
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().select().count(column).from(table);
         getMappedResult(rowMapper, result, sql);
@@ -101,7 +101,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
         return vals;
     }
 
-    protected void getMappedResult(RowMapper<T> rowMapper, List<T> result, AbstractOp sql) {
+    protected void getMappedResult(ResultSetMapper<T> rowMapper, List<T> result, AbstractOp sql) {
         try(PreparedStatement ps = prepareAndFill(sql);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {

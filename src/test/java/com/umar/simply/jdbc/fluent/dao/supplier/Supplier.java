@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.meta.Column;
 import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
@@ -9,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public class Supplier {
 

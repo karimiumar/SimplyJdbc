@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentDeletePersistenceService;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
@@ -9,10 +8,11 @@ import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
 import java.util.List;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public class DeletePersistenceService<T> extends AbstractPersistenceService<T> implements FluentDeletePersistenceService<T> {
 
-    private RowMapper<T> rowMapper;
+    private ResultSetMapper<T> rowMapper;
 
     DeleteOp sql = DeleteOp.create();
 
@@ -45,7 +45,7 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public DeletePersistenceService using(RowMapper rowMapper) {
+    public DeletePersistenceService using(ResultSetMapper rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }

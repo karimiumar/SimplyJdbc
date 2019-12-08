@@ -1,12 +1,12 @@
 package com.umar.simply.jdbc.fluent.dao.supplier.db.tables;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.supplier.Supplier;
 import com.umar.simply.jdbc.meta.Column;
 import static com.umar.simply.jdbc.meta.Column.column;
 import static com.umar.simply.jdbc.meta.Column.as;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 /**
  * Represents database's SUPPLIER table
@@ -25,9 +25,9 @@ public class SupplierTable {
 
     /**
      * If the returning SQL ResultSet consist of joins of two or more tables
-     * then the given Mapping should be used by the RowMapper.map(ResultSet) as
-     * the ResultSetMetaData only has information about actual table column
-     * names and all the aliases created to are lost.
+ then the given Mapping should be used by the ResultSetMapper.map(ResultSet) as
+ the ResultSetMetaData only has information about actual table column
+ names and all the aliases created to are lost.
      */
     public static final Table supplier_rsmd = Table.table("supplier", SUPPLIER_ID_COL);
     public static final Column<Integer> s_id_rsmd = as(supplier_rsmd.getTableName(), "id");
@@ -37,7 +37,7 @@ public class SupplierTable {
     public static final Column<LocalDateTime> s_created_rsmd = as(supplier_rsmd.getTableName(), "created");
     public static final Column<LocalDateTime> s_updated_rsmd = as(supplier_rsmd.getTableName(), "updated");
 
-    public static final RowMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
+    public static final ResultSetMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
         final Supplier rowSupplier = Supplier.emptySupplier();
         rowSupplier.setId(rs.getInt(SUPPLIER_ID_COL.getColumnName()));
         rowSupplier.setSupplierName(rs.getString(SUPPLIER_NAME_COL.getColumnName()));

@@ -1,12 +1,12 @@
 package com.umar.simply.jdbc.fluent.dao.supplier.db.tables;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.supplier.Order;
 import com.umar.simply.jdbc.meta.Column;
 import static com.umar.simply.jdbc.meta.Column.as;
 import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 /**
  * Represents database's ORDERS Table
@@ -26,7 +26,7 @@ public class OrderTable {
 
     /*
      * If the returning SQL ResultSet consist of joins of two or more tables
-     * then the given Mapping should be used by the RowMapper.map(ResultSet) as
+     * then the given Mapping should be used by the ResultSetMapper.map(ResultSet) as
      * the ResultSetMetaData only has information about actual table column
      * names and all the aliases created to are lost.
      */
@@ -39,7 +39,7 @@ public class OrderTable {
     public static final Column<LocalDateTime> order_created_rsmd = as(orders_rsmd.getTableName(), "created");
     public static final Column<LocalDateTime> order_updated_rsmd = as(orders_rsmd.getTableName(), "updated");
 
-    public static final RowMapper<Order> ORDER_ROW_MAPPER = (rs) -> {
+    public static final ResultSetMapper<Order> ORDER_ROW_MAPPER = (rs) -> {
         final Order rowOrder = Order.emptyOrder();
         rowOrder.setId(rs.getInt(ORDER_ID.getColumnName()));
         rowOrder.setOrderDate(rs.getTimestamp(ORDER_DATE.getColumnName()).toLocalDateTime());

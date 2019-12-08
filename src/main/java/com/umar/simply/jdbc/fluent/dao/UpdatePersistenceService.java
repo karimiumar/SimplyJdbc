@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.fluent.dao;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentUpdatePersistenceService;
 import com.umar.simply.jdbc.dml.operations.UpdateOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
@@ -12,11 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> implements FluentUpdatePersistenceService<T> {
 
     private final UpdateOp sql = new UpdateOp();
-    private RowMapper<T> rowMapper;
+    private ResultSetMapper<T> rowMapper;
     private int id;
     private Table table;
 
@@ -32,7 +32,7 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public UpdatePersistenceService using(RowMapper<T> rowMapper) {
+    public UpdatePersistenceService using(ResultSetMapper<T> rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }

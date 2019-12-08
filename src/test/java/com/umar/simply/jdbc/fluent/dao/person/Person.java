@@ -1,12 +1,12 @@
 package com.umar.simply.jdbc.fluent.dao.person;
 
-import com.umar.simply.jdbc.RowMapper;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.Table;
 
 import static com.umar.simply.jdbc.meta.Column.column;
 import static com.umar.simply.jdbc.meta.Table.table;
 import java.time.LocalDateTime;
+import com.umar.simply.jdbc.ResultSetMapper;
 
 public class Person {
 
@@ -40,7 +40,7 @@ public class Person {
         Column<Integer> AGE = column("age");
         Table TBL_PERSON = table("person", PERSON_ID);
 
-        RowMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
+        ResultSetMapper<Person> PERSON_ROW_MAPPER = (rs) -> {
             final Person personRow = new Person();
             personRow.id = rs.getInt(PERSON_ID.getColumnName());
             personRow.firstName = rs.getString(FIRST_NAME.getColumnName());

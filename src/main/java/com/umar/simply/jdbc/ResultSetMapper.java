@@ -3,7 +3,7 @@ package com.umar.simply.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface RowMapper<T> {
+public interface ResultSetMapper<T> {
     /**
      * Map the given SQL ResultSet to the corresponding type T
      * @param resultSet The ResultSet to map
