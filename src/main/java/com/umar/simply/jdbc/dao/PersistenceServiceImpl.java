@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.dao;
 
-import com.umar.simply.jdbc.JdbcUtil;
 import com.umar.simply.jdbc.dml.operations.AbstractOp;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
