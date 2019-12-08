@@ -6,7 +6,7 @@ Also, see Ceylon implementation of this library CeylonicJdbc
 
 If you want to convert a SQL query that lists out all the customers whose orders are summed up and list the list is displayed in descending order of the total_amount then the SQL query written is:
 ```
-SELECT * FROM ex.customer 
+SELECT * FROM customer 
 LEFT JOIN 
 (
 	SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id
@@ -22,7 +22,7 @@ It results in the following result:
 | 700.0	        |Jennifer|Stevens|
 
 
-The corresponding SimplyJDBC statement would be:
+The corresponding statement in SimplyJDBC would provide a List of Customer objects in descending order of the total amount of their orders.
 ```
 List<Customer> customerOrders = select().all()
 	.from(customer)
@@ -34,24 +34,8 @@ List<Customer> customerOrders = select().all()
          .on().column(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
          .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
          .using(CUSTOMER_ROW_MAPPER).execute();
-return customerOrders;
-```
-And the ```TotalAmtOrderedByEachCustomerMap ``` is a JDBC ResultSet map as:
-```
-public static RowMapper<Customer> TotalAmtOrderedByEachCustomerMap = (rs) -> {
-            Customer customerRow = new Customer();
-            customerRow.id = rs.getInt(customer_id_rsmd.getColumnName());
-            customerRow.firstName = rs.getString(customer_fname_rsmd.getColumnName());
-            customerRow.lastName = rs.getString(customer_lname_rsmd.getColumnName());
-            customerRow.city = rs.getString(customer_city_rsmd.getColumnName());
-            customerRow.country = rs.getString(customer_cuntry_rsmd.getColumnName());
-            customerRow.created = rs.getTimestamp(customer_created_rsmd.getColumnName()).toLocalDateTime();
-            if (rs.getTimestamp(customer_updated_rsmd.getColumnName()) != null) {
-                customerRow.updated = rs.getTimestamp(customer_updated_rsmd.getColumnName()).toLocalDateTime();
-            }
-            customerRow.totalAmount = rs.getDouble(TOTAL_AMOUNT);
-            return customerRow;
-        };
-```
 
+```
+The ```join(SelectOp op)``` statement takes a parameter of type ```SelectOp```. So in the above example, a new ```SELECT``` statement gets created that provides ```sum(totalAmount)```. The adjoining ```with(List<Column>)``` or ```with(Column)``` is used for group by clause to use columns with SQL aggregate functions like ```AVG, MAX, SUM```.
 Check the examples located under package ```com.umar.simply.jdbc.fluent.dao.supplier``` for details
+
