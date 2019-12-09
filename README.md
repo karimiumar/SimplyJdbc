@@ -9,7 +9,7 @@ If you want to convert a SQL query that lists out all the customers whose orders
 SELECT * FROM customer 
 LEFT JOIN 
 (
-	SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id
+	SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM orders GROUP BY customer_id
 ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY  SUM(total_amount) DESC
 ```
 It results in the following result:
@@ -37,5 +37,5 @@ List<Customer> customerOrders = select().all()
 
 ```
 The ```join(SelectOp op)``` statement takes a parameter of type ```SelectOp```. So in the above example, a new ```SELECT``` statement gets created that provides ```sum(totalAmount)```. The adjoining ```with(List<Column>)``` or ```with(Column)``` is used for group by clause to use columns with SQL aggregate functions like ```AVG, MAX, SUM```.
-Check the examples located under package ```com.umar.simply.jdbc.fluent.dao.supplier``` for details
+Check the examples located under package ```com.umar.simply.jdbc.dml.nojdbc``` and ```com.umar.simply.jdbc.fluent.dao.supplier``` for details
 
