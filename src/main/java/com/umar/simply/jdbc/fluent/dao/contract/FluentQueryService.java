@@ -15,7 +15,6 @@ public interface FluentQueryService<T> {
     QueryService<T> all(List<String> aliases);
     QueryService<T> from(Table table);
     QueryService<T> where();
-    QueryService<T> whereIn(Column<T> column, List<ColumnValue> values);
     QueryService<T> where(Column column);
     QueryService<T> values(List<ColumnValue> values);
     QueryService<T> column(List<Column> columns);

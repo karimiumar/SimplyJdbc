@@ -46,12 +46,6 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> whereIn(Column<T> column, List<ColumnValue> columnValues) {
-        sql.whereIn(column, columnValues);
-        return this;
-    }
-
-    @Override
     public QueryService<T> where(Column column) {
         sql.where(column);
         return this;

@@ -103,7 +103,7 @@ public class SqlQueryTest {
     @Test
     public void whereInUsingExSchemaVars() {
         SelectOp sql = create();
-        sql.select().all().from(TBL_CUSTOMERS).whereIn(CUSTOMER_COUNTRY, asList(set("Germany"), set("US")));
+        sql.select().all().from(TBL_CUSTOMERS).where().column(CUSTOMER_COUNTRY).in(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
         List<ColumnValue> params = sql.getValues();
