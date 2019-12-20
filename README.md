@@ -24,16 +24,13 @@ It results in the following result:
 
 The corresponding statement in SimplyJDBC would provide a List of Customer objects in descending order of the total amount of their orders.
 ```
-List<Customer> customerOrders = select().all()
-	.from(customer)
-        .left().join(
-             SelectOp.create().select().sum(totalAmount).as(TOTAL_AMOUNT).with(asList(orderCustomerId)
-	 )
-         .from(orders).groupBy(orderCustomerId))
-         .as(CUSTOMER_TOTALS)
-         .on().column(customerId).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
-         .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
-         .using(CUSTOMER_ROW_MAPPER).execute();
+List<Customer> customerOrders = select().all().from(TBL_CUSTOMERS)
+                .left().join(SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
+                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
+                .as(CUSTOMER_TOTALS)
+                .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .orderBy(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
+                .using(CUSTOMER_ROW_MAPPER).execute();
 
 ```
 The ```join(SelectOp op)``` statement takes a parameter of type ```SelectOp```. So in the above example, a new ```SELECT``` statement gets created that provides ```sum(totalAmount)```. The adjoining ```with(List<Column>)``` or ```with(Column)``` is used for group by clause to use columns with SQL aggregate functions like ```AVG, MAX, SUM```.
