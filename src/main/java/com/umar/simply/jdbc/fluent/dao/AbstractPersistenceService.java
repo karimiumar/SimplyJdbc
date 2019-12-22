@@ -31,6 +31,9 @@ public abstract class AbstractPersistenceService<T> {
         for (ColumnValue e:values) {
             vals[idx++] = e;
         }
+        
+        
+        
         return vals;
     }
 

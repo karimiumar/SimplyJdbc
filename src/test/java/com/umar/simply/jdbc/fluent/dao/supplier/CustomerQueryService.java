@@ -8,7 +8,6 @@ import java.util.List;
 
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
-import static java.util.Arrays.asList;
 
 public class CustomerQueryService extends QueryService implements FluentCustomerQueryService {
 
@@ -31,20 +30,13 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
          */
         List<Customer> customerOrders = select().all().from(TBL_CUSTOMERS)
                 .left().join(
-                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
-                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
+                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(ORDER_CUSTOMERID)
+                    .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID)
+                )
                 .as(CUSTOMER_TOTALS)
                 .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
-                .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
+                .orderBy(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
                 .using(CUSTOMER_ROW_MAPPER).execute();
-        String sql = select().all().from(TBL_CUSTOMERS)
-                .left().join(
-                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(asList(ORDER_CUSTOMERID))
-                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
-                .as(CUSTOMER_TOTALS)
-                .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
-                .orderBy().column(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc().getSQL().getSQL();
-        System.out.println(sql);
         return customerOrders;
     }
 
