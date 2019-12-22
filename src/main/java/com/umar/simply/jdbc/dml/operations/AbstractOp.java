@@ -164,88 +164,6 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL greater than statement
-     *
-     * @param column The column to prefix with >. It should be followed by <code>populate()</code> method to fill
-     * @return Returns this object
-     */
-    public T gtCol(String column) {
-        op().append(column);
-        op().append(">?");
-        return (T) this;
-    }
-
-    /**
-     * SQL greater than statement
-     *
-     * @param column The column to prefix with >. It should be followed by <code>populate()</code> method to fill
-     * @return Returns this object
-     */
-    public T gtCol(Column column) {
-        op().append(column);
-        op().append(">?");
-        return (T) this;
-    }
-
-    /**
-     * SQL less than statement
-     * @param column The column to prefix with <. It should be followed by <code>populate()</code> method to fill
-     * @return Returns this object
-     */
-    public T ltCol(String column) {
-        op().append(column);
-        op().append("<?");
-        return (T) this;
-    }
-
-    /**
-     * SQL less than statement
-     * @param column The column to prefix with <. It should be followed by <code>populate()</code> method to fill
-     * @return Returns this object
-     */
-    public T ltCol(Column column) {
-        op().append(column);
-        op().append("<?");
-        return (T) this;
-    }
-
-    /**
-     * SQL greater or equal to statement. It suffixes >=? to the PreparedStatement Object
-     *
-     * @param column The column to prefix with >=.
-     * @return Returns this object
-     */
-    public T geCol(String column) {
-        op().append(column);
-        op().append(">=?");
-        return (T) this;
-    }
-
-    /**
-     * SQL greater or equal to statement
-     *
-     * @param column The column to prefix with >= It suffixes >=? to the PreparedStatement Object
-     * @return Returns this object
-     */
-    public T geCol(Column column) {
-        op().append(column);
-        op().append(">=?");
-        return (T) this;
-    }
-
-    /**
-     * SQL less or equal to statement. It suffixes <=? to the PreparedStatement Object
-     *
-     * @param column The column to prefix with <=.
-     * @return Returns this object
-     */
-    public T leCol(Column column) {
-        op().append(column);
-        op().append("<=?");
-        return (T) this;
-    }
-
-    /**
      * SQL UPPER clause
      *
      * @return Returns this object
@@ -314,7 +232,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL WHERE clause.
+     * SQL WHERE clause. Use this for the scenario <code>WHERE (SELECT AVG(T) FROM X) AS AVG </code>
      * @param op The inner query to use
      * @return Returns this object
      */
@@ -329,7 +247,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL WHERE IN clause
+     * SQL WHERE IN clause. Use this for the scenario <code> WHERE columnA IN (4,5,6)</code>
      * @param column The column name
      * @param values The column populate to set
      * @return The current object
@@ -850,10 +768,12 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T with(List<Column> columns) {
-        for (Column column:columns){
+        columns.stream().map((column) -> {
             op().append(",");
+            return column;
+        }).forEachOrdered((column) -> {
             op().append(column);
-        }
+        });
         return (T) this;
     }
 

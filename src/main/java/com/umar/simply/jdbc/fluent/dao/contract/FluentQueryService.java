@@ -28,10 +28,6 @@ public interface FluentQueryService<T> {
     QueryService<T> and();
     QueryService<T> and(Column<T> column);
     QueryService<T> or();
-    QueryService<T> ltCol(Column<T> column);
-    QueryService<T> gtCol(Column<T> column);
-    QueryService<T> geCol(Column<T> column);
-    QueryService<T> leCol(Column<T> column);
     QueryService<T> gt();
     QueryService<T> lt();
     QueryService<T> ge();

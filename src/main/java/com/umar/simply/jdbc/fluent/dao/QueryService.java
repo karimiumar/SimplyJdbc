@@ -124,30 +124,6 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> ltCol(Column<T> column) {
-        sql.ltCol(column);
-        return this;
-    }
-
-    @Override
-    public QueryService<T> gtCol(Column<T> column) {
-        sql.gtCol(column);
-        return this;
-    }
-
-    @Override
-    public QueryService<T> geCol(Column<T> column) {
-        sql.geCol(column);
-        return this;
-    }
-
-    @Override
-    public QueryService<T> leCol(Column<T> column) {
-        sql.leCol(column);
-        return this;
-    }
-
-    @Override
     public QueryService<T> gt() {
         sql.gt();
         return this;
