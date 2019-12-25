@@ -20,7 +20,7 @@ public abstract class AbstractPersistenceService<T> {
 
     Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(idColumn);
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().columnEq(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }

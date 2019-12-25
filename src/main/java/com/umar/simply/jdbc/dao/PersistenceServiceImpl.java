@@ -28,7 +28,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     public List<T> select(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create();
-        sql.select().all().from(table).where().columnEq(getValuesArray(columnValues));
+        sql.SELECT().all().FROM(table).WHERE().columnEq(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result;
     }
@@ -43,8 +43,8 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
 
     @Override
     public T update(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
-        UpdateOp sql = new UpdateOp().table(table).setColumnValues(getValuesArray(columnValuesToSet))
-                .where().columnEq(getValuesArray(clauseValues));
+        UpdateOp sql = new UpdateOp().TABLE(table).setColumnValues(getValuesArray(columnValuesToSet))
+                .WHERE().columnEq(getValuesArray(clauseValues));
         getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),dbSequence));
         return optional.get();
@@ -53,7 +53,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(idColumn);
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().columnEq(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
@@ -61,7 +61,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> find(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().all().from(table).where().columnEq(getValuesArray(columnValues));
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().columnEq(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
@@ -69,7 +69,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public List<T> getAll(Table table, ResultSetMapper<T> rowMapper) {
         final List<T> result = new ArrayList<>();
-        SelectOp sql = SelectOp.create().select().all().from(table);
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table);
         getMappedResult(rowMapper, result, sql);
         return result;
     }
@@ -77,7 +77,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public int count(Table table, ResultSetMapper<T> rowMapper, Column column) {
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().select().count(column).from(table);
+        SelectOp sql = SelectOp.create().SELECT().COUNT(column).FROM(table);
         getMappedResult(rowMapper, result, sql);
         return result.size()>0 ? result.size() : 0;
     }

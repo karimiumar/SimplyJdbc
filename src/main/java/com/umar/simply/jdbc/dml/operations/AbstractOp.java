@@ -85,7 +85,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to suffix with <> operator
      * @return Returns this object
      */
-    public T ne(Column condition) {
+    public T NE(Column condition) {
         op().append("<>");
         op().append(condition);
         return (T) this;
@@ -95,12 +95,12 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL NOT statement
      * @return Returns this object
      */
-    public T not() {
+    public T NOT() {
         op().append(" NOT ");
         return (T) this;
     }
     
-    public T not(SelectOp sql) {
+    public T NOT(SelectOp sql) {
         op().append(" NOT( ");
         op().append(sql);
         op().append(" )");
@@ -112,7 +112,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL IS statement
      * @return Returns this object
      */
-    public T is() {
+    public T IS() {
         op().append(" IS ");
         return (T) this;
     }
@@ -121,7 +121,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * The SQL NULL operator
      * @return Returns this object
      */
-    public T nul(){
+    public T NULL(){
         op().append(" NULL");
         return (T) this;
     }
@@ -130,7 +130,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL AND statement
      * @return Returns this object
      */
-    public T and() {
+    public T AND() {
         op().append(" AND ");
         return (T) this;
     }
@@ -140,13 +140,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to append with AND clause
      * @return Returns this object
      */
-    public T and(Column column) {
+    public T AND(Column column) {
         op().append(" AND ");
         op().append(column);
         return (T) this;
     }
     
-    public T and(SelectOp sql) {
+    public T AND(SelectOp sql) {
         op().append(" AND (");
         op().append(sql);
         op().append(" )");
@@ -158,7 +158,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL OR statement
      * @return Returns this object
      */
-    public T or() {
+    public T OR() {
         op().append(" OR ");
         return (T) this;
     }
@@ -168,7 +168,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
-    public T upper() {
+    public T UPPER() {
         op().append(" UPPER ");
         return (T)this;
     }
@@ -177,7 +177,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL HAVING clause
      * @return Returns this object
      */
-    public T having() {
+    public T HAVING() {
         op().append(" HAVING ");
         return (T)this;
     }
@@ -185,9 +185,9 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL FROM clause
      * @return Returns this object
-     * @param table The table to use with FROM clause
+     * @param table The TABLE to use with FROM clause
      */
-    public T from(String table) {
+    public T FROM(String table) {
         op().append(" FROM ");
         op().append(table);
         return (T) this;
@@ -196,9 +196,9 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL FROM clause
      * @return Returns this object
-     * @param table The table to use with FROM clause
+     * @param table The TABLE to use with FROM clause
      */
-    public T from(Table table) {
+    public T FROM(Table table) {
         op().append(" FROM ");
         op().append(table);
         return (T) this;
@@ -209,7 +209,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      * @param tables The tables to use with FROM clause
      */
-    public T from(List<Table> tables) {
+    public T FROM(List<Table> tables) {
         int len = tables.size();
         int cnt = 1;
         op().append(" FROM ");
@@ -226,17 +226,17 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL WHERE clause.
      * @return Returns this object
      */
-    public T where() {
+    public T WHERE() {
         op().append(" WHERE ");
         return (T) this;
     }
 
     /**
      * SQL WHERE clause. Use this for the scenario <code>WHERE (SELECT AVG(T) FROM X) AS AVG </code>
-     * @param op The inner query to use
+     * @param op The INNER query to use
      * @return Returns this object
      */
-    public T where(SelectOp op) {
+    public T WHERE(SelectOp op) {
         op().append(" WHERE (");
         op().append(op);
         op().append(")");
@@ -252,7 +252,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param values The column populate to set
      * @return The current object
      */
-    public T whereIn(Column column, List<ColumnValue> values) {
+    /*public T whereIn(Column column, List<ColumnValue> values) {
         int len = values.size();
         int cnt = 1;
         op().append(" WHERE ");
@@ -268,14 +268,14 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(")");
 
         return (T) this;
-    }
+    }*/
 
     /**
      * SQL WHERE clause
      * @param column The column to append with WHERE clause
      * @return Returns this object
      */
-    public T where(Column column) {
+    public T WHERE(Column column) {
         op().append(" WHERE ");
         op().append(column);
         return (T) this;
@@ -283,20 +283,20 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL TABLE to be worked with
-     * @param table The table name
+     * @param table The TABLE name
      * @return Returns this object
      */
-    public T table(String table) {
+    public T TABLE(String table) {
         op().append(table);
         return (T) this;
     }
 
     /**
      * SQL TABLE to be worked with
-     * @param table The table name
+     * @param table The TABLE name
      * @return Returns this object
      */
-    public T table(Table table) {
+    public T TABLE(Table table) {
         op().append(table);
         return (T) this;
     }
@@ -306,7 +306,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with YEAR()
      * @return Returns this object
      */
-    public T year(Column column) {
+    public T YEAR(Column column) {
         op().append(" YEAR(");
         op().append(column);
         op().append(")");
@@ -317,7 +317,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL DISTINCT clause
      * @return Returns this object
      */
-    public T distinct() {
+    public T DISTINCT() {
         op().append(" DISTINCT ");
         return (T) this;
     }
@@ -327,7 +327,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with DISTINCT operator
      * @return Returns this object
      */
-    public T distinct(String column) {
+    public T DISTINCT(String column) {
         op().append(" DISTINCT ");
         op().append(column);
         return (T)this;
@@ -338,7 +338,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with DISTINCT operator
      * @return Returns this object
      */
-    public T distinct(Column column) {
+    public T DISTINCT(Column column) {
         op().append(" DISTINCT ");
         op().append(column);
         return (T)this;
@@ -346,10 +346,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use with count()
+     * @param column The column to use with COUNT()
      * @return Returns this object
      */
-    public T count(String column) {
+    public T COUNT(String column) {
         op().append(" COUNT(");
         op().append(column);
         op().append(")");
@@ -358,10 +358,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use with count()
+     * @param column The column to use with COUNT()
      * @return Returns this object
      */
-    public T count(Column column) {
+    public T COUNT(Column column) {
         op().append(" COUNT(");
         op().append(column);
         op().append(")");
@@ -373,7 +373,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op T type operation
      * @return Returns this object
      */
-    public T count(SelectOp op) {
+    public T COUNT(SelectOp op) {
         op().append(" COUNT(");
         op().append(op);
         op().append(")");
@@ -388,7 +388,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with MAX()
      * @return Returns this object
      */
-    public T max(Column column) {
+    public T MAX(Column column) {
         op().append(" MAX(");
         op().append(column);
         op().append(")");
@@ -400,7 +400,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with MIN()
      * @return Returns this object
      */
-    public T min(Column column) {
+    public T MIN(Column column) {
         op().append(" MIN(");
         op().append(column);
         op().append(")");
@@ -412,7 +412,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column to use with AVG()
      * @return Returns this object
      */
-    public T avg(Column column) {
+    public T AVG(Column column) {
         op().append(" AVG(");
         op().append(column);
         op().append(")");
@@ -421,10 +421,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SUM() function. 'SUM' function is appended around the column
-     * @param column The column to sum
+     * @param column The column to SUM
      * @return Returns this object
      */
-    public T sum(Column column) {
+    public T SUM(Column column) {
         op().append(" SUM(");
         op().append(column);
         op().append(")");
@@ -436,7 +436,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation
      * @return The current object
      */
-    public T exists(SelectOp op) {
+    public T EXISTS(SelectOp op) {
         op().append(" EXISTS");
         op().append(" (");
         op().append(op);
@@ -450,10 +450,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL BETWEEN clause.
      *
-     * @param columnValues The ColumnValue. Contains column name and column value
+     * @param columnValues The ColumnValue. Contains column name AND column value
      * @return Returns this object
      */
-    public T between(List<ColumnValue> columnValues) {
+    public T BETWEEN(List<ColumnValue> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append(" BETWEEN ");
@@ -469,10 +469,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL BETWEEN clause. 'BETWEEN' operator is appended around the SQL operation
-     * @param op The SQL operation to wrap in 'BETWEEN' clause
+     * @param op The SQL operation to wrap IN 'BETWEEN' clause
      * @return Returns this object
      */
-    public T between(SelectOp op) {
+    public T BETWEEN(SelectOp op) {
         op().append(" BETWEEN (");
         op().append(op);
         op().append(")");
@@ -487,7 +487,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param pattern The String pattern to look for.
      * @return Returns this object
      */
-    public T like(String pattern) {
+    public T LIKE(String pattern) {
         op().append(" LIKE ");
         op().append("?");
         getValues().add(ColumnValue.set(pattern));
@@ -496,11 +496,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     
     /**
      * The SQL IN() function. The 'IN' function is appended followed by the SQL operation
-     *
-     * @param op The SQL operation to wrap in 'IN' function
+     * Use it for the scenario <code>WHERE first_name IN (SELECT first_name FROM customer)</code>
+     * @param op The SQL operation to wrap IN 'IN' function
      * @return Returns this object
      */
-    public T in(SelectOp op) {
+    public T IN(SelectOp op) {
         op().append(" IN (");
         op().append(op);
         op().append(")");
@@ -511,11 +511,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * The SQL IN() function.The 'IN' function is appended followed by the SQL operation
+     * The SQL IN() function.The 'IN' takes a list of ColumnValue
      * @param columnValues The ColumnValue for SQL IN clause
      *@return Returns this object
      */
-    public T in(List<ColumnValue> columnValues) {
+    public T IN(List<ColumnValue> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append(" IN (");
@@ -533,10 +533,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * MySQL LIMIT Function
      *
-     * @param n The int value of limit
+     * @param n The int value of LIMIT
      * @return Returns this object
      */
-    public T limit(int n) {
+    public T LIMIT(int n) {
         getValues().add(ColumnValue.set(n));
         op().append(" LIMIT ");
         op().append("?");
@@ -546,10 +546,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * MySQL OffSet Function
      *
-     * @param n The int value to pass in offset
+     * @param n The int value to pass IN OFFSET
      * @return Returns this object
      */
-    public T offset(int n) {
+    public T OFFSET(int n) {
         getValues().add(ColumnValue.set(n));
         op().append(" OFFSET ");
         op().append("?");
@@ -561,7 +561,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param alias The alias to use
      * @return Returns this object
      */
-    public T as(String alias) {
+    public T AS(String alias) {
         op().append(" AS ");
         op().append(alias);
         op().append(" ");
@@ -572,17 +572,17 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ORDER BY clause
      * @return Returns this object
      */
-    public T orderBy() {
+    public T ORDERBY() {
         op().append(" ORDER BY ");
         return (T) this;
     }
     
     /**
      * SQL ORDER BY clause
-     * @param column The column on which ORDER BY to apply
+     * @param column The column ON which ORDER BY to apply
      * @return Returns this object
      */
-    public T orderBy(Column column) {
+    public T ORDERBY(Column column) {
         op().append(" ORDER BY ");
         op().append(column);
         return (T) this;
@@ -592,7 +592,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ASC clause for ascending order
      * @return Returns this object
      */
-    public T asc() {
+    public T ASC() {
         op().append(" ASC ");
         return (T) this;
     }
@@ -601,7 +601,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL DESC clause for descending order
      * @return Returns this object
      */
-    public T desc() {
+    public T DESC() {
         op().append(" DESC ");
         return (T) this;
     }
@@ -610,7 +610,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL GREATER THAN clause.
      * @return Returns this object
      */
-    public T gt() {
+    public T GT() {
         op().append(">");
         return (T) this;
     }
@@ -620,7 +620,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value
      * @return Returns this object
      */
-    public T gt(ColumnValue value) {
+    public T GT(ColumnValue value) {
         op().append(">");
         op().append("?");
         getValues().add(value);
@@ -631,7 +631,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LESS THAN clause.
      * @return Returns this object
      */
-    public T lt() {
+    public T LT() {
         op().append("<");
         return (T) this;
     }
@@ -641,7 +641,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
-    public T lt(ColumnValue value) {
+    public T LT(ColumnValue value) {
         op().append("<");
         op().append("?");
         getValues().add(value);
@@ -652,7 +652,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL GREATER OR EQUAL clause.
      * @return Returns this object
      */
-    public T ge(){
+    public T GE(){
         op().append(">=");
         return (T) this;
     }
@@ -662,7 +662,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
-    public T ge(ColumnValue value) {
+    public T GE(ColumnValue value) {
         op().append(value.getColumnName());
         op().append(">=");
         op().append("?");
@@ -675,7 +675,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
-    public T le(ColumnValue value) {
+    public T LE(ColumnValue value) {
         op().append(value.getColumnName());
         op().append("<=");
         op().append("?");
@@ -687,7 +687,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LESS OR EQUAL clause.
      * @return Returns this object
      */
-    public T le() {
+    public T LE() {
         op().append("<=");
         return (T) this;
     }
@@ -697,7 +697,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to append with = operator
      * @return Returns this object
      */
-    public T eq(String condition) {
+    public T EQ(String condition) {
         op().append("=");
         op().append(condition);
         return (T) this;
@@ -708,7 +708,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to append with = operator
      * @return Returns this object
      */
-    public T eq(Column condition) {
+    public T EQ(Column condition) {
         op().append("=");
         op().append(condition);
         return (T) this;
@@ -719,12 +719,12 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
-    public T eq() {
+    public T EQ() {
         op().append("=");
         return (T) this;
     }
     
-    public T eq(ColumnValue value) {
+    public T EQ(ColumnValue value) {
         op().append("=?");
         getValues().add(value);
         return (T) this;
@@ -736,7 +736,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
-    public T groupBy(List<Column> columns){
+    public T GROUPBY(List<Column> columns){
         int len = columns.size();
         int cnt = 1;
         op().append(" GROUP BY ");
@@ -755,15 +755,15 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
-    public T groupBy(Column column){
+    public T GROUPBY(Column column){
         op().append(" GROUP BY ");
         op().append(column);
         return (T) this;
     }
-
+    
     /**
-     * Use this method when grouping columns in
-     * conjunction with count(), avg(), min(), max() method
+     * Use this method when grouping columns IN
+ conjunction with COUNT(), AVG(), MIN(), MAX() method
      * @param columns The columns to use
      * @return Returns this object
      */
@@ -779,7 +779,17 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * Use this method when grouping columns in
-     * conjunction with count(), avg(), min(), max() method
+     * conjunction with count(), avg(), min(), max() method.
+     * For example if the desired SQL operation is as
+     * <code>
+     * SELECT  COUNT(id), country FROM customer AS c1  GROUP BY country
+     * </code>
+ ;then it can be written AS:
+ <code>
+ SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID)
+                .with(CUSTOMER_COUNTRY)
+                .FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
+ </code>
      * @param column The columns to use
      * @return Returns this object
      */
@@ -794,7 +804,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column
      * @return Returns this object
      */
-    public T using(String column) {
+    public T USING(String column) {
         op().append(" USING(");
         op().append(column);
         op().append(")");
@@ -806,7 +816,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The column
      * @return Returns this object
      */
-    public T using(Column column) {
+    public T USING(Column column) {
         op().append(" USING(");
         op().append(column);
         op().append(")");
@@ -817,7 +827,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * MySQL MINUS operator
      * @return Returns this object
      */
-    public T minus(){
+    public T MINUS(){
         op().append(" MINUS ");
         return (T) this;
     }
@@ -826,7 +836,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL INNER clause
      * @return Returns this object
      */
-    public T inner(){
+    public T INNER(){
         op().append(" INNER");
         return (T) this;
     }
@@ -836,17 +846,17 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL JOIN operation
      * @return Returns this object
      */
-    public T join() {
+    public T JOIN() {
         op().append(" JOIN ");
         return (T) this;
     }
     
     /**
-     * SQL JOIN operation with inner SELECT query
-     * @param query The inner query to use with join
+     * SQL JOIN operation with INNER SELECT query
+     * @param query The INNER query to use with JOIN
      * @return Returns this object
      */
-    public T join(SelectOp query) {
+    public T JOIN(SelectOp query) {
         op().append(" JOIN (");
         op().append(query);
         op().append(" )");
@@ -854,10 +864,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
     /**
      * SQL JOIN operation
-     * @param table The JOIN table 
+     * @param table The JOIN TABLE 
      * @return Returns this object
      */
-    public T join(Table table) {
+    public T JOIN(Table table) {
         op().append(" JOIN ");
         op().append(table);
         return (T) this;
@@ -867,7 +877,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LEFT JOIN clause
      * @return Returns this object
      */
-    public T left() {
+    public T LEFT() {
         op().append(" LEFT");
         return (T) this;
     }
@@ -876,7 +886,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL RIGHT JOIN clause
      * @return Returns this object
      */
-    public T right() {
+    public T RIGHT() {
         op().append(" RIGHT");
         return (T) this;
     }
@@ -885,26 +895,26 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL UNION clause
      * @return Returns this object
      */
-    public T union() {
+    public T UNION() {
         op().append(" UNION ");
         return (T) this;
     }
 
     /**
-     * SQL ON clause used in conjunction with JOIN
+     * SQL ON clause used IN conjunction with JOIN
      * @return Returns this object
      */
-    public T on() {
+    public T ON() {
         op().append(" ON ");
         return (T) this;
     }
     
     /**
-     * SQL ON clause used in conjunction with JOIN
+     * SQL ON clause used IN conjunction with JOIN
      * @param column The column to JOIN ON
      * @return Returns this object
      */
-    public T on(Column column) {
+    public T ON(Column column) {
         op().append(" ON ");
         op().append(column);
         op().append(" ");
@@ -915,7 +925,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ANY clause
      * @return Returns this object
      */
-    public T any() {
+    public T ANY() {
         op().append(" ANY ");
         return (T) this;
     }
@@ -924,7 +934,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL SOME clause. It's an alias for ANY
      * @return Returns this object
      */
-    public T some(){
+    public T SOME(){
         op().append(" SOME ");
         return (T) this;
     }
@@ -934,16 +944,16 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
-    public T substring(){
+    public T SUBSTRING(){
         op().append(" SUBSTRING ");
         return (T) this;
     }
 
     /**
-     * SQL charindex() function
+     * SQL CHARINDEX() function
      * @return Returns this object
      */
-    public T charindex(){
+    public T CHARINDEX(){
         op().append(" CHARINDEX ");
         return (T) this;
     }
@@ -952,17 +962,17 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL SELECT clause
      * @return Returns this object
      */
-    public T select() {
+    public T SELECT() {
         op().append("SELECT ");
         return (T) this;
     }
 
     /**
      * SQL SELECT clause
-     * @param columns List of columns to select
+     * @param columns List of columns to SELECT
      * @return Returns this object
      */
-    public T select(List<Column> columns) {
+    public T SELECT(List<Column> columns) {
         op().append("SELECT ");
         int len = columns.size();
         int cnt = 1;
@@ -977,10 +987,10 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SELECT clause
-     * @param column The column to select
+     * @param column The column to SELECT
      * @return Returns this object
      */
-    public T select(Column column) {
+    public T SELECT(Column column) {
         op().append("SELECT ");
         op().append(column);
         return (T) this;
@@ -991,7 +1001,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param index The index name
      * @return Returns this object
      */
-    public T withIndex(Index index) {
+    public T WITHINDEX(Index index) {
         op().append(" WITH(");
         op().append("INDEX(");
         op().append(index);

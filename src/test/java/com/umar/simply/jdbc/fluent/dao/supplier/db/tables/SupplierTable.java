@@ -7,6 +7,7 @@ import static com.umar.simply.jdbc.meta.Column.as;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
+import static com.umar.simply.jdbc.meta.Column.as;
 
 /**
  * Represents database's SUPPLIER table

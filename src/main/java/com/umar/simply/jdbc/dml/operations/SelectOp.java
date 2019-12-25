@@ -41,7 +41,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     }
 
     /**
-     * The values to work with as actual parameters
+     * The values to work with AS actual parameters
      *
      * @param values The column values to fill
      * @return Returns this object
@@ -61,7 +61,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
 
 
     /**
-     * SQL Columns to be selected or worked with
+     * SQL Columns to be selected OR worked with
      *
      * @param columns The columns to fetch
      * @return Returns this object
@@ -79,7 +79,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     }
 
     /**
-     * SQL Columns to be selected or worked with
+     * SQL Columns to be selected OR worked with
      *
      * @param column The columns to fetch
      * @return Returns this object
@@ -90,7 +90,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     }
 
     /**
-     * SQL Columns to be selected or worked with
+     * SQL Columns to be selected OR worked with
      *
      * @param column The columns to fetch
      * @return Returns this object

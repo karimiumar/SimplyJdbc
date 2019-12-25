@@ -28,13 +28,13 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public DeletePersistenceService where(SelectOp op) {
-        sql.where(op);
+        sql.WHERE(op);
         return this;
     }
 
     @Override
     public DeletePersistenceService where() {
-        sql.where();
+        sql.WHERE();
         return this;
     }
 

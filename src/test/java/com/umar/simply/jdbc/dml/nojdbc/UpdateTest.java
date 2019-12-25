@@ -16,10 +16,10 @@ public class UpdateTest {
     @Test
     public void combineAndConditionTest(){
         UpdateOp update = new UpdateOp();
-        update.table("PERSON").setColumnValues(set(PERSON_FIRST_NAME,"Eva"))
-                .where().not().columnEq(set(PERSON_ID,1))
-                .and(SelectOp.create().columnEq(set(PERSON_IS_ADULT,true))
-                        .or().columnEq(set(PERSON_EMAIL,"abc@abc.com")));
+        update.TABLE("PERSON").setColumnValues(set(PERSON_FIRST_NAME,"Eva"))
+                .WHERE().NOT().columnEq(set(PERSON_ID,1))
+                .AND(SelectOp.create().columnEq(set(PERSON_IS_ADULT,true))
+                        .OR().columnEq(set(PERSON_EMAIL,"abc@abc.com")));
         String result = update.getSQL();
         String expected = "UPDATE PERSON SET firstname=? WHERE  NOT id=? AND (adult=? OR email=? )";
         System.out.println(update.getSQL());
@@ -32,8 +32,8 @@ public class UpdateTest {
     @Test
     public void combineAndConditionWithValuesTest(){
         UpdateOp update = new UpdateOp();
-        update.table(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Eva")).where().not().columnEq(set(PERSON_ID,123))
-                .and(SelectOp.create().columnEq(set(PERSON_IS_ADULT,false)).or().columnEq(set(PERSON_EMAIL,"tina@123.com")));
+        update.TABLE(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Eva")).WHERE().NOT().columnEq(set(PERSON_ID,123))
+                .AND(SelectOp.create().columnEq(set(PERSON_IS_ADULT,false)).OR().columnEq(set(PERSON_EMAIL,"tina@123.com")));
         String result = update.getSQL();
         String expected = "UPDATE person SET firstname=? WHERE  NOT id=? AND (adult=? OR email=? )";
         List<ColumnValue> params = update.getValues();
@@ -45,12 +45,12 @@ public class UpdateTest {
     @Test
     public void complexOrConditionTest() {
         UpdateOp update = new UpdateOp();
-        update.table(TBL_ORDERS).setColumnValues(set(ORDER_CUSTOMERID,44))
-                .where()
-                .not(SelectOp.create()
-                    .ge(set(ORDER_TOTAL_AMT, 5000.00))
-                    .and()
-                    .le(set(ORDER_TOTAL_AMT, 12000.00))
+        update.TABLE(TBL_ORDERS).setColumnValues(set(ORDER_CUSTOMERID,44))
+                .WHERE()
+                .NOT(SelectOp.create()
+                    .GE(set(ORDER_TOTAL_AMT, 5000.00))
+                    .AND()
+                    .LE(set(ORDER_TOTAL_AMT, 12000.00))
                 );
         String result = update.getSQL();
         String expected = "UPDATE orders SET customer_id=? WHERE  NOT( total_amount>=? AND total_amount<=? )";
@@ -64,9 +64,9 @@ public class UpdateTest {
     @Test
     public void complexConditionTest() {
         UpdateOp update = new UpdateOp();
-        update.table(TBL_PERSON).setColumnValues(set(PERSON_CITY, "Dusseldorf"))
-                .where()
-                .not(SelectOp.create()
+        update.TABLE(TBL_PERSON).setColumnValues(set(PERSON_CITY, "Dusseldorf"))
+                .WHERE()
+                .NOT(SelectOp.create()
                 .columnEq(set(PERSON_COUNTRY, "Germany"))
                 );
         String result = update.getSQL();

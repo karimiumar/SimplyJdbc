@@ -41,7 +41,7 @@ public class DeleteOpJdbcTest {
    // @Test
     public void deleteWhereOrConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).where().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_FIRST_NAME,"Angelina"));
+        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_FIRST_NAME,"Angelina"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();
@@ -54,7 +54,7 @@ public class DeleteOpJdbcTest {
     @Test
     public void deleteWhereConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).where().columnEq(set(PERSON_FIRST_NAME,"Tina")).and().columnEq(set(PERSON_LAST_NAME,"Turner"));
+        operation.deleteFrom(TBL_PERSON).WHERE().columnEq(set(PERSON_FIRST_NAME,"Tina")).AND().columnEq(set(PERSON_LAST_NAME,"Turner"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();

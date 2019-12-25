@@ -7,6 +7,7 @@ import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
+import static com.umar.simply.jdbc.meta.Column.as;
 
 /**
  * Represents database's ORDERS Table
@@ -26,7 +27,7 @@ public class OrderTable {
 
     /*
      * If the returning SQL ResultSet consist of joins of two or more tables
-     * then the given Mapping should be used by the ResultSetMapper.map(ResultSet) as
+     * then the given Mapping should be used by the ResultSetMapper.map(ResultSet) AS
      * the ResultSetMetaData only has information about actual table column
      * names and all the aliases created to are lost.
      */

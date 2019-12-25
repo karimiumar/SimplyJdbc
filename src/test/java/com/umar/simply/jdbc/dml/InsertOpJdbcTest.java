@@ -1,5 +1,5 @@
 /*
-create table PERSON
+create TABLE PERSON
 (
     //id bigint primary key auto_increment, //mysql
     id bigint auto_increment primary key, //h2 database
@@ -45,7 +45,7 @@ public class InsertOpJdbcTest  {
     @AfterAll
     public static void clean(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).where().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
+        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
         System.out.println(operation.getSQL());
         try (Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {

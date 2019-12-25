@@ -26,7 +26,7 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
     @Override
     public UpdatePersistenceService update(Table table) {
         this.table = table;
-        sql.table(table);
+        sql.TABLE(table);
         return this;
     }
 
@@ -44,7 +44,7 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public UpdatePersistenceService where(List<ColumnValue> existingVals) {
-        sql.where().columnEq(getValuesArray(existingVals));
+        sql.WHERE().columnEq(getValuesArray(existingVals));
         return this;
     }
 

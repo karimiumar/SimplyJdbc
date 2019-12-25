@@ -20,7 +20,7 @@ public class InsertOp extends AbstractOp<InsertOp> {
 
     /**
      * The INSERT INTO operation.
-     * @param table The table name to use for INSERT operation
+     * @param table The TABLE name to use for INSERT operation
      * @return Returns this object
      */
     public InsertOp intoTable(String table) {
@@ -31,7 +31,7 @@ public class InsertOp extends AbstractOp<InsertOp> {
 
     /**
      * The INSERT INTO operation.
-     * @param table The table name to use for INSERT operation
+     * @param table The TABLE name to use for INSERT operation
      * @return Returns this object
      */
     public InsertOp intoTable(Table table) {

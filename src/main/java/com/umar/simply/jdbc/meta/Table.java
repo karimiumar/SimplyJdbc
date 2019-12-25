@@ -26,7 +26,7 @@ public class Table {
         return new Table(tableName +" "+alias, idColumn);
     }
     
-     public static Table as(String tableName, String alias) {
+     public static Table AS(String tableName, String alias) {
         return new Table(tableName +" "+alias, Column.column(""));
     }
 

@@ -16,7 +16,7 @@ import com.umar.simply.jdbc.ResultSetMapper;
 public class CustomerTable {
     
     /*
-    CUSTOMER_TOTALS is an alias for a subquery as given:
+    CUSTOMER_TOTALS is an alias for a subquery AS given:
     (SELECT customer_id, SUM(total_amount) AS TOTAL_AMOUNT  FROM ex.orders GROUP BY customer_id) AS CUSTOMER_TOTALS
      */
     public static final String CUSTOMER_TOTALS = "CUSTOMER_TOTALS";

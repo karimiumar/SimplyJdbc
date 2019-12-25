@@ -30,8 +30,8 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
          */
         List<Customer> customerOrders = select().all().from(TBL_CUSTOMERS)
                 .left().join(
-                    SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(ORDER_CUSTOMERID)
-                    .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID)
+                    SelectOp.create().SELECT().SUM(ORDER_TOTAL_AMT).AS(TOTAL_AMOUNT).with(ORDER_CUSTOMERID)
+                    .FROM(TBL_ORDERS).GROUPBY(ORDER_CUSTOMERID)
                 )
                 .as(CUSTOMER_TOTALS)
                 .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)

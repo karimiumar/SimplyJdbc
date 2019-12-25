@@ -35,19 +35,19 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
 
     @Override
     public QueryService<T> from(Table table) {
-        sql.from(table);
+        sql.FROM(table);
         return this;
     }
 
     @Override
     public QueryService<T> where() {
-        sql.where();
+        sql.WHERE();
         return this;
     }
 
     @Override
     public QueryService<T> where(Column column) {
-        sql.where(column);
+        sql.WHERE(column);
         return this;
     }
 
@@ -83,278 +83,278 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
 
     @Override
     public QueryService<T> ne(Column<T> condition) {
-        sql.ne(condition);
+        sql.NE(condition);
         return this;
     }
 
     @Override
     public QueryService<T> not() {
-        sql.not();
+        sql.NOT();
         return this;
     }
 
     @Override
     public QueryService<T> is() {
-        sql.is();
+        sql.IS();
         return this;
     }
 
     @Override
     public QueryService<T> nul() {
-        sql.nul();
+        sql.NULL();
         return this;
     }
 
     @Override
     public QueryService<T> and() {
-        sql.and();
+        sql.AND();
         return this;
     }
 
     @Override
     public QueryService<T> and(Column<T> column) {
-        sql.and(column);
+        sql.AND(column);
         return this;
     }
 
     @Override
     public QueryService<T> or() {
-        sql.or();
+        sql.OR();
         return this;
     }
 
     @Override
     public QueryService<T> gt() {
-        sql.gt();
+        sql.GT();
         return this;
     }
 
     @Override
     public QueryService<T> lt() {
-        sql.lt();
+        sql.LT();
         return this;
     }
 
     @Override
     public QueryService<T> ge() {
-        sql.ge();
+        sql.GE();
         return this;
     }
 
     @Override
     public QueryService<T> eq(Column condition) {
-        sql.eq(condition);
+        sql.EQ(condition);
         return this;
     }
 
     @Override
     public QueryService<T> eq(String condition) {
-        sql.eq(condition);
+        sql.EQ(condition);
         return this;
     }
 
     @Override
     public QueryService<T> eq() {
-        sql.eq();
+        sql.EQ();
         return this;
     }
 
     @Override
     public QueryService<T> eq(ColumnValue value) {
-        sql.eq(value);
+        sql.EQ(value);
         return this;
     }
 
     @Override
     public QueryService<T> gt(ColumnValue value) {
-        sql.gt(value);
+        sql.GT(value);
         return this;
     }
 
     @Override
     public QueryService<T> lt(ColumnValue value) {
-        sql.lt(value);
+        sql.LT(value);
         return this;
     }
 
     @Override
     public QueryService<T> ge(ColumnValue columnValue) {
-        sql.ge(columnValue);
+        sql.GE(columnValue);
         return this;
     }
 
     @Override
     public QueryService<T> le(ColumnValue columnValue) {
-        sql.le(columnValue);
+        sql.LE(columnValue);
         return this;
     }
 
     @Override
     public QueryService<T> upper() {
-        sql.upper();
+        sql.UPPER();
         return this;
     }
 
     @Override
     public QueryService<T> having() {
-        sql.having();
+        sql.HAVING();
         return this;
     }
 
     @Override
     public QueryService<T> from(List<Table> tables) {
-        sql.from(tables);
+        sql.FROM(tables);
         return this;
     }
 
     @Override
     public QueryService<T> year(Column column) {
-        sql.year(column);
+        sql.YEAR(column);
         return this;
     }
 
     @Override
     public QueryService<T> distinct() {
-        sql.distinct();
+        sql.DISTINCT();
         return this;
     }
 
     @Override
     public QueryService<T> distinct(Column column) {
-        sql.distinct(column);
+        sql.DISTINCT(column);
         return this;
     }
 
     @Override
     public QueryService<T> count(Column column) {
-        sql.count(column);
+        sql.COUNT(column);
         return this;
     }
 
     @Override
     public QueryService<T> count(SelectOp op) {
-        sql.count(op);
+        sql.COUNT(op);
         return this;
     }
 
     @Override
     public QueryService<T> max(Column column) {
-        sql.max(column);
+        sql.MAX(column);
         return this;
     }
 
     @Override
     public QueryService<T> min(Column column) {
-        sql.min(column);
+        sql.MIN(column);
         return this;
     }
 
     @Override
     public QueryService<T> avg(Column column) {
-        sql.avg(column);
+        sql.AVG(column);
         return this;
     }
 
     @Override
     public QueryService<T> sum(Column column) {
-        sql.sum(column);
+        sql.SUM(column);
         return this;
     }
 
     @Override
     public Column<T> sumOfColumn(Column column) {
         Column c = Column.column(column.getColumnName());
-        sql.sum(column);
+        sql.SUM(column);
         return c;
     }
 
     @Override
     public QueryService<T> exists(SelectOp op) {
-        sql.exists(op);
+        sql.EXISTS(op);
         return this;
     }
 
     @Override
     public QueryService<T> between(List<ColumnValue> columnValues) {
-        sql.between(columnValues);
+        sql.BETWEEN(columnValues);
         return this;
     }
 
     @Override
     public QueryService<T> between(SelectOp op) {
-        sql.between(op);
+        sql.BETWEEN(op);
         return this;
     }
 
     @Override
     public QueryService<T> like(String pattern) {
-        sql.like(pattern);
+        sql.LIKE(pattern);
         return this;
     }
 
     @Override
     public QueryService<T> in(List<ColumnValue> columnValues) {
-        sql.in(columnValues);
+        sql.IN(columnValues);
         return this;
     }
     
     @Override
     public QueryService<T> in(SelectOp op) {
-        sql.in(op);
+        sql.IN(op);
         return this;
     }
 
     @Override
     public QueryService<T> limit(int n) {
-        sql.limit(n);
+        sql.LIMIT(n);
         return this;
     }
 
     @Override
     public QueryService<T> offset(int n) {
-        sql.offset(n);
+        sql.OFFSET(n);
         return this;
     }
 
     @Override
     public QueryService<T> as(String alias) {
-        sql.as(alias);
+        sql.AS(alias);
         return this;
     }
 
     @Override
     public QueryService<T> orderBy(Column column) {
-        sql.orderBy(column);
+        sql.ORDERBY(column);
         return this;
     }
 
     @Override
     public QueryService<T> orderBy() {
-        sql.orderBy();
+        sql.ORDERBY();
         return this;
     }
     
     @Override
     public QueryService<T> asc() {
-        sql.asc();
+        sql.ASC();
         return this;
     }
 
     @Override
     public QueryService<T> desc() {
-        sql.desc();
+        sql.DESC();
         return this;
     }
 
     @Override
     public QueryService<T> groupBy(List<Column> columns) {
-        sql.groupBy(columns);
+        sql.GROUPBY(columns);
         return this;
     }
 
     @Override
     public QueryService<T> groupBy(Column column) {
-        sql.groupBy(column);
+        sql.GROUPBY(column);
         return this;
     }
 
@@ -372,109 +372,109 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
 
     @Override
     public QueryService<T> using(Column column) {
-        sql.using(column);
+        sql.USING(column);
         return this;
     }
 
     @Override
     public QueryService<T> table(Table table) {
-        sql.table(table);
+        sql.TABLE(table);
         return this;
     }
 
     @Override
     public QueryService<T> minus() {
-        sql.minus();
+        sql.MINUS();
         return this;
     }
 
     @Override
     public QueryService<T> inner() {
-        sql.inner();
+        sql.INNER();
         return this;
     }
 
     @Override
     public QueryService<T> join() {
-        sql.join();
+        sql.JOIN();
         return this;
     }
     
     @Override
     public QueryService<T> join(Table table) {
-        sql.join(table);
+        sql.JOIN(table);
         return this;
     }
 
     @Override
     public QueryService<T> join(SelectOp query) {
-        sql.join(query);
+        sql.JOIN(query);
         return this;
     }
 
     @Override
     public QueryService<T> left() {
-        sql.left();
+        sql.LEFT();
         return this;
     }
 
     @Override
     public QueryService<T> right() {
-        sql.right();
+        sql.RIGHT();
         return this;
     }
 
     @Override
     public QueryService<T> union() {
-        sql.union();
+        sql.UNION();
         return this;
     }
 
     @Override
     public QueryService<T> on() {
-        sql.on();
+        sql.ON();
         return this;
     }
     
     @Override
     public QueryService<T> on(Column column) {
-        sql.on(column);
+        sql.ON(column);
         return this;
     }
 
     @Override
     public QueryService<T> any() {
-        sql.any();
+        sql.ANY();
         return this;
     }
 
     @Override
     public QueryService<T> some() {
-        sql.some();
+        sql.SOME();
         return this;
     }
 
     @Override
     public QueryService<T> select(Column column) {
-        sql.select(column);
+        sql.SELECT(column);
         return this;
     }
 
     @Override
     public QueryService<T> select(List<Column> columns) {
-        sql.select(columns);
+        sql.SELECT(columns);
         return this;
     }
 
     @Override
     public QueryService<T> select() {
-        sql.select();
+        sql.SELECT();
         return this;
     }
 
     @Override
     public QueryService<T> withIndex(Index index) {
-        sql.withIndex(index);
+        sql.WITHINDEX(index);
         return this;
     }
 
