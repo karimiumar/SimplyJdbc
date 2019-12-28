@@ -28,7 +28,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     public List<T> select(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>();
         SelectOp sql = SelectOp.create();
-        sql.SELECT().all().FROM(table).WHERE().columnEq(getValuesArray(columnValues));
+        sql.SELECT().all().FROM(table).WHERE().COLUMN_EQ(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result;
     }
@@ -43,8 +43,8 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
 
     @Override
     public T update(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValuesToSet, List<ColumnValue> clauseValues, int dbSequence) {
-        UpdateOp sql = new UpdateOp().TABLE(table).setColumnValues(getValuesArray(columnValuesToSet))
-                .WHERE().columnEq(getValuesArray(clauseValues));
+        UpdateOp sql = new UpdateOp().TABLE(table).SET(getValuesArray(columnValuesToSet))
+                .WHERE().COLUMN_EQ(getValuesArray(clauseValues));
         getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),dbSequence));
         return optional.get();
@@ -53,7 +53,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().columnEq(idColumn);
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().COLUMN_EQ(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
@@ -61,7 +61,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
     @Override
     public Optional<T> find(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().columnEq(getValuesArray(columnValues));
+        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().COLUMN_EQ(getValuesArray(columnValues));
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }

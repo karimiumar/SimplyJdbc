@@ -26,9 +26,9 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
 
     @Override
     public List<Product> listProductsSuppliedBy(Supplier supplier) {
-        List<Product> productsSupplied = select().all()
-                .from(TBL_PRODUCT).where()
-                .column(PRODUCT_SUPPLIERID_COL).eq(set(supplier.id))
+        List<Product> productsSupplied = SELECT().ALL()
+                .FROM(TBL_PRODUCT).WHERE()
+                .COLUMN(PRODUCT_SUPPLIERID_COL).EQ(set(supplier.id))
                 .using(PRODUCT_ROW_MAPPER)
                 .execute();
         return productsSupplied;
@@ -36,10 +36,10 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
 
     @Override
     public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
-        List<Supplier> suppliersOf = select().all()
-                .from(TBL_SUPPLIER)
-                .join().table(TBL_PRODUCT)
-                .on(SUPP_ID).eq(set(queryProduct.supplierId))
+        List<Supplier> suppliersOf = SELECT().ALL()
+                .FROM(TBL_SUPPLIER)
+                .JOIN().TABLE(TBL_PRODUCT)
+                .ON(SUPP_ID).EQ(set(queryProduct.supplierId))
                 .using(SUPPLIER_ROW_MAPPER)
                 .execute();
         return suppliersOf;
@@ -73,7 +73,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     
     private List<ProductTable.ProductSupplier> listAllProductsOfSuppliers_Order_By_Supplier() {
         List<ProductTable.ProductSupplier> productSuppliers = 
-                select(asList(
+                SELECT(asList(
                         PRD_ID_ALIAS
                         ,PRD_NAME_ALIAS
                         ,PRD_UNIT_PRICE_ALIAS
@@ -84,11 +84,11 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
                         ,SUPP_NAME_ALIAS
                         ,SUPP_CONTACT_ALIAS
                         ,SUPP_ADDRESS_ALIAS))
-                .from(TBL_PRODUCT).as(PRODUCT)
-                .join(TBL_SUPPLIER).as(SUPPLIER)
-                .on(SUPP_ID).eq(PRODUCT_SUPPLIERID_COL)
-                .groupBy(asList(SUPP_ID, PRD_ID))
-                .orderBy(SUPP_ID)
+                .FROM(TBL_PRODUCT).AS(PRODUCT)
+                .JOIN(TBL_SUPPLIER).AS(SUPPLIER)
+                .ON(SUPP_ID).EQ(PRODUCT_SUPPLIERID_COL)
+                .GROUP_BY(asList(SUPP_ID, PRD_ID))
+                .ORDER_BY(SUPP_ID)
                 .using(PRD_SUPP_ROW_MAPPER)
                 .execute();
         return productSuppliers;

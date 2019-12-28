@@ -27,7 +27,7 @@ public class ColumnValue<T> {
     }
 
     /**
-     * Sets the column and the value.Used when both column name and value needs to be assigned
+     * Sets the column and the value. Used when both column name and value needs to be assigned
      *
      * @param <T> The column type
      * @param column The column to set
@@ -35,6 +35,22 @@ public class ColumnValue<T> {
      * @return Returns new ColumnValue object with the column and the value
      */
     public static <T> ColumnValue<T> set(Column<T> column, T value) {
+        isValidType(value);
+        return new ColumnValue<>(column, value);
+    }
+    
+    /**
+     * Its same as <code>set(Column<T> column, T value)</code>. Use it with <code>WHERE COLUMN_EQ</code> clause for
+     * readability.
+     * 
+     * Sets the column and the value. Used when both column name and value needs to be assigned
+     *
+     * @param <T> The column type
+     * @param column The column to set
+     * @param value The value to set
+     * @return Returns new ColumnValue object with the column and the value
+     */
+    public static <T> ColumnValue<T> eq(Column<T> column, T value) {
         isValidType(value);
         return new ColumnValue<>(column, value);
     }

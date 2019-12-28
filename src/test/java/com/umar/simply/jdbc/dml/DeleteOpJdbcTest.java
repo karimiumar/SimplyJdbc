@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import static java.util.Arrays.asList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,14 +38,14 @@ public class DeleteOpJdbcTest {
         }
     }
 
-   // @Test
+    @Test
     public void deleteWhereOrConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_FIRST_NAME,"Angelina"));
+        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();
-            Assertions.assertEquals(2, result);
+            Assertions.assertEquals(3, result);
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -54,7 +54,7 @@ public class DeleteOpJdbcTest {
     @Test
     public void deleteWhereConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().columnEq(set(PERSON_FIRST_NAME,"Tina")).AND().columnEq(set(PERSON_LAST_NAME,"Turner"));
+        operation.deleteFrom(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().COLUMN_EQ(eq(PERSON_LAST_NAME,"Turner"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();

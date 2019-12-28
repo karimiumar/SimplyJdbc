@@ -9,7 +9,7 @@ import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import static com.umar.simply.jdbc.meta.Column.column;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import static com.umar.simply.jdbc.dml.operations.SelectOp.create;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
@@ -319,7 +319,7 @@ public class SqlQueryTest {
     @Test
     public void groupBy(){
         SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID)
-                .with(CUSTOMER_COUNTRY)
+                .GROUP_WITH(CUSTOMER_COUNTRY)
                 .FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(id), country FROM customer AS c1  GROUP BY country";
@@ -332,7 +332,7 @@ public class SqlQueryTest {
     public void groupByOrderByDesc(){
         SelectOp sql = create()
                 .SELECT().COUNT(column("id"))
-                .with(column("country"))
+                .GROUP_WITH(column("country"))
                 .FROM("customer")
                 .GROUPBY(column("country"))
                 .ORDERBY().COUNT(column("id")).DESC();
@@ -347,7 +347,7 @@ public class SqlQueryTest {
     public void subQuerySelectOrderByDesc(){
         SelectOp sql = create().SELECT().all().FROM(TBL_CUSTOMERS)
                 .LEFT().JOIN(create()
-                .SELECT().SUM(ORDER_TOTAL_AMT).AS("TOTAL_AMOUNT").with(asList(ORDER_CUSTOMERID))
+                .SELECT().SUM(ORDER_TOTAL_AMT).AS("TOTAL_AMOUNT").GROUP_WITH(asList(ORDER_CUSTOMERID))
                 .FROM(TBL_ORDERS).GROUPBY(ORDER_CUSTOMERID))
                 .AS("CUSTOMER_TOTALS")
                 .ON().column(CUSTOMER_ID).EQ("CUSTOMER_TOTALS.CUSTOMER_ID")
@@ -359,7 +359,7 @@ public class SqlQueryTest {
 
     @Test
     public void totalAmtOrderedForEachCustomer(){
-        SelectOp sql = create().SELECT().SUM(ORDER_TOTAL_AMT).with(asList(CUSTOMER_FIRST_NAME,CUSTOMER_LAST_NAME))
+        SelectOp sql = create().SELECT().SUM(ORDER_TOTAL_AMT).GROUP_WITH(asList(CUSTOMER_FIRST_NAME,CUSTOMER_LAST_NAME))
                 .FROM(TBL_ORDERS)
                 .JOIN().TABLE(TBL_CUSTOMERS).AS("C")
                 .ON().column(ORDER_CUSTOMERID).EQ().column(column("C.id"))
@@ -377,7 +377,7 @@ public class SqlQueryTest {
     @Test
     public void havingCount(){
         SelectOp sql = create()
-                .SELECT().COUNT(column("C.id")).with(column("C.country"))
+                .SELECT().COUNT(column("C.id")).GROUP_WITH(column("C.country"))
                 .FROM(TBL_CUSTOMERS).AS("C")
                 .GROUPBY(column("C.country"))
                 .HAVING().COUNT(column("C.id")).GT(set(10));
@@ -466,7 +466,7 @@ public class SqlQueryTest {
 
     @Test
     public void findDuplicates(){
-        SelectOp sql = SelectOp.create().SELECT().COUNT(PERSON_EMAIL).with(PERSON_EMAIL)
+        SelectOp sql = SelectOp.create().SELECT().COUNT(PERSON_EMAIL).GROUP_WITH(PERSON_EMAIL)
                 .FROM(TBL_PERSON).GROUPBY(PERSON_EMAIL).HAVING().COUNT(PERSON_EMAIL).GT().values(set(1));
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(email), email FROM person GROUP BY email HAVING  COUNT(email)>?";

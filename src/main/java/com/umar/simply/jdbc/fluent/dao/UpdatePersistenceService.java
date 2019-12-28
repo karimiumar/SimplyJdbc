@@ -38,13 +38,13 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public UpdatePersistenceService assignNewValues(List<ColumnValue> newVals) {
-        sql.setColumnValues(getValuesArray(newVals));
+        sql.SET(getValuesArray(newVals));
         return this;
     }
 
     @Override
     public UpdatePersistenceService where(List<ColumnValue> existingVals) {
-        sql.WHERE().columnEq(getValuesArray(existingVals));
+        sql.WHERE().COLUMN_EQ(getValuesArray(existingVals));
         return this;
     }
 

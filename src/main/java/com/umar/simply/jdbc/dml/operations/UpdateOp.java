@@ -18,7 +18,7 @@ public class UpdateOp extends AbstractOp<UpdateOp> {
         op().append("UPDATE ");
     }
 
-    public UpdateOp setColumnValues(ColumnValue ... columnValues){
+    public UpdateOp SET(ColumnValue ... columnValues){
         int len = columnValues.length;
         int cnt = 1;
         op().append(" SET ");

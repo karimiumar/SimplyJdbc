@@ -30,7 +30,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     public abstract List<ColumnValue> getValues();
 
     /**
-     * Fills the PreparedStatement object with values
+     * Fills the PreparedStatement object GROUP_WITH values
      *
      * @param ps The PreparedStatement object to fill
      * @return The PreparedStatement object
@@ -48,13 +48,14 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
 
     /**
+     * A typesafe method for SQL operation which takes the form 
+     * <code>WHERE column1 = x AND column2 = y AND column3 = 'abc'</code>
      * Appends the column name suffixed by =? to a PreparedStatement object.
-     * It also adds the column values passed to java.util.List<ColumnValue> list
      *
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
      */
-    public T columnEq(ColumnValue ...columnValues) {
+    public T COLUMN_EQ(ColumnValue ...columnValues) {
         int len = columnValues.length;
         int cnt = 1;
         for(ColumnValue e: columnValues) {
@@ -68,21 +69,9 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return (T) this;
     }
 
-
-    /**
-     * SQL EQUAL condition.
-     * @param column The column to append
-     * @return Returns this object
-     */
-    public T columnEq(String column) {
-        op().append(column);
-        op().append("=?");
-        return (T) this;
-    }
-
     /**
      * The NOT EQUAL operator
-     * @param condition The condition to suffix with <> operator
+     * @param condition The condition to suffix GROUP_WITH <> operator
      * @return Returns this object
      */
     public T NE(Column condition) {
@@ -137,7 +126,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL AND statement
-     * @param column The column to append with AND clause
+     * @param column The column to append GROUP_WITH AND clause
      * @return Returns this object
      */
     public T AND(Column column) {
@@ -185,7 +174,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL FROM clause
      * @return Returns this object
-     * @param table The TABLE to use with FROM clause
+     * @param table The TABLE to use GROUP_WITH FROM clause
      */
     public T FROM(String table) {
         op().append(" FROM ");
@@ -196,7 +185,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL FROM clause
      * @return Returns this object
-     * @param table The TABLE to use with FROM clause
+     * @param table The TABLE to use GROUP_WITH FROM clause
      */
     public T FROM(Table table) {
         op().append(" FROM ");
@@ -207,7 +196,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL FROM clause.
      * @return Returns this object
-     * @param tables The tables to use with FROM clause
+     * @param tables The tables to use GROUP_WITH FROM clause
      */
     public T FROM(List<Table> tables) {
         int len = tables.size();
@@ -244,35 +233,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         //it will be lost due to local variable scope of SelectOp parameter
         getValues().addAll(op.getValues()); 
         return (T) this;
-    }
-
-    /**
-     * SQL WHERE IN clause. Use this for the scenario <code> WHERE columnA IN (4,5,6)</code>
-     * @param column The column name
-     * @param values The column populate to set
-     * @return The current object
-     */
-    /*public T whereIn(Column column, List<ColumnValue> values) {
-        int len = values.size();
-        int cnt = 1;
-        op().append(" WHERE ");
-        op().append(column);
-        op().append(" IN (");
-        for(ColumnValue e: values) {
-            op().append("?");
-            if(cnt++ < len){
-                op().append(",");
-            }
-            getValues().add(e);
-        }
-        op().append(")");
-
-        return (T) this;
-    }*/
+    }    
 
     /**
      * SQL WHERE clause
-     * @param column The column to append with WHERE clause
+     * @param column The column to append GROUP_WITH WHERE clause
      * @return Returns this object
      */
     public T WHERE(Column column) {
@@ -282,7 +247,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL TABLE to be worked with
+     * SQL TABLE to be worked GROUP_WITH
      * @param table The TABLE name
      * @return Returns this object
      */
@@ -292,7 +257,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL TABLE to be worked with
+     * SQL TABLE to be worked GROUP_WITH
      * @param table The TABLE name
      * @return Returns this object
      */
@@ -303,7 +268,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL YEAR() function
-     * @param column The column to use with YEAR()
+     * @param column The column to use GROUP_WITH YEAR()
      * @return Returns this object
      */
     public T YEAR(Column column) {
@@ -324,7 +289,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL DISTINCT clause
-     * @param column The column to use with DISTINCT operator
+     * @param column The column to use GROUP_WITH DISTINCT operator
      * @return Returns this object
      */
     public T DISTINCT(String column) {
@@ -335,7 +300,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL DISTINCT clause
-     * @param column The column to use with DISTINCT operator
+     * @param column The column to use GROUP_WITH DISTINCT operator
      * @return Returns this object
      */
     public T DISTINCT(Column column) {
@@ -346,7 +311,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use with COUNT()
+     * @param column The column to use GROUP_WITH COUNT()
      * @return Returns this object
      */
     public T COUNT(String column) {
@@ -358,7 +323,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use with COUNT()
+     * @param column The column to use GROUP_WITH COUNT()
      * @return Returns this object
      */
     public T COUNT(Column column) {
@@ -385,7 +350,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL MAX() function
-     * @param column The column to use with MAX()
+     * @param column The column to use GROUP_WITH MAX()
      * @return Returns this object
      */
     public T MAX(Column column) {
@@ -397,7 +362,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL MIN() function
-     * @param column The column to use with MIN()
+     * @param column The column to use GROUP_WITH MIN()
      * @return Returns this object
      */
     public T MIN(Column column) {
@@ -409,7 +374,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL AVG() function
-     * @param column The column to use with AVG()
+     * @param column The column to use GROUP_WITH AVG()
      * @return Returns this object
      */
     public T AVG(Column column) {
@@ -694,7 +659,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL = operator. An '=' symbol is appended by this method followed by the 'condition'.
-     * @param condition The condition to append with = operator
+     * @param condition The condition to append GROUP_WITH = operator
      * @return Returns this object
      */
     public T EQ(String condition) {
@@ -705,7 +670,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     
     /**
      * SQL = operator. An '=' symbol is appended by this method followed by the 'condition'.
-     * @param condition The condition to append with = operator
+     * @param condition The condition to append GROUP_WITH = operator
      * @return Returns this object
      */
     public T EQ(Column condition) {
@@ -763,11 +728,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     
     /**
      * Use this method when grouping columns IN
- conjunction with COUNT(), AVG(), MIN(), MAX() method
+ conjunction GROUP_WITH COUNT(), AVG(), MIN(), MAX() method
      * @param columns The columns to use
      * @return Returns this object
      */
-    public T with(List<Column> columns) {
+    public T GROUP_WITH(List<Column> columns) {
         columns.stream().map((column) -> {
             op().append(",");
             return column;
@@ -787,13 +752,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
  ;then it can be written AS:
  <code>
  SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID)
-                .with(CUSTOMER_COUNTRY)
+                .GROUP_WITH(CUSTOMER_COUNTRY)
                 .FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
  </code>
      * @param column The columns to use
      * @return Returns this object
      */
-    public T with(Column column) {
+    public T GROUP_WITH(Column column) {
         op().append(", ");
         op().append(column);
         return (T) this;
@@ -852,8 +817,8 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
     
     /**
-     * SQL JOIN operation with INNER SELECT query
-     * @param query The INNER query to use with JOIN
+     * SQL JOIN operation GROUP_WITH INNER SELECT query
+     * @param query The INNER query to use GROUP_WITH JOIN
      * @return Returns this object
      */
     public T JOIN(SelectOp query) {
@@ -901,7 +866,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
-     * SQL ON clause used IN conjunction with JOIN
+     * SQL ON clause used IN conjunction GROUP_WITH JOIN
      * @return Returns this object
      */
     public T ON() {
@@ -910,7 +875,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
     
     /**
-     * SQL ON clause used IN conjunction with JOIN
+     * SQL ON clause used IN conjunction GROUP_WITH JOIN
      * @param column The column to JOIN ON
      * @return Returns this object
      */

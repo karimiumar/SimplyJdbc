@@ -9,7 +9,7 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.sql.*;
 
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 
 import static java.util.Arrays.asList;
@@ -58,7 +58,7 @@ public class UpdateOpJdbcTest  {
     @AfterAll
     public static void clean() {
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_FIRST_NAME,"Angelina"), set(PERSON_FIRST_NAME,"Eva"), set(PERSON_LAST_NAME,"Ali Karimi"));
+        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"), eq(PERSON_FIRST_NAME,"Eva"), eq(PERSON_LAST_NAME,"Ali Karimi"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             operation.fill(ps).executeUpdate();
@@ -71,7 +71,7 @@ public class UpdateOpJdbcTest  {
     @Order(2)
     public void updateWhere() {
         UpdateOp operation = new UpdateOp();
-        operation.TABLE(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).WHERE().columnEq(set(PERSON_FIRST_NAME,"Tina"));
+        operation.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL(), Statement.RETURN_GENERATED_KEYS)) {
             int result = operation.fill(ps).executeUpdate();
@@ -91,12 +91,12 @@ public class UpdateOpJdbcTest  {
     @Test
     @Order(3)
     public void updateWhereAnd() {
-        UpdateOp operation = new UpdateOp();
-        operation.TABLE(TBL_PERSON).setColumnValues(set(PERSON_FIRST_NAME,"Mohammad Umar"), set(PERSON_LAST_NAME,"Ali Karimi"), set(PERSON_EMAIL,"karimiumar@gmail.com"))
-                .WHERE().columnEq(set(PERSON_FIRST_NAME,"Mohammad"), set(PERSON_IS_ADULT,true), set(PERSON_EMAIL,"tina@rediffmail.com"));
+        UpdateOp update = new UpdateOp();
+        update.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Mohammad Umar"), set(PERSON_LAST_NAME,"Ali Karimi"), set(PERSON_EMAIL,"karimiumar@gmail.com"))
+                .WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Mohammad"), eq(PERSON_IS_ADULT,true), eq(PERSON_EMAIL,"tina@rediffmail.com"));
         try (Connection connection = util.getConnection();
-             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
-            int result = operation.fill(ps).executeUpdate();
+             PreparedStatement ps = connection.prepareStatement(update.getSQL())) {
+            int result = update.fill(ps).executeUpdate();
             Assertions.assertTrue(result > 0);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
