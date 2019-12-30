@@ -9,7 +9,7 @@ public class Column<T> {
    
     private final String columnName;
 
-    private Column(String columnName){
+    protected Column(String columnName){
         this.columnName = columnName;
     }
 

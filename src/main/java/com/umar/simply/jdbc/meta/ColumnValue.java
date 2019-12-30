@@ -21,7 +21,7 @@ public class ColumnValue<T> {
     private final T value;
     private final Column<T> columnName;
     
-    private ColumnValue(Column<T> columnName, T value) {
+    protected ColumnValue(Column<T> columnName, T value) {
         this.columnName = columnName;
         this.value = value;
     }

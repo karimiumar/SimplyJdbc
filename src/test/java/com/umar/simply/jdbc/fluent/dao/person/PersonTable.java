@@ -5,6 +5,7 @@ import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
+import com.umar.simply.jdbc.meta.ColumnValue;
 
 /**
  * Represents a database person table
@@ -12,8 +13,26 @@ import com.umar.simply.jdbc.ResultSetMapper;
  * @author umar
  */
 public class PersonTable extends Table {
+    
+    public static Id personId() {
+        return new Id("id");
+    }
+    
+    public static Id setId(int val) {
+        return new Id(val);
+    }
+    
+    public static final class Id extends ColumnValue<Integer>{
+        protected Id(String columnName) {
+            super(column(columnName), 0);
+        }
+        
+        protected Id(int val) {
+            super(column("id"), val);
+        }
+    }
 
-    public static final Column<Integer> PERSON_ID = column("id");
+    public static final Column<Integer> PERSON_ID = personId().getColumnName();
     public static final Column<String> PERSON_FIRST_NAME = column("firstname");
     public static final Column<String> PERSON_LAST_NAME = column("lastname");
     public static final Column<String> PERSON_EMAIL = column("email");

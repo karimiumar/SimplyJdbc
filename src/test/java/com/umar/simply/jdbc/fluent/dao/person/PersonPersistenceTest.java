@@ -6,6 +6,7 @@ import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import static java.util.Arrays.asList;
 import java.util.List;
+import java.util.Optional;
 
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
@@ -35,7 +36,6 @@ public class PersonPersistenceTest {
         Assertions.assertTrue(p1.getId() > 0);
         p2 = saveService.save(p2).execute();
         Assertions.assertTrue(p2.getId() > 0);
-        System.out.println(p1);
         Person umar = new Person("Mohammad Umar", "Ali Karimi", "karimiumar@hotmail.com", true, "India", "Nainital", 37);
         saveService.save(umar).execute();
     }
@@ -44,13 +44,12 @@ public class PersonPersistenceTest {
     @Order(2)
     public void updatePerson(){
         PersonUpdateService updateService = new PersonUpdateService();
-        PersonQueryService<Person> queryLucy = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService queryLucy = new PersonQueryService(JdbcUtilService.getConnection());
         List<Person> people = queryLucy.people().stream().filter(p->p.getEmail().equals("lucy@gmail.com")).collect(Collectors.toList());
         Person p1 = people.get(0);
         Person p1NewVal = new Person("Lucy", "Liu", "lucy@gmail.com", true, "Beijing", "China", 34);
         p1 = updateService.update(p1).with(p1NewVal).execute();
         Assertions.assertEquals("Beijing", p1.getCity());
-        System.out.println(p1);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameLucy() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Lucy";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.size() > 0);
@@ -73,7 +72,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNamePinder() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Pinder";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.size() > 0);
@@ -82,7 +81,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameLucyPinder() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Lucy Pinder";
         List<Person> result = query.findByName(name); //search result will return two Lucy ->{Lucy Liu, Lucy Pinder}
         Assertions.assertTrue(result.size() > 0);
@@ -91,7 +90,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameLucyLiu() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Lucy Liu";
         List<Person> result = query.findByName(name); //search result will return two Lucy ->{Lucy Liu, Lucy Pinder}
         Assertions.assertTrue(result.size() > 0);
@@ -100,7 +99,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameGeorgeMichael() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "George Michael";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.isEmpty());
@@ -108,7 +107,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameGeorgeLeeMichael() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "George Lee Michael";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.isEmpty());
@@ -116,7 +115,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameDonGeorgeLeeMichael() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Don George Lee Michael";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.isEmpty());
@@ -124,7 +123,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameBlank() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = " ";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.isEmpty());
@@ -132,7 +131,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameEmpty() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(result.isEmpty());
@@ -140,7 +139,7 @@ public class PersonPersistenceTest {
     
     @Test
     public void findByNameNull() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = null;
         Exception assertThrows = Assertions.assertThrows(RuntimeException.class, ()->query.findByName(name));
         Assertions.assertTrue(assertThrows.getMessage().contains("parameter <name> is required"));
@@ -157,7 +156,7 @@ public class PersonPersistenceTest {
      */
     @Test
     public void findUmarByFullName() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Mohammad Umar Ali Karimi";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(!result.isEmpty());
@@ -173,10 +172,27 @@ public class PersonPersistenceTest {
      */
     @Test
     public void findUmarByMohammdUmar() {
-        PersonQueryService<Person> query = new PersonQueryService<>(JdbcUtilService.getConnection());
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         String name = "Mohammad Umar";
         List<Person> result = query.findByName(name);
         Assertions.assertTrue(!result.isEmpty());
     }
+    
+    @Test
+    public void findByIdIsEmptyResult() {
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
+        Optional<Person> optional = query.findById(PersonTable.setId(0));
+        Assertions.assertTrue(optional.isEmpty());
+    }
 
+    @Test
+    public void findByIdNonEmpty() {
+        PersonSaveService saveService = new PersonSaveService();
+        Person p1 = new Person("Jasmine", "J", "jj@gmail.com", true, "New Delhi", "India", 29);
+        p1 = saveService.save(p1).execute();
+        int id = p1.getId();
+        PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
+        Optional<Person> optional = query.findById(PersonTable.setId(id));
+        Assertions.assertTrue(!optional.isEmpty());
+    }
 }

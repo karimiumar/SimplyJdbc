@@ -4,21 +4,36 @@ import com.umar.simply.jdbc.fluent.dao.QueryService;
 import java.util.List;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.PERSON_ROW_MAPPER;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
+import com.umar.simply.jdbc.fluent.dao.person.contract.FluentPersonQueryService;
+import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
-public class PersonQueryService<Person> extends QueryService {
+public class PersonQueryService extends QueryService implements FluentPersonQueryService {
 
     public PersonQueryService(Connection connection) {
         super(connection);
     }
 
+    @Override
     public List<Person> people() {
         List<Person> people = SELECT().ALL().FROM(TBL_PERSON).using(PERSON_ROW_MAPPER).execute();
         return people;
     }
     
+    @Override
+    public Optional<Person> findById(PersonTable.Id id) {
+        List<Person> people = SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_ID, id.getValue())).using(PERSON_ROW_MAPPER).execute();
+        String sql = SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_ID, id.getValue())).getSQL().getSQL();
+        if(people.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(people.get(0));
+    }
+    
+    @Override
     public List<Person> findByName(String name) {
         Objects.requireNonNull(name, "parameter <name> is required");
         List<Person> result = Arrays.asList();
