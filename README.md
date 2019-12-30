@@ -24,12 +24,14 @@ It results in the following result:
 
 The corresponding statement in SimplyJDBC would provide a List of Customer objects in descending order of the total amount of their orders.
 ```
-List<Customer> customerOrders = select().all().from(TBL_CUSTOMERS)
-                .left().join(SelectOp.create().select().sum(ORDER_TOTAL_AMT).as(TOTAL_AMOUNT).with(ORDER_CUSTOMERID)
-                .from(TBL_ORDERS).groupBy(ORDER_CUSTOMERID))
-                .as(CUSTOMER_TOTALS)
-                .on(CUSTOMER_ID).eq(CUSTOMER_TOTALS_CUSTOMER_ID)
-                .orderBy(CUSTOMER_TOTALS_TOTAL_AMOUNT).desc()
+List<Customer> customerOrders = SELECT().ALL().FROM(TBL_CUSTOMERS)
+                .LEFT().JOIN(
+                    SelectOp.create().SELECT().SUM(ORDER_TOTAL_AMT).AS(TOTAL_AMOUNT).GROUP_WITH(ORDER_CUSTOMERID)
+                    .FROM(TBL_ORDERS).GROUPBY(ORDER_CUSTOMERID)
+                )
+                .AS(CUSTOMER_TOTALS)
+                .ON(CUSTOMER_ID).EQ(CUSTOMER_TOTALS_CUSTOMER_ID)
+                .ORDER_BY(CUSTOMER_TOTALS_TOTAL_AMOUNT).DESC()
                 .using(CUSTOMER_ROW_MAPPER).execute();
 
 ```
