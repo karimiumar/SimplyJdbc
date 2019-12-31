@@ -351,7 +351,7 @@ public class SqlQueryTest {
                 .FROM(TBL_ORDERS).GROUPBY(ORDER_CUSTOMERID))
                 .AS("CUSTOMER_TOTALS")
                 .ON().column(CUSTOMER_ID).EQ("CUSTOMER_TOTALS.CUSTOMER_ID")
-                .ORDERBY().column("CUSTOMER_TOTALS.TOTAL_AMOUNT").DESC();
+                .ORDERBY().COLUMN("CUSTOMER_TOTALS.TOTAL_AMOUNT").DESC();
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer LEFT JOIN (SELECT  SUM(total_amount) AS TOTAL_AMOUNT ,customer_id FROM orders GROUP BY customer_id ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC";
         Assertions.assertEquals(result,expected);
@@ -420,9 +420,9 @@ public class SqlQueryTest {
     @Test
     public void union(){
 
-        SelectOp sql = SelectOp.create().SELECT().column("c.*").FROM("customer c")
+        SelectOp sql = SelectOp.create().SELECT().COLUMN("c.*").FROM("customer c")
                 .UNION()
-                .SELECT().column("s.*").FROM("customer c1");
+                .SELECT().COLUMN("s.*").FROM("customer c1");
         String result = sql.getSQL();
         String expected = "SELECT c.* FROM customer c UNION SELECT s.* FROM customer c1";
         Assertions.assertEquals(result,expected);
@@ -431,7 +431,7 @@ public class SqlQueryTest {
     @Test
     public void intersectUsingInnerJoin(){
         /*Simulate INTERSECT operator IN MySQL USING DISTINCT AND INNER JOIN*/
-        SelectOp sql = SelectOp.create().SELECT().DISTINCT().column("id").FROM("t1").INNER().JOIN().TABLE("t2").USING("id");
+        SelectOp sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").INNER().JOIN().TABLE("t2").USING("id");
         String result = sql.getSQL();
         String expected = "SELECT  DISTINCT id FROM t1 INNER JOIN t2 USING(id)";
         Assertions.assertEquals(result,expected);
@@ -440,8 +440,8 @@ public class SqlQueryTest {
     @Test
     public void insersectUsingInAndSubQuery(){
         /*Simulate INTERSECT operator IN MySQL USING IN AND Subquery*/
-        SelectOp sql = SelectOp.create().SELECT().DISTINCT().column("id").FROM("t1").WHERE()
-                .column("id").IN(create().SELECT().column("id").FROM("t2"));
+        SelectOp sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").WHERE()
+                .COLUMN("id").IN(create().SELECT().COLUMN("id").FROM("t2"));
         String result = sql.getSQL();
         String expected = "SELECT  DISTINCT id FROM t1 WHERE id IN (SELECT id FROM t2)";
         Assertions.assertEquals(result,expected);
@@ -449,7 +449,7 @@ public class SqlQueryTest {
 
     @Test
     public void minus(){
-        SelectOp sql = SelectOp.create().SELECT().column("id").FROM("t1").MINUS().SELECT().column("id").FROM("t2");
+        SelectOp sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").MINUS().SELECT().COLUMN("id").FROM("t2");
         String result = sql.getSQL();
         String expected = "SELECT id FROM t1 MINUS SELECT id FROM t2";
         Assertions.assertEquals(result,expected);
@@ -457,8 +457,8 @@ public class SqlQueryTest {
 
     @Test
     public void minusSimulationUsingJoin(){
-        SelectOp sql = SelectOp.create().SELECT().column("id").FROM("t1").LEFT().JOIN().TABLE("t2").USING("id")
-                .WHERE().column("t2.id").IS().NULL();
+        SelectOp sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").LEFT().JOIN().TABLE("t2").USING("id")
+                .WHERE().COLUMN("t2.id").IS().NULL();
         String result = sql.getSQL();
         String expected = "SELECT id FROM t1 LEFT JOIN t2 USING(id) WHERE t2.id IS  NULL";
         Assertions.assertEquals(result,expected);

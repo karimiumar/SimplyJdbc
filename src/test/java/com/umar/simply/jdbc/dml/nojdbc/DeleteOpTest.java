@@ -26,7 +26,7 @@ public class DeleteOpTest {
     public void deleteDuplicates(){
         DeleteOp sql = DeleteOp.create().DELETE_FROM("contacts t1")
                 .INNER().JOIN().TABLE("contacts t2")
-                .WHERE().column("t1.id").LT().column("t2.id").AND().column("t1.email").EQ("t2.email");
+                .WHERE().COLUMN("t1.id").LT().COLUMN("t2.id").AND().COLUMN("t1.email").EQ("t2.email");
         String result = sql.getSQL();
         String expected = "DELETE FROM contacts t1  INNER JOIN contacts t2 WHERE t1.id<t2.id AND t1.email=t2.email";
         Assertions.assertEquals(result,expected);

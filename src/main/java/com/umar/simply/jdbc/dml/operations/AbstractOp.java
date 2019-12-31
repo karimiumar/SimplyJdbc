@@ -45,7 +45,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return ps;
     }
 
-    public T column(String column) {
+    public T COLUMN(String column) {
         op().append(column);
         return (T)this;
     }
@@ -53,7 +53,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * A typesafe method for SQL operation which takes the form 
      * <code>WHERE column1 = x AND column2 = y AND column3 = 'abc'</code>
-     * Appends the column name suffixed by =? to a PreparedStatement object.
+ Appends the COLUMN name suffixed by =? to a PreparedStatement object.
      *
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
@@ -129,7 +129,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL AND statement
-     * @param column The column to append GROUP_WITH AND clause
+     * @param column The COLUMN to append GROUP_WITH AND clause
      * @return Returns this object
      */
     public T AND(Column column) {
@@ -240,7 +240,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL WHERE clause
-     * @param column The column to append GROUP_WITH WHERE clause
+     * @param column The COLUMN to append GROUP_WITH WHERE clause
      * @return Returns this object
      */
     public T WHERE(Column column) {
@@ -271,7 +271,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL YEAR() function
-     * @param column The column to use GROUP_WITH YEAR()
+     * @param column The COLUMN to use GROUP_WITH YEAR()
      * @return Returns this object
      */
     public T YEAR(Column column) {
@@ -292,7 +292,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL DISTINCT clause
-     * @param column The column to use GROUP_WITH DISTINCT operator
+     * @param column The COLUMN to use GROUP_WITH DISTINCT operator
      * @return Returns this object
      */
     public T DISTINCT(String column) {
@@ -303,7 +303,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL DISTINCT clause
-     * @param column The column to use GROUP_WITH DISTINCT operator
+     * @param column The COLUMN to use GROUP_WITH DISTINCT operator
      * @return Returns this object
      */
     public T DISTINCT(Column column) {
@@ -314,7 +314,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use GROUP_WITH COUNT()
+     * @param column The COLUMN to use GROUP_WITH COUNT()
      * @return Returns this object
      */
     public T COUNT(String column) {
@@ -326,7 +326,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL COUNT() function
-     * @param column The column to use GROUP_WITH COUNT()
+     * @param column The COLUMN to use GROUP_WITH COUNT()
      * @return Returns this object
      */
     public T COUNT(Column column) {
@@ -353,7 +353,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL MAX() function
-     * @param column The column to use GROUP_WITH MAX()
+     * @param column The COLUMN to use GROUP_WITH MAX()
      * @return Returns this object
      */
     public T MAX(Column column) {
@@ -365,7 +365,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL MIN() function
-     * @param column The column to use GROUP_WITH MIN()
+     * @param column The COLUMN to use GROUP_WITH MIN()
      * @return Returns this object
      */
     public T MIN(Column column) {
@@ -377,7 +377,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL AVG() function
-     * @param column The column to use GROUP_WITH AVG()
+     * @param column The COLUMN to use GROUP_WITH AVG()
      * @return Returns this object
      */
     public T AVG(Column column) {
@@ -389,7 +389,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SUM() function. 'SUM' function is appended around the column
-     * @param column The column to SUM
+     * @param column The COLUMN to SUM
      * @return Returns this object
      */
     public T SUM(Column column) {
@@ -418,7 +418,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     /**
      * SQL BETWEEN clause.
      *
-     * @param columnValues The ColumnValue. Contains column name AND column value
+     * @param columnValues The ColumnValue. Contains COLUMN name AND COLUMN value
      * @return Returns this object
      */
     public T BETWEEN(List<ColumnValue> columnValues) {
@@ -547,7 +547,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     
     /**
      * SQL ORDER BY clause
-     * @param column The column ON which ORDER BY to apply
+     * @param column The COLUMN ON which ORDER BY to apply
      * @return Returns this object
      */
     public T ORDERBY(Column column) {
@@ -769,7 +769,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * MySQL USING operator. 'USING' operator is appended around the 'column'
-     * @param column The column
+     * @param column The COLUMN
      * @return Returns this object
      */
     public T USING(String column) {
@@ -781,7 +781,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * MySQL USING operator. 'USING' operator is appended around the 'column'
-     * @param column The column
+     * @param column The COLUMN
      * @return Returns this object
      */
     public T USING(Column column) {
@@ -879,7 +879,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     
     /**
      * SQL ON clause used IN conjunction GROUP_WITH JOIN
-     * @param column The column to JOIN ON
+     * @param column The COLUMN to JOIN ON
      * @return Returns this object
      */
     public T ON(Column column) {
@@ -955,7 +955,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * SQL SELECT clause
-     * @param column The column to SELECT
+     * @param column The COLUMN to SELECT
      * @return Returns this object
      */
     public T SELECT(Column column) {

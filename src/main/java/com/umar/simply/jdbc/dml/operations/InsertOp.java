@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.dml.operations;
 
-import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 

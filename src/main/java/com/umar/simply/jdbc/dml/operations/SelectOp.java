@@ -43,7 +43,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     /**
      * The values to work GROUP_WITH AS actual parameters
      *
-     * @param values The column values to fill
+     * @param values The COLUMN values to fill
      * @return Returns this object
      */
     public SelectOp values(ColumnValue... values) {
@@ -95,7 +95,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param column The columns to fetch
      * @return Returns this object
      */
-    public SelectOp column(String column) {
+    public SelectOp COLUMN(String column) {
         op().append(column);
         return this;
     }
