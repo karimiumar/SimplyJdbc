@@ -1,15 +1,13 @@
 package com.umar.simply.jdbc.fluent.dao.person;
 
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
-import com.umar.simply.jdbc.fluent.dao.person.Person;
 import com.umar.simply.jdbc.fluent.dao.person.contract.FluentDeletePersonService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.fluent.dao.DeletePersistenceService;
+import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.TBL_PERSON;
 import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.util.List;
-
-import static com.umar.simply.jdbc.fluent.dao.person.Person.TblPerson.TBL_PERSON;
 
 public class DeletePersonService implements FluentDeletePersonService {
     DeletePersistenceService<Person> dps = new DeletePersistenceService<>(JdbcUtilService.getConnection());
