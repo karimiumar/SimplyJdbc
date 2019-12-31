@@ -35,6 +35,6 @@ List<Customer> customerOrders = SELECT().ALL().FROM(TBL_CUSTOMERS)
                 .using(CUSTOMER_ROW_MAPPER).execute();
 
 ```
-The ```join(SelectOp op)``` statement takes a parameter of type ```SelectOp```. So in the above example, a new ```SELECT``` statement gets created that provides ```sum(totalAmount)```. The adjoining ```with(List<Column>)``` or ```with(Column)``` is used for group by clause to use columns with SQL aggregate functions like ```AVG, MAX, SUM```.
+The ```join(SelectOp op)``` statement takes a parameter of type ```SelectOp```. So in the above example, a new ```SELECT``` statement gets created that provides ```sum(totalAmount)```. The adjoining ```GROUP_WITH(List<Column>)``` or ```GROUP_WITH(Column)``` is used for group by clause to use columns with SQL aggregate functions like ```AVG, MAX, SUM```.
 Check the examples located under package ```com.umar.simply.jdbc.dml.nojdbc``` and ```com.umar.simply.jdbc.fluent.dao.supplier``` for details
 
