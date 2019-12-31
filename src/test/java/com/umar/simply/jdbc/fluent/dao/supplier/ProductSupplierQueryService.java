@@ -15,8 +15,10 @@ import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentProductSupplierQu
 
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
-import static com.umar.simply.jdbc.meta.ColumnValue.set;
+import com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable;
+import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import static java.util.Arrays.asList;
+import java.util.Optional;
 
 public class ProductSupplierQueryService extends QueryService implements FluentProductSupplierQueryService {
     
@@ -92,5 +94,15 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
                 .using(PRD_SUPP_ROW_MAPPER)
                 .execute();
         return productSuppliers;
+    }
+
+    @Override
+    public Optional<Supplier> findById(SupplierTable.Id id) {
+        return findById(TBL_SUPPLIER, SUPPLIER_ROW_MAPPER, id);
+    }
+
+    @Override
+    public Optional<Product> findById(ProductTable.Id id) {
+        return findById(TBL_PRODUCT, PRODUCT_ROW_MAPPER, id);
     }
 }

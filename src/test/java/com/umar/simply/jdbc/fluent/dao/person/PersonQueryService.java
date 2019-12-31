@@ -5,7 +5,6 @@ import java.util.List;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.PERSON_ROW_MAPPER;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import com.umar.simply.jdbc.fluent.dao.person.contract.FluentPersonQueryService;
-import static com.umar.simply.jdbc.meta.ColumnValue.*;
 import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Objects;
@@ -25,12 +24,7 @@ public class PersonQueryService extends QueryService implements FluentPersonQuer
     
     @Override
     public Optional<Person> findById(PersonTable.Id id) {
-        List<Person> people = SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_ID, id.getValue())).using(PERSON_ROW_MAPPER).execute();
-        String sql = SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_ID, id.getValue())).getSQL().getSQL();
-        if(people.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(people.get(0));
+        return findById(TBL_PERSON, PERSON_ROW_MAPPER, id);
     }
     
     @Override

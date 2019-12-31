@@ -8,6 +8,7 @@ import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
 import static com.umar.simply.jdbc.meta.Column.as;
+import com.umar.simply.jdbc.meta.ColumnValue;
 
 /**
  * Represents database's ORDERS Table
@@ -15,8 +16,26 @@ import static com.umar.simply.jdbc.meta.Column.as;
  * @author umar
  */
 public class OrderTable {
+    
+    public static Id orderId() {
+        return new Id("id");
+    }
+    
+    public static Id setId(int val) {
+        return new Id(val);
+    }
+    
+    public static final class Id extends ColumnValue<Integer>{
+        protected Id(String columnName) {
+            super(column(columnName), 0);
+        }
+        
+        protected Id(int val) {
+            super(column("id"), val);
+        }
+    }
 
-    public static final Column<Integer> ORDER_ID = column("id");
+    public static final Column<Integer> ORDER_ID = orderId().getColumnName();
     public static final Column<LocalDateTime> ORDER_DATE = column("order_date");
     public static final Column<Integer> ORDER_NO = column("order_number");
     public static final Column<Integer> ORDER_CUSTOMERID = column("customer_id");
@@ -31,6 +50,7 @@ public class OrderTable {
      * the ResultSetMetaData only has information about actual table column
      * names and all the aliases created to are lost.
      */
+    /*
     public static final Table orders_rsmd = Table.table(TBL_ORDERS.getTableName(), ORDER_ID);
     public static final Column<Integer> order_id_rsmd = as(orders_rsmd.getTableName(), "id");
     public static final Column<LocalDateTime> order_orderDate_rsmd = as(orders_rsmd.getTableName(), "order_date");
@@ -39,6 +59,7 @@ public class OrderTable {
     public static final Column<Double> order_totalAmount_rsmd = as(orders_rsmd.getTableName(), "total_amount");
     public static final Column<LocalDateTime> order_created_rsmd = as(orders_rsmd.getTableName(), "created");
     public static final Column<LocalDateTime> order_updated_rsmd = as(orders_rsmd.getTableName(), "updated");
+    */
 
     public static final ResultSetMapper<Order> ORDER_ROW_MAPPER = (rs) -> {
         final Order rowOrder = Order.emptyOrder();

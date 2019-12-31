@@ -2,12 +2,11 @@ package com.umar.simply.jdbc.fluent.dao.supplier.db.tables;
 
 import com.umar.simply.jdbc.fluent.dao.supplier.Supplier;
 import com.umar.simply.jdbc.meta.Column;
-import static com.umar.simply.jdbc.meta.Column.column;
-import static com.umar.simply.jdbc.meta.Column.as;
+import static com.umar.simply.jdbc.meta.Column.*;
 import com.umar.simply.jdbc.meta.Table;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
-import static com.umar.simply.jdbc.meta.Column.as;
+import com.umar.simply.jdbc.meta.ColumnValue;
 
 /**
  * Represents database's SUPPLIER table
@@ -15,8 +14,26 @@ import static com.umar.simply.jdbc.meta.Column.as;
  * @author umar
  */
 public class SupplierTable {
-
-    public static final Column<Integer> SUPPLIER_ID_COL = column("id");
+    
+    public static Id supplierId() {
+        return new Id("id");
+    }
+    
+    public static Id setId(int val) {
+        return new Id(val);
+    }
+    
+    public static final class Id extends ColumnValue<Integer>{
+        protected Id(String columnName) {
+            super(column(columnName), 0);
+        }
+        
+        protected Id(int val) {
+            super(column("id"), val);
+        }
+    }
+    
+    public static final Column<Integer> SUPPLIER_ID_COL = supplierId().getColumnName();
     public static final Column<String> SUPPLIER_NAME_COL = column("supplier_name");
     public static final Column<String> SUPPLIER_CONTACT_COL = column("supplier_contact");
     public static final Column<String> SUPPLIER_ADDR_COL = column("supplier_address");
@@ -30,6 +47,7 @@ public class SupplierTable {
  the ResultSetMetaData only has information about actual table column
  names and all the aliases created to are lost.
      */
+    /*
     public static final Table supplier_rsmd = Table.table("supplier", SUPPLIER_ID_COL);
     public static final Column<Integer> s_id_rsmd = as(supplier_rsmd.getTableName(), "id");
     public static final Column<String> s_supplierName_rsmd = as(supplier_rsmd.getTableName(), "supplier_name");
@@ -37,6 +55,7 @@ public class SupplierTable {
     public static final Column<String> s_supplierAddr_rsmd = as(supplier_rsmd.getTableName(), "supplier_address");
     public static final Column<LocalDateTime> s_created_rsmd = as(supplier_rsmd.getTableName(), "created");
     public static final Column<LocalDateTime> s_updated_rsmd = as(supplier_rsmd.getTableName(), "updated");
+    */
 
     public static final ResultSetMapper<Supplier> SUPPLIER_ROW_MAPPER = (rs) -> {
         final Supplier rowSupplier = Supplier.emptySupplier();

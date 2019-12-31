@@ -3,11 +3,13 @@ package com.umar.simply.jdbc.fluent.dao.supplier;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentCustomerQueryService;
+import com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable;
 import java.sql.Connection;
 import java.util.List;
 
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
+import java.util.Optional;
 
 public class CustomerQueryService extends QueryService implements FluentCustomerQueryService {
 
@@ -38,6 +40,11 @@ public class CustomerQueryService extends QueryService implements FluentCustomer
                 .ORDER_BY(CUSTOMER_TOTALS_TOTAL_AMOUNT).DESC()
                 .using(CUSTOMER_ROW_MAPPER).execute();
         return customerOrders;
+    }
+
+    @Override
+    public Optional<Customer> findById(CustomerTable.Id id) {
+        return findById(TBL_CUSTOMERS, CUSTOMER_ROW_MAPPER, id);
     }
 
 }

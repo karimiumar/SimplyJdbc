@@ -18,7 +18,7 @@ public abstract class AbstractPersistenceService<T> {
         this.connection = connection;
     }
 
-    Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
+    protected Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().COLUMN_EQ(idColumn);
         getMappedResult(rowMapper, result, sql);

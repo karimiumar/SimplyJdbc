@@ -7,6 +7,7 @@ import com.umar.simply.jdbc.meta.Table;
 import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
 import com.umar.simply.jdbc.ResultSetMapper;
+import com.umar.simply.jdbc.meta.ColumnValue;
 
 /**
  * Represents database's CUSTOMER Table
@@ -14,6 +15,24 @@ import com.umar.simply.jdbc.ResultSetMapper;
  * @author umar
  */
 public class CustomerTable {
+    
+    public static Id customerId() {
+        return new Id("id");
+    }
+    
+    public static Id setId(int val) {
+        return new Id(val);
+    }
+    
+    public static final class Id extends ColumnValue<Integer> {
+        protected Id(String columnName) {
+            super(column(columnName), 0);
+        }
+        
+        protected Id(int val) {
+            super(column("id"), val);
+        }
+    }
     
     /*
     CUSTOMER_TOTALS is an alias for a subquery AS given:
@@ -25,7 +44,7 @@ public class CustomerTable {
     public static final Column<Integer> CUSTOMER_TOTALS_CUSTOMER_ID = Column.column(CUSTOMER_TOTALS + "." +ID);
     public static final Column<Double> CUSTOMER_TOTALS_TOTAL_AMOUNT = Column.column(CUSTOMER_TOTALS + "." +TOTAL_AMOUNT);
 
-    public static final Column<Integer> CUSTOMER_ID = column("id");
+    public static final Column<Integer> CUSTOMER_ID = customerId().getColumnName();
     public static final Column<String> CUSTOMER_COUNTRY = column("country");
     public static final Column<String> CUSTOMER_CITY = column("city");
     public static final Column<String> CUSTOMER_FIRST_NAME = column("first_name");

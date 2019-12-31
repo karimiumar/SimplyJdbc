@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import static com.umar.simply.jdbc.meta.Column.column;
 import com.umar.simply.jdbc.ResultSetMapper;
+import com.umar.simply.jdbc.meta.ColumnValue;
 
 /**
  * Represents database PRODUCT table
@@ -16,8 +17,26 @@ import com.umar.simply.jdbc.ResultSetMapper;
  * @author umar
  */
 public class ProductTable extends Table {
+    
+    public static Id productId() {
+        return new Id("id");
+    }
+    
+    public static Id setId(int val) {
+        return new Id(val);
+    }
+    
+    public static final class Id extends ColumnValue<Integer>{
+        protected Id(String columnName) {
+            super(column(columnName), 0);
+        }
+        
+        protected Id(int val) {
+            super(column("id"), val);
+        }
+    }
 
-    public static final Column<Integer> PRODUCT_ID_COL = column("id");
+    public static final Column<Integer> PRODUCT_ID_COL = productId().getColumnName();
     public static final Column<String> PRODUCT_NAME_COL = column("product_name");
     public static final Column<Integer> PRODUCT_SUPPLIERID_COL = column("supplier_id");
     public static final Column<Double> PRODUCT_UNIT_PRICE_COL = column("unit_price");
