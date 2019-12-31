@@ -23,7 +23,7 @@ public class InsertOp extends AbstractOp<InsertOp> {
      * @param table The TABLE name to use for INSERT operation
      * @return Returns this object
      */
-    public InsertOp intoTable(String table) {
+    public InsertOp INTO_TABLE(String table) {
         op().append("INSERT INTO ");
         op().append(table);
         return this;
@@ -34,43 +34,13 @@ public class InsertOp extends AbstractOp<InsertOp> {
      * @param table The TABLE name to use for INSERT operation
      * @return Returns this object
      */
-    public InsertOp intoTable(Table table) {
+    public InsertOp INTO_TABLE(Table table) {
         op().append("INSERT INTO ");
         op().append(table);
         return this;
     }
 
-    /**
-     * The column names to insert
-     * @param cols The columns names to INSERT
-     * @return Returns this object
-     */
-    public InsertOp columns(List<Column> cols) {
-        int len = cols.size();
-        int cnt = 1;
-        op().append("(");
-        for(Column col:cols) {
-            op().append(col);
-            if(cnt++ < len){
-                op().append(",");
-            }
-        }
-        cnt = 1; // reinitialize cnt to 1
-        op().append(")");
-        op().append("VALUES");
-        op().append("(");
-        for(Column col: cols) {
-            op().append("?");
-            if(cnt++ < len){
-                op().append(",");
-            }
-        }
-        op().append(")");
-
-        return this;
-    }
-
-    public InsertOp columnValues(List<ColumnValue> columnValues) {
+    public InsertOp VALUES(List<ColumnValue> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append("(");

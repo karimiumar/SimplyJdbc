@@ -22,7 +22,7 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public DeletePersistenceService from(Table table) {
-        sql.deleteFrom(table);
+        sql.DELETE_FROM(table);
         return this;
     }
 

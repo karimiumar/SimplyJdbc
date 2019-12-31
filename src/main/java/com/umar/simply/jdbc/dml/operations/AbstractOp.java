@@ -45,8 +45,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return ps;
     }
 
-
-
+    public T column(String column) {
+        op().append(column);
+        return (T)this;
+    }
+    
     /**
      * A typesafe method for SQL operation which takes the form 
      * <code>WHERE column1 = x AND column2 = y AND column3 = 'abc'</code>

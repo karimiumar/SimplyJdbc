@@ -46,7 +46,7 @@ public class UpdateOpJdbcTest  {
     @MethodSource("people")
     @Order(1)
     public void insertPeople(ColumnValue<String> fname, ColumnValue<String> lname, ColumnValue<String> email, ColumnValue<Boolean> isAdult){
-        InsertOp insert = InsertOp.create().intoTable(TBL_PERSON).columnValues(asList(fname,lname, email, isAdult));
+        InsertOp insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(fname,lname, email, isAdult));
         try (Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
             insert.fill(ps).executeUpdate();
@@ -58,7 +58,7 @@ public class UpdateOpJdbcTest  {
     @AfterAll
     public static void clean() {
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"), eq(PERSON_FIRST_NAME,"Eva"), eq(PERSON_LAST_NAME,"Ali Karimi"));
+        operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"), eq(PERSON_FIRST_NAME,"Eva"), eq(PERSON_LAST_NAME,"Ali Karimi"));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             operation.fill(ps).executeUpdate();

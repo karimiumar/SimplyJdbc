@@ -25,7 +25,7 @@ public class SavePersistenceService<T> extends AbstractPersistenceService<T> imp
     @Override
     public SavePersistenceService<T> save(Table table) {
         this.table = table;
-        sql.intoTable(table);
+        sql.INTO_TABLE(table);
         return this;
     }
 
@@ -44,7 +44,7 @@ public class SavePersistenceService<T> extends AbstractPersistenceService<T> imp
 
     @Override
     public SavePersistenceService<T> withValues(List<ColumnValue> newVals) {
-        sql.columnValues(newVals);
+        sql.VALUES(newVals);
         return this;
     }
 }

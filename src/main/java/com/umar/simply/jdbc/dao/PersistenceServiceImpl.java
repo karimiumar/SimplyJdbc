@@ -35,7 +35,7 @@ public class PersistenceServiceImpl<T> implements PersistenceService<T>{
 
     @Override
     public Optional<T> save(Table table, ResultSetMapper<T> rowMapper, List<ColumnValue> columnValues) {
-        InsertOp sql = InsertOp.create().intoTable(table).columnValues(columnValues);
+        InsertOp sql = InsertOp.create().INTO_TABLE(table).VALUES(columnValues);
         int databaseId = getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),databaseId));
         return optional;

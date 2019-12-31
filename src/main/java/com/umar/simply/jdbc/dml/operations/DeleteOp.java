@@ -20,22 +20,17 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
         return new DeleteOp();
     }
 
-    public DeleteOp deleteFrom(String table) {
+    public DeleteOp DELETE_FROM(String table) {
         op().append("DELETE FROM ");
         op().append(table);
         op().append(" ");
         return this;
     }
 
-    public DeleteOp deleteFrom(Table table) {
+    public DeleteOp DELETE_FROM(Table table) {
         op().append("DELETE FROM ");
         op().append(table);
         op().append(" ");
-        return this;
-    }
-
-    public DeleteOp column(String column) {
-        op().append(column);
         return this;
     }
 

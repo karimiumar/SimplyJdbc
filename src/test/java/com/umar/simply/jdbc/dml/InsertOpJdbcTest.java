@@ -45,7 +45,7 @@ public class InsertOpJdbcTest  {
     @AfterAll
     public static void clean(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
+        operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
         System.out.println(operation.getSQL());
         try (Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
@@ -58,7 +58,7 @@ public class InsertOpJdbcTest  {
     @Test
     public void testInsertOp() {
         InsertOp insert = InsertOp.create();
-        insert.intoTable(TBL_PERSON).columnValues(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true)));
+        insert.INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true)));
         System.out.println(insert.getSQL());
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {

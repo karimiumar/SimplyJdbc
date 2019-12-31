@@ -26,11 +26,11 @@ public class DeleteOpJdbcTest {
     @BeforeEach
     public void prepare() {
         InsertOp insert = InsertOp.create();
-        insert.intoTable(TBL_PERSON).columnValues(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE, 32)));
+        insert.INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE, 32)));
         try (Connection connection = util.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
             insert.fill(ps).addBatch();
-            insert = InsertOp.create().intoTable(TBL_PERSON).columnValues(asList(set(PERSON_FIRST_NAME,"Angelina"), set(PERSON_LAST_NAME,"Jolie"), set(PERSON_EMAIL,"angel@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE,27)));
+            insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Angelina"), set(PERSON_LAST_NAME,"Jolie"), set(PERSON_EMAIL,"angel@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE,27)));
             insert.fill(ps).addBatch();
             ps.executeBatch();
         } catch (SQLException e) {
@@ -41,7 +41,7 @@ public class DeleteOpJdbcTest {
     @Test
     public void deleteWhereOrConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"));
+        operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();
@@ -54,7 +54,7 @@ public class DeleteOpJdbcTest {
     @Test
     public void deleteWhereConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().COLUMN_EQ(eq(PERSON_LAST_NAME,"Turner"));
+        operation.DELETE_FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().COLUMN_EQ(eq(PERSON_LAST_NAME,"Turner"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();

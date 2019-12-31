@@ -14,7 +14,7 @@ public class DeleteOpTest {
     @Test
     public void whereEq(){
         DeleteOp operation = DeleteOp.create();
-        operation.deleteFrom("PERSON").WHERE().COLUMN_EQ(eq(column("firstname"), "abc"));
+        operation.DELETE_FROM("PERSON").WHERE().COLUMN_EQ(eq(column("firstname"), "abc"));
         String result = operation.getSQL();
         String expected = "DELETE FROM PERSON  WHERE firstname=?";
         Assertions.assertEquals(result,expected);
@@ -24,7 +24,7 @@ public class DeleteOpTest {
 
     @Test
     public void deleteDuplicates(){
-        DeleteOp sql = DeleteOp.create().deleteFrom("contacts t1")
+        DeleteOp sql = DeleteOp.create().DELETE_FROM("contacts t1")
                 .INNER().JOIN().TABLE("contacts t2")
                 .WHERE().column("t1.id").LT().column("t2.id").AND().column("t1.email").EQ("t2.email");
         String result = sql.getSQL();
