@@ -281,7 +281,6 @@ public class SqlQueryTest {
         List<ColumnValue> params = sql.getValues();
         Assertions.assertEquals(5, params.size());
     }
-
     @Test
     public void notBetween(){
         SelectOp sql = create().SELECT().all().FROM(TBL_PRODUCT)
@@ -413,7 +412,7 @@ public class SqlQueryTest {
                 .AND(column("c1.country")).EQ(column("c2.country")).ORDERBY(column("c1.country"));
         String result = sql.getSQL();
         String expected = "SELECT c1.first_name,c1.last_name,c2.first_name,c2.last_name,"
-                +"c2.city,c2.country FROM customer c1,customer c2 WHERE c1.id<>c2.id AND c1.city=c2.city AND c1.country=c2.country ORDER BY c1.country";
+                +"c2.city,c2.country FROM customer AS c1,customer AS c2 WHERE c1.id<>c2.id AND c1.city=c2.city AND c1.country=c2.country ORDER BY c1.country";
         Assertions.assertEquals(result,expected);
     }
 
@@ -541,9 +540,9 @@ public class SqlQueryTest {
                 .AND().COLUMN_EQ(eq(column("HD.HD_DEP_COUNT"),2))
                 .ORDERBY(column("CNT"));
         String expected = "SELECT  COUNT(*) AS CNT  FROM STORE_SALES AS SS "
-                + " JOIN HOUSEHOLD_DEMOGRAPHICS HD ON (SS.SS_HDEMO_SK=HD.HD_DEMO_SK ) "
-                + "JOIN TIME_DIM T ON (SS.SS_SOLD_TIME_SK=T.T_TIME_SK ) "
-                + "JOIN STORE S ON (S.STORE_SK=SS.SS_STORE_SK ) "
+                + " JOIN HOUSEHOLD_DEMOGRAPHICS AS HD ON (SS.SS_HDEMO_SK=HD.HD_DEMO_SK ) "
+                + "JOIN TIME_DIM AS T ON (SS.SS_SOLD_TIME_SK=T.T_TIME_SK ) "
+                + "JOIN STORE AS S ON (S.STORE_SK=SS.SS_STORE_SK ) "
                 + "WHERE T.T_HOUR=? AND T.T_MINUTE>=? AND HD.HD_DEP_COUNT=? ORDER BY CNT";
         String result = sql.getSQL();
         Assertions.assertEquals(result,expected);

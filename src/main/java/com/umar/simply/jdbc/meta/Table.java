@@ -26,8 +26,8 @@ public class Table {
         return new Table(tableName +" "+alias, idColumn);
     }
     
-     public static Table AS(String tableName, String alias) {
-        return new Table(tableName +" "+alias, Column.column(""));
+    public static Table AS(String tableName, String alias) {
+        return new Table(tableName +" AS "+alias, Column.column(""));
     }
 
     @Override
