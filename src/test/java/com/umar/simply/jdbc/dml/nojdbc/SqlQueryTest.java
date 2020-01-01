@@ -522,5 +522,33 @@ public class SqlQueryTest {
         },"Invalid type of value passed");
         Assertions.assertTrue(assertThrows.getMessage().contains("Invalid type of value passed"));
     }
+    
+    
+    /**
+     * Issue | The ON operation should also include braces #15
+     */
+    @Test
+    public void joinWithBraces() {
+        SelectOp sql = create().SELECT().COUNT("*").AS("CNT").FROM("STORE_SALES").AS("SS")
+                .JOIN(Table.AS("HOUSEHOLD_DEMOGRAPHICS", "HD"))
+                .ON(create().COLUMN("SS.SS_HDEMO_SK").EQ("HD.HD_DEMO_SK"))
+                .JOIN(Table.AS("TIME_DIM", "T"))
+                .ON(create().COLUMN("SS.SS_SOLD_TIME_SK").EQ("T.T_TIME_SK"))
+                .JOIN(Table.AS("STORE", "S"))
+                .ON(create().COLUMN("S.STORE_SK").EQ("SS.SS_STORE_SK"))
+                .WHERE().COLUMN_EQ(eq(column("T.T_HOUR"), 8))
+                .AND().GE(set(column("T.T_MINUTE"), 30))
+                .AND().COLUMN_EQ(eq(column("HD.HD_DEP_COUNT"),2))
+                .ORDERBY(column("CNT"));
+        String expected = "SELECT  COUNT(*) AS CNT  FROM STORE_SALES AS SS "
+                + " JOIN HOUSEHOLD_DEMOGRAPHICS HD ON (SS.SS_HDEMO_SK=HD.HD_DEMO_SK ) "
+                + "JOIN TIME_DIM T ON (SS.SS_SOLD_TIME_SK=T.T_TIME_SK ) "
+                + "JOIN STORE S ON (S.STORE_SK=SS.SS_STORE_SK ) "
+                + "WHERE T.T_HOUR=? AND T.T_MINUTE>=? AND HD.HD_DEP_COUNT=? ORDER BY CNT";
+        String result = sql.getSQL();
+        Assertions.assertEquals(result,expected);
+        List<ColumnValue> params = sql.getValues();
+        Assertions.assertEquals(3, params.size());      
+    }
 
 }
