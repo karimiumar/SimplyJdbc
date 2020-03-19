@@ -549,5 +549,19 @@ public class SqlQueryTest {
         List<ColumnValue> params = sql.getValues();
         Assertions.assertEquals(3, params.size());      
     }
+    
+    @Test
+    public void testIfRecordExists() {
+        SelectOp sql = create().SELECT().EXISTS(
+                create().SELECT().all().FROM(TBL_PRODUCT)
+                        .JOIN(TBL_SUPPLIER).USING(PRODUCT_SUPPLIERID_COL)
+                        .WHERE(PRODUCT_NAME_COL).EQ().values(set("abcd"))
+        );
+        String expected = "SELECT  EXISTS (SELECT * FROM product JOIN supplier USING(supplier_id) WHERE product_name=? )";
+        String result = sql.getSQL();
+        List<ColumnValue> params = sql.getValues();
+        Assertions.assertEquals(result,expected);
+        Assertions.assertEquals(1,params.size());
+    }
 
 }
