@@ -535,9 +535,9 @@ public class SqlQueryTest {
                 .ON(create().COLUMN("SS.SS_SOLD_TIME_SK").EQ("T.T_TIME_SK"))
                 .JOIN(Table.AS("STORE", "S"))
                 .ON(create().COLUMN("S.STORE_SK").EQ("SS.SS_STORE_SK"))
-                .WHERE().COLUMN_EQ(eq(column("T.T_HOUR"), 8))
+                .WHERE().EQ(eq(column("T.T_HOUR"), 8))
                 .AND().GE(set(column("T.T_MINUTE"), 30))
-                .AND().COLUMN_EQ(eq(column("HD.HD_DEP_COUNT"),2))
+                .AND().EQ(eq(column("HD.HD_DEP_COUNT"),2))
                 .ORDERBY(column("CNT"));
         String expected = "SELECT  COUNT(*) AS CNT  FROM STORE_SALES AS SS "
                 + " JOIN HOUSEHOLD_DEMOGRAPHICS AS HD ON (SS.SS_HDEMO_SK=HD.HD_DEMO_SK ) "
@@ -555,13 +555,29 @@ public class SqlQueryTest {
         SelectOp sql = create().SELECT().EXISTS(
                 create().SELECT().all().FROM(TBL_PRODUCT)
                         .JOIN(TBL_SUPPLIER).USING(PRODUCT_SUPPLIERID_COL)
-                        .WHERE(PRODUCT_NAME_COL).EQ().values(set("abcd"))
+                        .WHERE().EQ(eq(PRODUCT_NAME_COL, "abcd"))
         );
         String expected = "SELECT  EXISTS (SELECT * FROM product JOIN supplier USING(supplier_id) WHERE product_name=? )";
         String result = sql.getSQL();
         List<ColumnValue> params = sql.getValues();
         Assertions.assertEquals(result,expected);
         Assertions.assertEquals(1,params.size());
+        String columnNameExpected = "product_name";
+        String actualColumnName = params.get(0).getColumnName().getColumnName();
+        Assertions.assertEquals(columnNameExpected, actualColumnName);
+        Assertions.assertEquals("abcd", params.get(0).getValue());
     }
-
+    
+    @Test
+    public void testExecute2ndQueryIfFirstQueryHasEmpyResult() {
+        SelectOp sql = create().WITH("r").AS(
+                create().SELECT().all().FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"INDIA"))
+        ).SELECT().all().FROM("r").UNION().ALL().SELECT().all().FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"US")
+        ).AND().NOT().EXISTS(create().SELECT().all().FROM("r"));
+        String result = sql.getSQL();
+        String expected = "WITH r AS (SELECT * FROM person WHERE country=?) SELECT * FROM r UNION  ALL SELECT * FROM person WHERE country=? AND  NOT  EXISTS (SELECT * FROM r )";
+        List<ColumnValue> params = sql.getValues();
+        Assertions.assertEquals(result,expected);
+        Assertions.assertEquals(2,params.size());
+    }
 }

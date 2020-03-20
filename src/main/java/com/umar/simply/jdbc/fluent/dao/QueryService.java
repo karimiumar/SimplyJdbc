@@ -70,14 +70,8 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> COLUMN_EQ(List<ColumnValue> columnValues) {
-        sql.COLUMN_EQ(getValuesArray(columnValues));
-        return this;
-    }
-
-    @Override
-    public QueryService<T> COLUMN_EQ(ColumnValue columnValue) {
-        sql.COLUMN_EQ(columnValue);
+    public QueryService<T> EQ(List<ColumnValue> columnValues) {
+        sql.EQ(getValuesArray(columnValues));
         return this;
     }
 
@@ -487,5 +481,17 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
         List list = new ArrayList<>();
         getMappedResult(rowMapper, list, sql);
         return list;
+    }
+
+    @Override
+    public QueryService<T> AS(SelectOp op) {
+        sql.AS(op);
+        return this;
+    }
+
+    @Override
+    public QueryService<T> WITH(String alias) {
+        sql.WITH(alias);
+        return this;
     }
 }

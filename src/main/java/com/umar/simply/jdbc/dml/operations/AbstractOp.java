@@ -58,12 +58,14 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
      */
-    public T COLUMN_EQ(ColumnValue ...columnValues) {
+    public T EQ(ColumnValue ...columnValues) {
         int len = columnValues.length;
         int cnt = 1;
         for(ColumnValue e: columnValues) {
             getValues().add(e);
-            op().append(e.getColumnName());
+            if(null != e.getColumnName()){
+                op().append(e.getColumnName());
+            }
             op().append("=?");
             if(cnt++ < len){
                 op().append(" AND ");
@@ -144,6 +146,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" )");
         getValues().addAll(sql.getValues());
         return (T) this;
+    }
+    
+    public T ALL() {
+        op().append(" ALL ");
+        return (T) this ;
     }
 
     /**
@@ -535,6 +542,15 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append(" ");
         return (T) this;
     }
+    
+    
+    public T AS(SelectOp operation) {
+        op().append("AS (");
+        op().append(operation.getSQL());
+        op().append(") ");
+        getValues().addAll(operation.getValues());
+        return (T) this;
+    }
 
     /**
      * SQL ORDER BY clause
@@ -692,11 +708,14 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return (T) this;
     }
     
-    public T EQ(ColumnValue value) {
+    /*public T EQ(ColumnValue value) {
+        if(null != value.getColumnName()){
+            op().append(value.getColumnName());
+        }
         op().append("=?");
         getValues().add(value);
         return (T) this;
-    }
+    }*/
 
     /**
      * SQL GROUP BY clause. 'GROUP BY' operator is appended followed by columns to group.
@@ -987,6 +1006,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         op().append("INDEX(");
         op().append(index);
         op().append("))");
+        return (T) this;
+    }
+    
+    public T WITH(String alias) {
+        op().append("WITH ");
+        op().append(alias);
+        op().append(" ");
         return (T) this;
     }
 

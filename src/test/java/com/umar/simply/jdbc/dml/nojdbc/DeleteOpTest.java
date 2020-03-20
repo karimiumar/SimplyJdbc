@@ -14,7 +14,7 @@ public class DeleteOpTest {
     @Test
     public void whereEq(){
         DeleteOp operation = DeleteOp.create();
-        operation.DELETE_FROM("PERSON").WHERE().COLUMN_EQ(eq(column("firstname"), "abc"));
+        operation.DELETE_FROM("PERSON").WHERE().EQ(eq(column("firstname"), "abc"));
         String result = operation.getSQL();
         String expected = "DELETE FROM PERSON  WHERE firstname=?";
         Assertions.assertEquals(result,expected);

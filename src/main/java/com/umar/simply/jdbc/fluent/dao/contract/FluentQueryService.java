@@ -19,8 +19,7 @@ public interface FluentQueryService<T> {
     QueryService<T> VALUES(List<ColumnValue> values);
     QueryService<T> COLUMN(List<Column> columns);
     QueryService<T> COLUMN(Column<T> column);
-    QueryService<T> COLUMN_EQ(List<ColumnValue> columnValues);
-    QueryService<T> COLUMN_EQ(ColumnValue columnValue);
+    QueryService<T> EQ(List<ColumnValue> columnValues);
     QueryService<T> NE(Column<T> condition);
     QueryService<T> NOT();
     QueryService<T> IS();
@@ -60,6 +59,7 @@ public interface FluentQueryService<T> {
     QueryService<T> LIMIT(int n);
     QueryService<T> OFFSET(int n);
     QueryService<T> AS(String alias);
+    QueryService<T> AS(SelectOp op);
     QueryService<T> ORDER_BY(Column column);
     QueryService<T> ORDER_BY();
     QueryService<T> ASC();
@@ -86,6 +86,7 @@ public interface FluentQueryService<T> {
     QueryService<T> SELECT(List<Column> columns);
     QueryService<T> SELECT();
     QueryService<T> withIndex(Index index);
+    QueryService<T> WITH(String alias);
     List<?> execute();
     QueryService<T> using(ResultSetMapper<T> rowMapper);
     SelectOp getSQL();

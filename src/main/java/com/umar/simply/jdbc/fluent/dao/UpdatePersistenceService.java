@@ -44,7 +44,7 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
 
     @Override
     public UpdatePersistenceService where(List<ColumnValue> existingVals) {
-        sql.WHERE().COLUMN_EQ(getValuesArray(existingVals));
+        sql.WHERE().EQ(getValuesArray(existingVals));
         return this;
     }
 

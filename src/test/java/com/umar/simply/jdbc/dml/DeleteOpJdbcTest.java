@@ -54,7 +54,7 @@ public class DeleteOpJdbcTest {
     @Test
     public void deleteWhereConditon(){
         DeleteOp operation = DeleteOp.create();
-        operation.DELETE_FROM(TBL_PERSON).WHERE().COLUMN_EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().COLUMN_EQ(eq(PERSON_LAST_NAME,"Turner"));
+        operation.DELETE_FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().EQ(eq(PERSON_LAST_NAME,"Turner"));
         try(Connection connection = util.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
             int result = operation.fill(ps).executeUpdate();
