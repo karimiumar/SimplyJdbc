@@ -5,10 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
@@ -17,12 +13,19 @@ import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.SupplierTable.*
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreateTablesInH2db {
-   
-    @Test
-    @Order(1)
-    public void dropTablesInPublicSchema() {
+    private static final Logger logger = Logger.getLogger(CreateTablesInH2db.class.getName());
+    public static void setup() {
+        dropTablesInPublicSchema();
+        createPerson();
+        createSupplier();
+        createCustomer();
+        createProduct();
+        createOrder();
+    }
+
+    public static void dropTablesInPublicSchema() {
+        logger.log(Level.INFO, "Dropping Tables in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("DROP TABLE IF EXISTS ");
         ddlBuilder.append(TBL_PERSON);
@@ -58,10 +61,9 @@ public class CreateTablesInH2db {
         ddl = ddlBuilder.toString();
         executeDDL(ddl);  
     }
-    
-    @Test
-    //@Order(3)
-    public void createPerson() {
+
+    public static void createPerson() {
+        logger.log(Level.INFO, "Creating Person Table in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
         //ddlBuilder.append(EX_SCHEMA);
@@ -92,9 +94,9 @@ public class CreateTablesInH2db {
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
-    
-    @Test
-    public void createSupplier() {
+
+    public static void createSupplier() {
+        logger.log(Level.INFO, "Creating Supplier Table in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
         //ddlBuilder.append(EX_SCHEMA);
@@ -117,9 +119,9 @@ public class CreateTablesInH2db {
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
-    
-    @Test
-    public void createCustomer() {
+
+    public static void createCustomer() {
+        logger.log(Level.INFO, "Creating Customer Table in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
         //ddlBuilder.append(EX_SCHEMA);
@@ -144,9 +146,9 @@ public class CreateTablesInH2db {
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
-    
-    @Test
-    public void createProduct() {
+
+    public static void createProduct() {
+        logger.log(Level.INFO, "Creating Product Table in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
         //ddlBuilder.append(EX_SCHEMA);
@@ -173,9 +175,9 @@ public class CreateTablesInH2db {
         String ddl = ddlBuilder.toString();
         executeDDL(ddl);
     }
-    
-    @Test
-    public void createOrder() {
+
+    public static void createOrder() {
+        logger.log(Level.INFO, "Creating Orders Table in Public Schema");
         StringBuilder ddlBuilder = new StringBuilder();
         ddlBuilder.append("create table ");
         //ddlBuilder.append(EX_SCHEMA);
@@ -202,7 +204,7 @@ public class CreateTablesInH2db {
     }
     
     
-    private void executeDDL(String ddl) {
+    private static void executeDDL(String ddl) {
         try (PreparedStatement ps = JdbcUtilService.getConnection().prepareStatement(ddl)) {
             ps.execute();
         } catch (SQLException ex) {

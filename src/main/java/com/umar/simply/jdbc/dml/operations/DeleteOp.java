@@ -12,7 +12,7 @@ import java.util.List;
 public class DeleteOp extends AbstractOp<DeleteOp> {
 
     private final StringBuilder sb = new StringBuilder();
-    private final List<ColumnValue> values = new LinkedList<>();
+    private final List<ColumnValue<?>> values = new LinkedList<>();
 
     private DeleteOp(){}
 
@@ -34,10 +34,10 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
         return this;
     }
 
-    public DeleteOp anyColumnValues(ColumnValue ... columnValues) {
+    public DeleteOp anyColumnValues(ColumnValue<?> ... columnValues) {
         int len = columnValues.length;
         int cnt = 1;
-        for(ColumnValue e: columnValues) {
+        for(ColumnValue<?> e: columnValues) {
             values.add(e);
             op().append(e.getColumnName());
             op().append("=?");
@@ -59,7 +59,7 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
     }
 
     @Override
-    public List<ColumnValue> getValues() {
+    public List<ColumnValue<?>> getValues() {
         return values;
     }
 

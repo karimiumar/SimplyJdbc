@@ -50,7 +50,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT country,city FROM customer AS C1  LIMIT ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue>params = sql.getValues();
+        List<ColumnValue<?>>params = sql.getValues();
         Assertions.assertTrue(params.size() == 1);
     }
 
@@ -61,7 +61,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT country,city FROM customer LIMIT ? OFFSET ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue>params = sql.getValues();
+        List<ColumnValue<?>>params = sql.getValues();
         Assertions.assertTrue(params.size() == 2);
     }
 
@@ -82,7 +82,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         //"SELECT * FROM customer c1 WHERE country IN ('Germany','US')";
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -95,7 +95,7 @@ public class SqlQueryTest {
                 .IN(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -106,7 +106,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_CUSTOMERS).WHERE().column(CUSTOMER_COUNTRY).IN(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -119,7 +119,7 @@ public class SqlQueryTest {
                 asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country NOT  IN (?,?)";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -186,7 +186,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -197,7 +197,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("%a");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -208,7 +208,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("%or%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -219,7 +219,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("_r%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -230,7 +230,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a_%_%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -241,7 +241,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a%o");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -252,7 +252,7 @@ public class SqlQueryTest {
         sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).NOT().LIKE("a%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname NOT  LIKE ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -264,7 +264,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         //SELECT * FROM product WHERE product_name BETWEEN 'Carnarvon Tigers' AND 'Mozzarella di Giovanni'
         String expected = "SELECT * FROM product WHERE product_name BETWEEN ? AND ?";
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
         Assertions.assertEquals(result,expected);
     }
@@ -278,7 +278,7 @@ public class SqlQueryTest {
         //"SELECT * FROM product WHERE (unit_price BETWEEN '10' AND '20') AND  NOT category_id IN ('1','2','3')"
         String expected = "SELECT * FROM product WHERE (unit_price BETWEEN ? AND ?) AND  NOT category_id IN (?,?,?)";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(5, params.size());
     }
     @Test
@@ -288,7 +288,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT * FROM product WHERE unit_price NOT  BETWEEN ? AND ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
     }
 
@@ -299,7 +299,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT * FROM product WHERE product_name IS ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
     }
 
@@ -309,9 +309,9 @@ public class SqlQueryTest {
                 .FROM(TBL_PRODUCT).WHERE().column(PRODUCT_UNIT_PRICE_COL).EQ().values(set(20))
                 .ORDERBY().column(PRODUCT_NAME_COL);
         String result = sql.getSQL();
-        String expected = "SELECT id,product_name,unit_price FROM product WHERE unit_price=? ORDER BY product_name";
+        String expected = "SELECT id,product_name,unit_price FROM product WHERE unit_price = ? ORDER BY product_name";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
     }
 
@@ -323,7 +323,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(id), country FROM customer AS c1  GROUP BY country";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(0, params.size());
     }
     
@@ -338,7 +338,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(id), country FROM customer GROUP BY country ORDER BY  COUNT(id) DESC";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(0, params.size());
     }
     
@@ -352,7 +352,7 @@ public class SqlQueryTest {
                 .ON().column(CUSTOMER_ID).EQ("CUSTOMER_TOTALS.CUSTOMER_ID")
                 .ORDERBY().COLUMN("CUSTOMER_TOTALS.TOTAL_AMOUNT").DESC();
         String result = sql.getSQL();
-        String expected = "SELECT * FROM customer LEFT JOIN (SELECT  SUM(total_amount) AS TOTAL_AMOUNT ,customer_id FROM orders GROUP BY customer_id ) AS CUSTOMER_TOTALS  ON id=CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC";
+        String expected = "SELECT * FROM customer LEFT JOIN (SELECT  SUM(total_amount) AS TOTAL_AMOUNT ,customer_id FROM orders GROUP BY customer_id ) AS CUSTOMER_TOTALS  ON id = CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC";
         Assertions.assertEquals(result,expected);
     }
 
@@ -366,7 +366,7 @@ public class SqlQueryTest {
                 .ORDERBY().SUM(ORDER_TOTAL_AMT)
                 .DESC();
         String result = sql.getSQL();
-        String expected = "SELECT  SUM(total_amount),first_name,last_name FROM orders JOIN customer AS C  ON customer_id=C.id GROUP BY first_name,last_name ORDER BY  SUM(total_amount) DESC";
+        String expected = "SELECT  SUM(total_amount),first_name,last_name FROM orders JOIN customer AS C  ON customer_id = C.id GROUP BY first_name,last_name ORDER BY  SUM(total_amount) DESC";
         Assertions.assertEquals(result,expected);
     }
 
@@ -381,9 +381,9 @@ public class SqlQueryTest {
                 .GROUPBY(column("C.country"))
                 .HAVING().COUNT(column("C.id")).GT(set(10));
         String result = sql.getSQL();
-        String expected = "SELECT  COUNT(C.id), C.country FROM customer AS C  GROUP BY C.country HAVING  COUNT(C.id)>?";
+        String expected = "SELECT  COUNT(C.id), C.country FROM customer AS C  GROUP BY C.country HAVING  COUNT(C.id) > ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         ColumnValue cv0 = params.get(0);
         Assertions.assertTrue(10 == (Integer) cv0.getValue());
     }
@@ -395,7 +395,7 @@ public class SqlQueryTest {
         String result = sql.getSQL();
         String expected = "SELECT id,product_name,unit_price FROM product WHERE product_name LIKE ? OR product_name LIKE ?";
         Assertions.assertEquals(result, expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(2, params.size());
     }
 
@@ -411,8 +411,10 @@ public class SqlQueryTest {
                 .WHERE(column("c1.id")).NE(column("c2.id")).AND(column("c1.city")).EQ(column("c2.city"))
                 .AND(column("c1.country")).EQ(column("c2.country")).ORDERBY(column("c1.country"));
         String result = sql.getSQL();
-        String expected = "SELECT c1.first_name,c1.last_name,c2.first_name,c2.last_name,"
-                +"c2.city,c2.country FROM customer AS c1,customer AS c2 WHERE c1.id<>c2.id AND c1.city=c2.city AND c1.country=c2.country ORDER BY c1.country";
+        String expected = "SELECT c1.first_name,c1.last_name,c2.first_name,c2.last_name,c2.city,c2.country " +
+                "FROM customer AS c1,customer AS c2 " +
+                "WHERE c1.id <> c2.id AND c1.city = c2.city " +
+                "AND c1.country = c2.country ORDER BY c1.country";
         Assertions.assertEquals(result,expected);
     }
 
@@ -468,9 +470,9 @@ public class SqlQueryTest {
         SelectOp sql = SelectOp.create().SELECT().COUNT(PERSON_EMAIL).GROUP_WITH(PERSON_EMAIL)
                 .FROM(TBL_PERSON).GROUPBY(PERSON_EMAIL).HAVING().COUNT(PERSON_EMAIL).GT().values(set(1));
         String result = sql.getSQL();
-        String expected = "SELECT  COUNT(email), email FROM person GROUP BY email HAVING  COUNT(email)>?";
+        String expected = "SELECT  COUNT(email), email FROM person GROUP BY email HAVING  COUNT(email) > ?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
     }
 
@@ -490,9 +492,9 @@ public class SqlQueryTest {
                         .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier AS s1  WHERE  EXISTS (SELECT product_name AS prd_name  FROM product WHERE supplier_id=s1.id AND unit_price<? )";
+        String expected = "SELECT * FROM supplier AS s1  WHERE  EXISTS (SELECT product_name AS prd_name  FROM product WHERE supplier_id = s1.id AND unit_price < ? )";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
     }
     
@@ -504,9 +506,9 @@ public class SqlQueryTest {
                         .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().values(set(20))
                 );
         String result = sql.getSQL();
-        String expected = "SELECT * FROM supplier AS s1  WHERE  NOT  EXISTS (SELECT product_name FROM product AS prd1  WHERE supplier_id=s1.id AND unit_price<? )";
+        String expected = "SELECT * FROM supplier AS s1  WHERE  NOT  EXISTS (SELECT product_name FROM product AS prd1  WHERE supplier_id = s1.id AND unit_price < ? )";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(1, params.size());
     }
     
@@ -539,14 +541,15 @@ public class SqlQueryTest {
                 .AND().GE(set(column("T.T_MINUTE"), 30))
                 .AND().EQ(eq(column("HD.HD_DEP_COUNT"),2))
                 .ORDERBY(column("CNT"));
-        String expected = "SELECT  COUNT(*) AS CNT  FROM STORE_SALES AS SS "
-                + " JOIN HOUSEHOLD_DEMOGRAPHICS AS HD ON (SS.SS_HDEMO_SK=HD.HD_DEMO_SK ) "
-                + "JOIN TIME_DIM AS T ON (SS.SS_SOLD_TIME_SK=T.T_TIME_SK ) "
-                + "JOIN STORE AS S ON (S.STORE_SK=SS.SS_STORE_SK ) "
-                + "WHERE T.T_HOUR=? AND T.T_MINUTE>=? AND HD.HD_DEP_COUNT=? ORDER BY CNT";
+        String expected = "SELECT  COUNT(*) AS CNT  FROM STORE_SALES AS SS  " +
+                "JOIN HOUSEHOLD_DEMOGRAPHICS AS HD ON (SS.SS_HDEMO_SK = HD.HD_DEMO_SK ) " +
+                "JOIN TIME_DIM AS T ON (SS.SS_SOLD_TIME_SK = T.T_TIME_SK ) " +
+                "JOIN STORE AS S ON (S.STORE_SK = SS.SS_STORE_SK ) " +
+                "WHERE T.T_HOUR =?  AND T.T_MINUTE >= ? " +
+                "AND HD.HD_DEP_COUNT =?  ORDER BY CNT";
         String result = sql.getSQL();
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(3, params.size());      
     }
     
@@ -557,9 +560,9 @@ public class SqlQueryTest {
                         .JOIN(TBL_SUPPLIER).USING(PRODUCT_SUPPLIERID_COL)
                         .WHERE().EQ(eq(PRODUCT_NAME_COL, "abcd"))
         );
-        String expected = "SELECT  EXISTS (SELECT * FROM product JOIN supplier USING(supplier_id) WHERE product_name=? )";
+        String expected = "SELECT  EXISTS (SELECT * FROM product JOIN supplier USING(supplier_id) WHERE product_name =? )";
         String result = sql.getSQL();
-        List<ColumnValue> params = sql.getValues();
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(result,expected);
         Assertions.assertEquals(1,params.size());
         String columnNameExpected = "product_name";
@@ -575,8 +578,8 @@ public class SqlQueryTest {
         ).SELECT().all().FROM("r").UNION().ALL().SELECT().all().FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"US")
         ).AND().NOT().EXISTS(create().SELECT().all().FROM("r"));
         String result = sql.getSQL();
-        String expected = "WITH r AS (SELECT * FROM person WHERE country=?) SELECT * FROM r UNION  ALL SELECT * FROM person WHERE country=? AND  NOT  EXISTS (SELECT * FROM r )";
-        List<ColumnValue> params = sql.getValues();
+        String expected = "WITH r AS (SELECT * FROM person WHERE country =?) SELECT * FROM r UNION  ALL SELECT * FROM person WHERE country =?  AND  NOT  EXISTS (SELECT * FROM r )";
+        List<ColumnValue<?>> params = sql.getValues();
         Assertions.assertEquals(result,expected);
         Assertions.assertEquals(2,params.size());
     }

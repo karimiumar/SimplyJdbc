@@ -10,6 +10,6 @@ public interface FluentDeletePersonService {
     DeletePersonService delete();
     DeletePersonService where();
     DeletePersonService where(SelectOp op);
-    DeletePersonService anyColumnValues(List<ColumnValue> columnValues);
+    DeletePersonService anyColumnValues(List<ColumnValue<?>> columnValues);
     void execute();
 }

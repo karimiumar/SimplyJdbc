@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import static java.util.Arrays.asList;
 
 public class PersonSaveService implements FluentPersonSaveService {
-    private List<ColumnValue> newValues;
+    private List<ColumnValue<?>> newValues;
 
     @Override
     public PersonSaveService save(Person newPerson) {

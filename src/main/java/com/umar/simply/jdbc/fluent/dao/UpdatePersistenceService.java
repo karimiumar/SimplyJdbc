@@ -24,32 +24,32 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public UpdatePersistenceService update(Table table) {
+    public UpdatePersistenceService<T> update(Table table) {
         this.table = table;
         sql.TABLE(table);
         return this;
     }
 
     @Override
-    public UpdatePersistenceService using(ResultSetMapper<T> rowMapper) {
+    public UpdatePersistenceService<T> using(ResultSetMapper<T> rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }
 
     @Override
-    public UpdatePersistenceService assignNewValues(List<ColumnValue> newVals) {
+    public UpdatePersistenceService<T> assignNewValues(List<ColumnValue<?>> newVals) {
         sql.SET(getValuesArray(newVals));
         return this;
     }
 
     @Override
-    public UpdatePersistenceService where(List<ColumnValue> existingVals) {
+    public UpdatePersistenceService<T> where(List<ColumnValue<?>> existingVals) {
         sql.WHERE().EQ(getValuesArray(existingVals));
         return this;
     }
 
     @Override
-    public UpdatePersistenceService of(int id) {
+    public UpdatePersistenceService<T> of(int id) {
         this.id = id;
         return this;
     }
@@ -57,8 +57,6 @@ public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> i
     @Override
     public Optional<T> execute() {
         getSavedResult(sql);
-        Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
-        return optional;
-        
+        return findById(table,rowMapper,set(table.getIdColumn(),id));
     }
 }

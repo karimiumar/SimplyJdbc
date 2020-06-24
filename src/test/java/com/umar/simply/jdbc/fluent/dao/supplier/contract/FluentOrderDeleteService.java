@@ -9,6 +9,6 @@ public interface FluentOrderDeleteService {
     OrderDeleteService delete();
     OrderDeleteService where();
     OrderDeleteService where(SelectOp op);
-    OrderDeleteService anyColumnValues(List<ColumnValue> columnValues);
+    OrderDeleteService anyColumnValues(List<ColumnValue<?>> columnValues);
     void execute();
 }

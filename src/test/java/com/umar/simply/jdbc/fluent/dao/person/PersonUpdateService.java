@@ -14,8 +14,8 @@ import java.util.Optional;
 
 public class PersonUpdateService implements FluentPersonUpdateService {
 
-    private List<ColumnValue> existingVals;
-    private List<ColumnValue> newVals;
+    private List<ColumnValue<?>> existingVals;
+    private List<ColumnValue<?>> newVals;
     private Integer id = -1;
     UpdatePersistenceService<Person> ups = new UpdatePersistenceService<>(JdbcUtilService.getConnection());
 
@@ -50,7 +50,7 @@ public class PersonUpdateService implements FluentPersonUpdateService {
     @Override
     public Person execute(){
         Optional<Person> optionalResult = ups.update(TBL_PERSON).assignNewValues(newVals).where(existingVals).of(id).using(PERSON_ROW_MAPPER).execute();
-        if(!optionalResult.isPresent()){
+        if(optionalResult.isEmpty()){
             throw new RuntimeException(String.format("Could not find Person with id:%d in the database.", id));
         }
         return optionalResult.get();

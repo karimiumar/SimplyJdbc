@@ -11,8 +11,8 @@ import com.umar.simply.jdbc.ResultSetMapper;
 public interface FluentUpdatePersistenceService<T> {
     UpdatePersistenceService update(Table table);
     UpdatePersistenceService using(ResultSetMapper<T> rowMapper);
-    UpdatePersistenceService where(List<ColumnValue> existingVals);
-    UpdatePersistenceService assignNewValues(List<ColumnValue> newVals);
+    UpdatePersistenceService where(List<ColumnValue<?>> existingVals);
+    UpdatePersistenceService assignNewValues(List<ColumnValue<?>> newVals);
     UpdatePersistenceService of(int id);
     Optional<T> execute();
 }

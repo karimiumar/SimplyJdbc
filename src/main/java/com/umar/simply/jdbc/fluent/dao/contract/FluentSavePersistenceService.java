@@ -11,6 +11,6 @@ public interface FluentSavePersistenceService<T> {
 
     SavePersistenceService<T> save(Table table);
     SavePersistenceService<T> using(ResultSetMapper<T> rowMapper);
-    SavePersistenceService<T> withValues(List<ColumnValue> newVals);
+    SavePersistenceService<T> withValues(List<ColumnValue<?>> newVals);
     T execute();
 }

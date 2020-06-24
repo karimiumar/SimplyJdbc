@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 
 public class ProductSaveService implements FluentProductSaveService {
 
-    private List<ColumnValue> newValues;
+    private List<ColumnValue<?>> newValues;
     
     @Override
     public ProductSaveService save(Product product) {

@@ -32,7 +32,7 @@ public class CustomerDeleteService implements FluentCustomerDeleteService {
     }
 
     @Override
-    public CustomerDeleteService anyColumnValues(List<ColumnValue> columnValues) {
+    public CustomerDeleteService anyColumnValues(List<ColumnValue<?>> columnValues) {
         dps.anyColumnValues(columnValues);
         return this;
     }

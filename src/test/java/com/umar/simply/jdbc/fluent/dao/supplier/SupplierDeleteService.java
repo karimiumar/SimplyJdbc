@@ -32,7 +32,7 @@ public class SupplierDeleteService implements FluentSupplierDeleteService {
     }
 
     @Override
-    public SupplierDeleteService anyColumnValues(List<ColumnValue> columnValues) {
+    public SupplierDeleteService anyColumnValues(List<ColumnValue<?>> columnValues) {
         dps.anyColumnValues(columnValues);
         return this;
     }

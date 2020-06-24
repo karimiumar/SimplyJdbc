@@ -13,7 +13,7 @@ import static com.umar.simply.jdbc.meta.ColumnValue.set;
 
 public class OrderSaveService implements FluentOrderSaveService {
 
-    private List<ColumnValue> values;
+    private List<ColumnValue<?>> values;
     
     @Override
     public OrderSaveService save(Order transientOrder) {

@@ -8,7 +8,7 @@ import java.util.List;
 public class SelectOp extends AbstractOp<SelectOp> {
 
     private final StringBuilder sb = new StringBuilder();
-    private final List<ColumnValue> values = new LinkedList<>();
+    private final List<ColumnValue<?>> values = new LinkedList<>();
 
     private SelectOp() {
 
@@ -46,10 +46,10 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param values The COLUMN values to fill
      * @return Returns this object
      */
-    public SelectOp values(ColumnValue... values) {
+    public SelectOp values(ColumnValue<?>... values) {
         int len = values.length;
         int cnt = 1;
-        for (ColumnValue value : values) {
+        for (ColumnValue<?> value : values) {
             this.values.add(value);
             op().append("?");
             if (cnt++ < len) {
@@ -66,10 +66,10 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param columns The columns to fetch
      * @return Returns this object
      */
-    public SelectOp column(List<Column> columns) {
+    public SelectOp column(List<Column<?>> columns) {
         int len = columns.size();
         int cnt = 1;
-        for (Column column : columns) {
+        for (Column<?> column : columns) {
             op().append(column);
             if (cnt++ < len) {
                 op().append(",");
@@ -84,7 +84,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param column The columns to fetch
      * @return Returns this object
      */
-    public SelectOp column(Column column) {
+    public SelectOp column(Column<?> column) {
         op().append(column);
         return this;
     }
@@ -116,7 +116,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     }
 
     @Override
-    public List<ColumnValue> getValues() {
+    public List<ColumnValue<?>> getValues() {
         return values;
     }
 

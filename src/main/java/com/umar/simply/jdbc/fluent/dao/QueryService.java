@@ -9,6 +9,7 @@ import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.umar.simply.jdbc.ResultSetMapper;
 
@@ -46,19 +47,19 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> WHERE(Column column) {
+    public QueryService<T> WHERE(Column<?> column) {
         sql.WHERE(column);
         return this;
     }
 
     @Override
-    public QueryService<T> VALUES(List<ColumnValue> columnValues) {
+    public QueryService<T> VALUES(List<ColumnValue<?>> columnValues) {
         sql.values(getValuesArray(columnValues));
         return this;
     }
 
     @Override
-    public QueryService<T> COLUMN(List<Column> columns) {
+    public QueryService<T> COLUMN(List<Column<?>> columns) {
         sql.column(columns);
         return this;
     }
@@ -70,7 +71,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> EQ(List<ColumnValue> columnValues) {
+    public QueryService<T> EQ(List<ColumnValue<?>> columnValues) {
         sql.EQ(getValuesArray(columnValues));
         return this;
     }
@@ -136,7 +137,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> EQ(Column condition) {
+    public QueryService<T> EQ(Column<?> condition) {
         sql.EQ(condition);
         return this;
     }
@@ -154,31 +155,31 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> EQ(ColumnValue value) {
+    public QueryService<T> EQ(ColumnValue<?> value) {
         sql.EQ(value);
         return this;
     }
 
     @Override
-    public QueryService<T> GT(ColumnValue value) {
+    public QueryService<T> GT(ColumnValue<?> value) {
         sql.GT(value);
         return this;
     }
 
     @Override
-    public QueryService<T> LT(ColumnValue value) {
+    public QueryService<T> LT(ColumnValue<?> value) {
         sql.LT(value);
         return this;
     }
 
     @Override
-    public QueryService<T> GE(ColumnValue columnValue) {
+    public QueryService<T> GE(ColumnValue<?> columnValue) {
         sql.GE(columnValue);
         return this;
     }
 
     @Override
-    public QueryService<T> LE(ColumnValue columnValue) {
+    public QueryService<T> LE(ColumnValue<?> columnValue) {
         sql.LE(columnValue);
         return this;
     }
@@ -202,7 +203,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> YEAR(Column column) {
+    public QueryService<T> YEAR(Column<?> column) {
         sql.YEAR(column);
         return this;
     }
@@ -214,13 +215,13 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> DISTINCT(Column column) {
+    public QueryService<T> DISTINCT(Column<?> column) {
         sql.DISTINCT(column);
         return this;
     }
 
     @Override
-    public QueryService<T> COUNT(Column column) {
+    public QueryService<T> COUNT(Column<?> column) {
         sql.COUNT(column);
         return this;
     }
@@ -232,25 +233,25 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> MAX(Column column) {
+    public QueryService<T> MAX(Column<?> column) {
         sql.MAX(column);
         return this;
     }
 
     @Override
-    public QueryService<T> MIN(Column column) {
+    public QueryService<T> MIN(Column<?> column) {
         sql.MIN(column);
         return this;
     }
 
     @Override
-    public QueryService<T> AVG(Column column) {
+    public QueryService<T> AVG(Column<?> column) {
         sql.AVG(column);
         return this;
     }
 
     @Override
-    public QueryService<T> SUM(Column column) {
+    public QueryService<T> SUM(Column<?> column) {
         sql.SUM(column);
         return this;
     }
@@ -262,7 +263,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> BETWEEN(List<ColumnValue> columnValues) {
+    public QueryService<T> BETWEEN(List<ColumnValue<?>> columnValues) {
         sql.BETWEEN(columnValues);
         return this;
     }
@@ -280,7 +281,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> IN(List<ColumnValue> columnValues) {
+    public QueryService<T> IN(List<ColumnValue<?>> columnValues) {
         sql.IN(columnValues);
         return this;
     }
@@ -310,7 +311,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> ORDER_BY(Column column) {
+    public QueryService<T> ORDER_BY(Column<?> column) {
         sql.ORDERBY(column);
         return this;
     }
@@ -334,31 +335,31 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> GROUP_BY(List<Column> columns) {
+    public QueryService<T> GROUP_BY(List<Column<?>> columns) {
         sql.GROUPBY(columns);
         return this;
     }
 
     @Override
-    public QueryService<T> GROUP_BY(Column column) {
+    public QueryService<T> GROUP_BY(Column<?> column) {
         sql.GROUPBY(column);
         return this;
     }
 
     @Override
-    public QueryService<T> GROUP_WITH(List<Column> columns) {
+    public QueryService<T> GROUP_WITH(List<Column<?>> columns) {
         sql.GROUP_WITH(columns);
         return this;
     }
 
     @Override
-    public QueryService<T> GROUP_WITH(Column column) {
+    public QueryService<T> GROUP_WITH(Column<?> column) {
         sql.GROUP_WITH(column);
         return this;
     }
 
     @Override
-    public QueryService<T> USING(Column column) {
+    public QueryService<T> USING(Column<?> column) {
         sql.USING(column);
         return this;
     }
@@ -424,7 +425,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
     
     @Override
-    public QueryService<T> ON(Column column) {
+    public QueryService<T> ON(Column<?> column) {
         sql.ON(column);
         return this;
     }
@@ -442,13 +443,13 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService<T> SELECT(Column column) {
+    public QueryService<T> SELECT(Column<?> column) {
         sql.SELECT(column);
         return this;
     }
 
     @Override
-    public QueryService<T> SELECT(List<Column> columns) {
+    public QueryService<T> SELECT(List<Column<?>> columns) {
         sql.SELECT(columns);
         return this;
     }
@@ -471,15 +472,15 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public QueryService using(ResultSetMapper<T> rowMapper) {
+    public QueryService<T> using(ResultSetMapper<T> rowMapper) {
         this.rowMapper = rowMapper;
         return this;
     }
 
     @Override
     public List<?> execute() {
-        List list = new ArrayList<>();
-        getMappedResult(rowMapper, list, sql);
+        List<?> list = new ArrayList<>();
+        getMappedResult(rowMapper,(List<T>) list, sql);
         return list;
     }
 

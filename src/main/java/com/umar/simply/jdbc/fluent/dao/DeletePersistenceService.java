@@ -12,8 +12,6 @@ import com.umar.simply.jdbc.ResultSetMapper;
 
 public class DeletePersistenceService<T> extends AbstractPersistenceService<T> implements FluentDeletePersistenceService<T> {
 
-    private ResultSetMapper<T> rowMapper;
-
     DeleteOp sql = DeleteOp.create();
 
     public DeletePersistenceService(final Connection connection) {
@@ -21,32 +19,31 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public DeletePersistenceService from(Table table) {
+    public DeletePersistenceService<T> from(Table table) {
         sql.DELETE_FROM(table);
         return this;
     }
 
     @Override
-    public DeletePersistenceService where(SelectOp op) {
+    public DeletePersistenceService<T> where(SelectOp op) {
         sql.WHERE(op);
         return this;
     }
 
     @Override
-    public DeletePersistenceService where() {
+    public DeletePersistenceService<T> where() {
         sql.WHERE();
         return this;
     }
 
     @Override
-    public DeletePersistenceService anyColumnValues(List<ColumnValue> columnValues) {
+    public DeletePersistenceService<T> anyColumnValues(List<ColumnValue<?>> columnValues) {
         sql.anyColumnValues(getValuesArray(columnValues));
         return this;
     }
 
     @Override
-    public DeletePersistenceService using(ResultSetMapper rowMapper) {
-        this.rowMapper = rowMapper;
+    public DeletePersistenceService<T> using(ResultSetMapper<T> rowMapper) {
         return this;
     }
 

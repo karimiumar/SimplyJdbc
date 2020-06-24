@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 
 public class SupplierSaveService implements FluentSupplierSaveService {
 
-    private List<ColumnValue> newValues;
+    private List<ColumnValue<?>> newValues;
     
     @Override
     public SupplierSaveService save(Supplier supplier) {

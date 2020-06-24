@@ -32,7 +32,7 @@ public class OrderDeleteService implements FluentOrderDeleteService {
     }
 
     @Override
-    public OrderDeleteService anyColumnValues(List<ColumnValue> columnValues) {
+    public OrderDeleteService anyColumnValues(List<ColumnValue<?>> columnValues) {
         dps.anyColumnValues(columnValues);
         return this;
     }

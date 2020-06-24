@@ -18,17 +18,17 @@ public abstract class AbstractPersistenceService<T> {
         this.connection = connection;
     }
 
-    protected Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue idColumn){
+    protected Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue<?> idColumn){
         final List<T> result = new ArrayList<>(1);
         SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().EQ(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
 
-    ColumnValue[] getValuesArray(List<ColumnValue> values){
-        ColumnValue [] vals = new ColumnValue[values.size()];
+    ColumnValue<?>[] getValuesArray(List<ColumnValue<?>> values){
+        ColumnValue<?> [] vals = new ColumnValue[values.size()];
         int idx = 0;
-        for (ColumnValue e:values) {
+        for (ColumnValue<?> e:values) {
             vals[idx++] = e;
         }
         return vals;

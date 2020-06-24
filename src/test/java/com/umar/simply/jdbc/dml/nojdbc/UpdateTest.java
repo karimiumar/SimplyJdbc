@@ -21,9 +21,9 @@ public class UpdateTest {
                 .AND(SelectOp.create().EQ(set(PERSON_IS_ADULT,true))
                         .OR().EQ(set(PERSON_EMAIL,"abc@abc.com")));
         String result = update.getSQL();
-        String expected = "UPDATE PERSON SET firstname=? WHERE  NOT id=? AND (adult=? OR email=? )";
+        String expected = "UPDATE PERSON SET firstname =? WHERE  NOT id =?  AND (adult =?  OR email =? )";
         System.out.println(update.getSQL());
-        List<ColumnValue> params = update.getValues();
+        List<ColumnValue<?>> params = update.getValues();
         Assertions.assertTrue(params.size() == 4);
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
@@ -35,8 +35,8 @@ public class UpdateTest {
         update.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Eva")).WHERE().NOT().EQ(set(PERSON_ID,123))
                 .AND(SelectOp.create().EQ(set(PERSON_IS_ADULT,false)).OR().EQ(set(PERSON_EMAIL,"tina@123.com")));
         String result = update.getSQL();
-        String expected = "UPDATE person SET firstname=? WHERE  NOT id=? AND (adult=? OR email=? )";
-        List<ColumnValue> params = update.getValues();
+        String expected = "UPDATE person SET firstname =? WHERE  NOT id =?  AND (adult =?  OR email =? )";
+        List<ColumnValue<?>> params = update.getValues();
         Assertions.assertTrue(params.size() == 4);
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
@@ -53,9 +53,9 @@ public class UpdateTest {
                     .LE(set(ORDER_TOTAL_AMT, 12000.00))
                 );
         String result = update.getSQL();
-        String expected = "UPDATE orders SET customer_id=? WHERE  NOT( total_amount>=? AND total_amount<=? )";
+        String expected = "UPDATE orders SET customer_id =? WHERE  NOT( total_amount >= ? AND total_amount <= ? )";
         System.out.println(result);
-        List<ColumnValue> params = update.getValues();
+        List<ColumnValue<?>> params = update.getValues();
         Assertions.assertTrue(params.size() == 3);
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
@@ -70,10 +70,10 @@ public class UpdateTest {
                 .EQ(set(PERSON_COUNTRY, "Germany"))
                 );
         String result = update.getSQL();
-        String expected = "UPDATE person SET city=? WHERE  NOT( country=? )";
+        String expected = "UPDATE person SET city =? WHERE  NOT( country =? )";
         System.out.println(result);
         Assertions.assertEquals(result, expected);
-        List<ColumnValue> params = update.getValues();
+        List<ColumnValue<?>> params = update.getValues();
         Assertions.assertTrue(params.size() == 2);
         System.out.println(update.getSQL());
     }

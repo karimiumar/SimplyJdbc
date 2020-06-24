@@ -9,6 +9,6 @@ public interface FluentSupplierDeleteService {
     SupplierDeleteService delete();
     SupplierDeleteService where();
     SupplierDeleteService where(SelectOp op);
-    SupplierDeleteService anyColumnValues(List<ColumnValue> columnValues);
+    SupplierDeleteService anyColumnValues(List<ColumnValue<?>> columnValues);
     void execute();
 }

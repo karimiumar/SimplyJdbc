@@ -9,6 +9,6 @@ public interface FluentProductDeleteService {
     ProductDeleteService delete();
     ProductDeleteService where();
     ProductDeleteService where(SelectOp op);
-    ProductDeleteService anyColumnValues(List<ColumnValue> columnValues);
+    ProductDeleteService anyColumnValues(List<ColumnValue<?>> columnValues);
     void execute();
 }

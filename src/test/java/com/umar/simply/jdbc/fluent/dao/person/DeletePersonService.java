@@ -31,7 +31,7 @@ public class DeletePersonService implements FluentDeletePersonService {
     }
 
     @Override
-    public DeletePersonService anyColumnValues(List<ColumnValue> columnValues) {
+    public DeletePersonService anyColumnValues(List<ColumnValue<?>> columnValues) {
         dps.anyColumnValues(columnValues);
         return this;
     }

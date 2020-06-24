@@ -16,9 +16,9 @@ public class DeleteOpTest {
         DeleteOp operation = DeleteOp.create();
         operation.DELETE_FROM("PERSON").WHERE().EQ(eq(column("firstname"), "abc"));
         String result = operation.getSQL();
-        String expected = "DELETE FROM PERSON  WHERE firstname=?";
+        String expected = "DELETE FROM PERSON  WHERE firstname =?";
         Assertions.assertEquals(result,expected);
-        List<ColumnValue> params = operation.getValues();
+        List<ColumnValue<?>> params = operation.getValues();
         Assertions.assertEquals(1, params.size());
     }
 
@@ -28,7 +28,7 @@ public class DeleteOpTest {
                 .INNER().JOIN().TABLE("contacts t2")
                 .WHERE().COLUMN("t1.id").LT().COLUMN("t2.id").AND().COLUMN("t1.email").EQ("t2.email");
         String result = sql.getSQL();
-        String expected = "DELETE FROM contacts t1  INNER JOIN contacts t2 WHERE t1.id<t2.id AND t1.email=t2.email";
+        String expected = "DELETE FROM contacts t1  INNER JOIN contacts t2 WHERE t1.id < t2.id AND t1.email = t2.email";
         Assertions.assertEquals(result,expected);
     }
 }

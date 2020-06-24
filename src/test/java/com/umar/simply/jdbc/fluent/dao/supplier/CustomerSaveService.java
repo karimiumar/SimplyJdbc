@@ -15,7 +15,7 @@ import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.CustomerTable.*
 
 public class CustomerSaveService implements FluentCustomerSaveService {
     
-    private List<ColumnValue> columnValues;
+    private List<ColumnValue<?>> columnValues;
     
     @Override
     public CustomerSaveService save(Customer transientCustomer) {
@@ -32,8 +32,7 @@ public class CustomerSaveService implements FluentCustomerSaveService {
     @Override
     public Customer execute() {
         SavePersistenceService<Customer> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Customer saved = sps.save(TBL_CUSTOMERS).withValues(columnValues).using(CUSTOMER_ROW_MAPPER).execute();
-        return saved;
+        return sps.save(TBL_CUSTOMERS).withValues(columnValues).using(CUSTOMER_ROW_MAPPER).execute();
     }
     
 }

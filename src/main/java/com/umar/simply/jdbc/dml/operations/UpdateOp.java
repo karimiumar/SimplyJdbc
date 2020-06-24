@@ -12,20 +12,20 @@ import java.util.List;
 public class UpdateOp extends AbstractOp<UpdateOp> {
 
     private final StringBuilder sb = new StringBuilder();
-    private final List<ColumnValue> values = new LinkedList<>();
+    private final List<ColumnValue<?>> values = new LinkedList<>();
 
     public UpdateOp() {
         op().append("UPDATE ");
     }
 
-    public UpdateOp SET(ColumnValue ... columnValues){
+    public UpdateOp SET(ColumnValue<?> ... columnValues){
         int len = columnValues.length;
         int cnt = 1;
         op().append(" SET ");
-        for(ColumnValue e: columnValues) {
+        for(ColumnValue<?> e: columnValues) {
             values.add(e);
             op().append(e.getColumnName());
-            op().append("=?");
+            op().append(" =?");
             if(cnt++ < len){
                 op().append(",");
             }
@@ -43,7 +43,7 @@ public class UpdateOp extends AbstractOp<UpdateOp> {
     }
 
     @Override
-    public List<ColumnValue> getValues() {
+    public List<ColumnValue<?>> getValues() {
         return values;
     }
 

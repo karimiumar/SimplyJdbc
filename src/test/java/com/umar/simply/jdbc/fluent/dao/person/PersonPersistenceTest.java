@@ -1,6 +1,7 @@
 package com.umar.simply.jdbc.fluent.dao.person;
 
 
+import com.umar.simply.jdbc.ddl.CreateTablesInH2db;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
@@ -9,16 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
+
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class PersonPersistenceTest {
-
+    @BeforeAll
+    public static void setup() {
+        CreateTablesInH2db.setup();
+    }
     @AfterAll 
     public static void clean() {
         DeletePersonService dps = new DeletePersonService();

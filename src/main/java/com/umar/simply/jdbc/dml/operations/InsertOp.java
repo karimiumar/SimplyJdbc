@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InsertOp extends AbstractOp<InsertOp> {
     private final StringBuilder sb = new StringBuilder();
-    private final List<ColumnValue> values = new LinkedList<>();
+    private final List<ColumnValue<?>> values = new LinkedList<>();
 
 
     private InsertOp(){}
@@ -39,11 +39,11 @@ public class InsertOp extends AbstractOp<InsertOp> {
         return this;
     }
 
-    public InsertOp VALUES(List<ColumnValue> columnValues) {
+    public InsertOp VALUES(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append("(");
-        for (ColumnValue e: columnValues){
+        for (ColumnValue<?> e: columnValues){
             op().append(e.getColumnName());
             if(cnt++ < len){
                 op().append(",");
@@ -53,7 +53,7 @@ public class InsertOp extends AbstractOp<InsertOp> {
         op().append(")");
         op().append("VALUES");
         op().append("(");
-        for(ColumnValue e: columnValues) {
+        for(ColumnValue<?> e: columnValues) {
             op().append("?");
             if(cnt++ < len){
                 op().append(",");
@@ -75,7 +75,7 @@ public class InsertOp extends AbstractOp<InsertOp> {
     }
 
     @Override
-    public List<ColumnValue> getValues() {
+    public List<ColumnValue<?>> getValues() {
         return values;
     }
 }

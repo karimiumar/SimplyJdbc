@@ -43,7 +43,7 @@ public class SavePersistenceService<T> extends AbstractPersistenceService<T> imp
     }
 
     @Override
-    public SavePersistenceService<T> withValues(List<ColumnValue> newVals) {
+    public SavePersistenceService<T> withValues(List<ColumnValue<?>> newVals) {
         sql.VALUES(newVals);
         return this;
     }

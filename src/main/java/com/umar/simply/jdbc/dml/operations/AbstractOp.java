@@ -27,7 +27,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     public abstract StringBuilder op();
 
-    public abstract List<ColumnValue> getValues();
+    public abstract List<ColumnValue<?>> getValues();
 
     /**
      * Fills the PreparedStatement object with values
@@ -58,15 +58,15 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
      */
-    public T EQ(ColumnValue ...columnValues) {
+    public T EQ(ColumnValue<?> ...columnValues) {
         int len = columnValues.length;
         int cnt = 1;
-        for(ColumnValue e: columnValues) {
+        for(ColumnValue<?> e: columnValues) {
             getValues().add(e);
             if(null != e.getColumnName()){
                 op().append(e.getColumnName());
             }
-            op().append("=?");
+            op().append(" =? ");
             if(cnt++ < len){
                 op().append(" AND ");
             }
@@ -76,11 +76,20 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
 
     /**
      * The NOT EQUAL operator
+     * @return Returns this object
+     */
+    public T NE() {
+        op().append(" <> ");
+        return (T) this;
+    }
+
+    /**
+     * The NOT EQUAL operator
      * @param condition The condition to suffix <> operator
      * @return Returns this object
      */
-    public T NE(Column condition) {
-        op().append("<>");
+    public T NE(Column<?> condition) {
+        op().append(" <> ");
         op().append(condition);
         return (T) this;
     }
@@ -134,7 +143,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to append AND clause
      * @return Returns this object
      */
-    public T AND(Column column) {
+    public T AND(Column<?> column) {
         op().append(" AND ");
         op().append(column);
         return (T) this;
@@ -423,16 +432,24 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
 
     /**
+     * The SQL BETWEEN clause
+     * @return Returns this object
+     */
+    public T BETWEEN() {
+        op().append(" BETWEEN ");
+        return (T) this;
+    }
+    /**
      * SQL BETWEEN clause.
      *
      * @param columnValues The ColumnValue. Contains COLUMN name AND COLUMN value
      * @return Returns this object
      */
-    public T BETWEEN(List<ColumnValue> columnValues) {
+    public T BETWEEN(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append(" BETWEEN ");
-        for (ColumnValue e: columnValues) {
+        for (ColumnValue<?> e: columnValues) {
             op().append("?");
             if(cnt++ < len){
                 op().append(" AND ");
@@ -490,16 +507,35 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue for SQL IN clause
      *@return Returns this object
      */
-    public T IN(List<ColumnValue> columnValues) {
+    public T IN(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
         op().append(" IN (");
-        for(ColumnValue cv: columnValues) {
+        for(ColumnValue<?> cv: columnValues) {
             op().append("?");
             if(cnt++ < len){
                 op().append(",");
             }
             getValues().add(cv);
+        }
+        op().append(")");
+        return (T) this;
+    }
+
+    /**
+     * This method can be used when creating IN queries from JPA
+     * @param objects The objects
+     * @return Returns this
+     */
+    public T IN(Object ... objects){
+        int len = objects.length;
+        int cnt = 1;
+        op().append(" IN (");
+        for (Object object: objects) {
+            op().append("'").append(object).append("'");
+            if(cnt++ < len){
+                op().append(",");
+            }
         }
         op().append(")");
         return (T) this;
@@ -595,7 +631,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T GT() {
-        op().append(">");
+        op().append(" > ");
         return (T) this;
     }
 
@@ -605,7 +641,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T GT(ColumnValue value) {
-        op().append(">");
+        op().append(" > ");
         op().append("?");
         getValues().add(value);
         return (T) this;
@@ -616,7 +652,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T LT() {
-        op().append("<");
+        op().append(" < ");
         return (T) this;
     }
 
@@ -626,7 +662,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T LT(ColumnValue value) {
-        op().append("<");
+        op().append(" < ");
         op().append("?");
         getValues().add(value);
         return (T) this;
@@ -637,7 +673,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T GE(){
-        op().append(">=");
+        op().append(" >= ");
         return (T) this;
     }
 
@@ -648,7 +684,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      */
     public T GE(ColumnValue value) {
         op().append(value.getColumnName());
-        op().append(">=");
+        op().append(" >= ");
         op().append("?");
         getValues().add(value);
         return (T) this;
@@ -661,7 +697,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      */
     public T LE(ColumnValue value) {
         op().append(value.getColumnName());
-        op().append("<=");
+        op().append(" <= ");
         op().append("?");
         getValues().add(value);
         return (T) this;
@@ -672,7 +708,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T LE() {
-        op().append("<=");
+        op().append(" <= ");
         return (T) this;
     }
 
@@ -682,7 +718,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T EQ(String condition) {
-        op().append("=");
+        op().append(" = ");
         op().append(condition);
         return (T) this;
     }
@@ -693,7 +729,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T EQ(Column condition) {
-        op().append("=");
+        op().append(" = ");
         op().append(condition);
         return (T) this;
     }
@@ -704,18 +740,9 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      */
     public T EQ() {
-        op().append("=");
+        op().append(" = ");
         return (T) this;
     }
-    
-    /*public T EQ(ColumnValue value) {
-        if(null != value.getColumnName()){
-            op().append(value.getColumnName());
-        }
-        op().append("=?");
-        getValues().add(value);
-        return (T) this;
-    }*/
 
     /**
      * SQL GROUP BY clause. 'GROUP BY' operator is appended followed by columns to group.
@@ -723,11 +750,11 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
-    public T GROUPBY(List<Column> columns){
+    public T GROUPBY(List<Column<?>> columns){
         int len = columns.size();
         int cnt = 1;
         op().append(" GROUP BY ");
-        for(Column column:columns) {
+        for(Column<?> column:columns) {
             op().append(column);
             if(cnt++ < len){
                 op().append(",");
@@ -742,7 +769,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
-    public T GROUPBY(Column column){
+    public T GROUPBY(Column<?> column){
         op().append(" GROUP BY ");
         op().append(column);
         return (T) this;
@@ -762,7 +789,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columns The columns to use
      * @return Returns this object
      */
-    public T GROUP_WITH(List<Column> columns) {
+    public T GROUP_WITH(List<Column<?>> columns) {
         columns.stream().map((column) -> {
             op().append(",");
             return column;
@@ -786,7 +813,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The columns to use
      * @return Returns this object
      */
-    public T GROUP_WITH(Column column) {
+    public T GROUP_WITH(Column<?> column) {
         op().append(", ");
         op().append(column);
         return (T) this;
@@ -972,7 +999,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columns List of columns to SELECT
      * @return Returns this object
      */
-    public T SELECT(List<Column> columns) {
+    public T SELECT(List<Column<?>> columns) {
         op().append("SELECT ");
         int len = columns.size();
         int cnt = 1;
@@ -990,7 +1017,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to SELECT
      * @return Returns this object
      */
-    public T SELECT(Column column) {
+    public T SELECT(Column<?> column) {
         op().append("SELECT ");
         op().append(column);
         return (T) this;
@@ -1032,7 +1059,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param params The value parameters to use
      * @throws SQLException The SQLException thrown by this method
      */
-    private void populate(PreparedStatement ps, ColumnValue... params) throws SQLException {
+    private void populate(PreparedStatement ps, ColumnValue<?>... params) throws SQLException {
         for (int i = 0, length = params.length; i < length; i++) {
             final Object param = params[i].getValue();
             final int paramIndex = i + 1;

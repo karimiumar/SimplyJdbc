@@ -1,17 +1,19 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
+import com.umar.simply.jdbc.ddl.CreateTablesInH2db;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import org.junit.jupiter.api.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerQueryTest {
-    
+    @BeforeAll
+    public static void setup() {
+        CreateTablesInH2db.setup();
+    }
+
     @AfterAll
     public static void clean() {
         OrderDeleteService ods = new OrderDeleteService();

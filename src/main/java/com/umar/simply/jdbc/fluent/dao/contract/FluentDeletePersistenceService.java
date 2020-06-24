@@ -9,10 +9,10 @@ import java.util.List;
 import com.umar.simply.jdbc.ResultSetMapper;
 
 public interface FluentDeletePersistenceService<T> {
-    DeletePersistenceService from(Table table);
-    DeletePersistenceService where(SelectOp op);
-    DeletePersistenceService where();
-    DeletePersistenceService anyColumnValues(List<ColumnValue> columnValues);
-    DeletePersistenceService using(ResultSetMapper<T> rowMapper);
+    DeletePersistenceService<T> from(Table table);
+    DeletePersistenceService<T> where(SelectOp op);
+    DeletePersistenceService<T> where();
+    DeletePersistenceService<T> anyColumnValues(List<ColumnValue<?>> columnValues);
+    DeletePersistenceService<T> using(ResultSetMapper<T> rowMapper);
     void execute();
 }
