@@ -50,7 +50,7 @@ public class PersonUpdateService implements FluentPersonUpdateService {
     @Override
     public Person execute(){
         Optional<Person> optionalResult = ups.update(TBL_PERSON).assignNewValues(newVals).where(existingVals).of(id).using(PERSON_ROW_MAPPER).execute();
-        if(optionalResult.isEmpty()){
+        if(null == optionalResult.get()){
             throw new RuntimeException(String.format("Could not find Person with id:%d in the database.", id));
         }
         return optionalResult.get();
