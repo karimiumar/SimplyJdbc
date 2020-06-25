@@ -32,7 +32,7 @@ public class PersonQueryService extends QueryService implements FluentPersonQuer
     public List<Person> findByName(String name) {
         Objects.requireNonNull(name, "parameter <name> is required");
         List<Person> result = Arrays.asList();
-        if(name.isBlank() || name.isEmpty()) return result;
+        if(null == name || name.equals("") || name.equals(" ")) return result;
         String [] names = name.trim().split("\\s");     
         if(names.length > 1) {
            return searchByLastOrFirstNames(names);
