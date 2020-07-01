@@ -183,7 +183,7 @@ public class PersonPersistenceTest {
     public void findByIdIsEmptyResult() {
         PersonQueryService query = new PersonQueryService(JdbcUtilService.getConnection());
         Optional<Person> optional = query.findById(PersonTable.setId(0));
-        Assertions.assertTrue(null == optional.get());
+        Assertions.assertTrue(!optional.isPresent());
     }
 
     @Test
