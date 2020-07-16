@@ -44,7 +44,7 @@ public class UpdateOpJdbcTest  {
         InsertOp insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(fname,lname, email, isAdult));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
-            insert.fill(ps).executeUpdate();
+            insert.setParametersOfPreparedStatement(ps).executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +56,7 @@ public class UpdateOpJdbcTest  {
         operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"), eq(PERSON_FIRST_NAME,"Eva"), eq(PERSON_LAST_NAME,"Ali Karimi"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
-            operation.fill(ps).executeUpdate();
+            operation.setParametersOfPreparedStatement(ps).executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -69,7 +69,7 @@ public class UpdateOpJdbcTest  {
         operation.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).WHERE().EQ(eq(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL(), Statement.RETURN_GENERATED_KEYS)) {
-            int result = operation.fill(ps).executeUpdate();
+            int result = operation.setParametersOfPreparedStatement(ps).executeUpdate();
             try(ResultSet rs = ps.getGeneratedKeys()){
                 if(rs.next()) {
                     System.out.println("Key->" + rs.getInt(1));
@@ -91,7 +91,7 @@ public class UpdateOpJdbcTest  {
                 .WHERE().EQ(eq(PERSON_FIRST_NAME,"Mohammad"), eq(PERSON_IS_ADULT,true), eq(PERSON_EMAIL,"tina@rediffmail.com"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(update.getSQL())) {
-            int result = update.fill(ps).executeUpdate();
+            int result = update.setParametersOfPreparedStatement(ps).executeUpdate();
             Assertions.assertTrue(result > 0);
         } catch (Exception ex) {
             throw new RuntimeException(ex);

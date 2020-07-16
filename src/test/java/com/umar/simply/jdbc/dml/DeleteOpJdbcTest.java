@@ -1,6 +1,5 @@
 package com.umar.simply.jdbc.dml;
 
-import com.umar.simply.jdbc.JdbcUtil;
 import com.umar.simply.jdbc.ddl.CreateTablesInH2db;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
@@ -31,9 +30,9 @@ public class DeleteOpJdbcTest {
         insert.INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE, 32)));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
-            insert.fill(ps).addBatch();
+            insert.setParametersOfPreparedStatement(ps).addBatch();
             insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Angelina"), set(PERSON_LAST_NAME,"Jolie"), set(PERSON_EMAIL,"angel@rediffmail.com"), set(PERSON_IS_ADULT, true), set(PERSON_AGE,27)));
-            insert.fill(ps).addBatch();
+            insert.setParametersOfPreparedStatement(ps).addBatch();
             ps.executeBatch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -46,7 +45,7 @@ public class DeleteOpJdbcTest {
         operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"));
         try(Connection connection = JdbcUtilService.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
-            int result = operation.fill(ps).executeUpdate();
+            int result = operation.setParametersOfPreparedStatement(ps).executeUpdate();
             Assertions.assertEquals(3, result);
         }catch (SQLException e){
             throw new RuntimeException(e);
@@ -59,7 +58,7 @@ public class DeleteOpJdbcTest {
         operation.DELETE_FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_FIRST_NAME,"Tina")).AND().EQ(eq(PERSON_LAST_NAME,"Turner"));
         try(Connection connection = JdbcUtilService.getConnection();
             PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
-            int result = operation.fill(ps).executeUpdate();
+            int result = operation.setParametersOfPreparedStatement(ps).executeUpdate();
             Assertions.assertEquals(1, result);
         }catch (SQLException e){
             throw new RuntimeException(e);

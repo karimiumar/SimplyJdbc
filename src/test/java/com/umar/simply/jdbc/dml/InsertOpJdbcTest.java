@@ -49,7 +49,7 @@ public class InsertOpJdbcTest  {
         operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
-            operation.fill(ps).executeUpdate();
+            operation.setParametersOfPreparedStatement(ps).executeUpdate();
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class InsertOpJdbcTest  {
         insert.INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true)));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
-            int result = insert.fill(ps).executeUpdate();
+            int result = insert.setParametersOfPreparedStatement(ps).executeUpdate();
             Assertions.assertTrue(result > 0);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

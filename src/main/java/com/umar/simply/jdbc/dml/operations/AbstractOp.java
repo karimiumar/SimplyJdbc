@@ -21,7 +21,7 @@ import java.util.List;
  * @param <T> The Type of AbstractOp
  * @author umar
  */
-public abstract class AbstractOp<T extends AbstractOp<T>> {
+public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunctions<T> {
 
     public abstract String getSQL();
 
@@ -35,7 +35,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param ps The PreparedStatement object to fill
      * @return The PreparedStatement object
      */
-    public PreparedStatement fill(PreparedStatement ps){
+    public PreparedStatement setParametersOfPreparedStatement(PreparedStatement ps){
         try {
             populate(ps, getValuesArray());
             reset();
@@ -45,6 +45,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return ps;
     }
 
+    @Override
     public T COLUMN(String column) {
         op().append(column);
         return (T)this;
@@ -58,7 +59,8 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
      */
-    public T EQ(ColumnValue<?> ...columnValues) {
+    @Override
+    public T EQ(ColumnValue<?>... columnValues) {
         int len = columnValues.length;
         int cnt = 1;
         for(ColumnValue<?> e: columnValues) {
@@ -78,6 +80,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * The NOT EQUAL operator
      * @return Returns this object
      */
+    @Override
     public T NE() {
         op().append(" <> ");
         return (T) this;
@@ -88,6 +91,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to suffix <> operator
      * @return Returns this object
      */
+    @Override
     public T NE(Column<?> condition) {
         op().append(" <> ");
         op().append(condition);
@@ -98,11 +102,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL NOT statement
      * @return Returns this object
      */
+    @Override
     public T NOT() {
         op().append(" NOT ");
         return (T) this;
     }
     
+    @Override
     public T NOT(SelectOp sql) {
         op().append(" NOT( ");
         op().append(sql);
@@ -115,6 +121,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL IS statement
      * @return Returns this object
      */
+    @Override
     public T IS() {
         op().append(" IS ");
         return (T) this;
@@ -124,6 +131,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * The SQL NULL operator
      * @return Returns this object
      */
+    @Override
     public T NULL(){
         op().append(" NULL");
         return (T) this;
@@ -133,6 +141,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL AND statement
      * @return Returns this object
      */
+    @Override
     public T AND() {
         op().append(" AND ");
         return (T) this;
@@ -143,12 +152,14 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to append AND clause
      * @return Returns this object
      */
+    @Override
     public T AND(Column<?> column) {
         op().append(" AND ");
         op().append(column);
         return (T) this;
     }
     
+    @Override
     public T AND(SelectOp sql) {
         op().append(" AND (");
         op().append(sql);
@@ -157,6 +168,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return (T) this;
     }
     
+    @Override
     public T ALL() {
         op().append(" ALL ");
         return (T) this ;
@@ -166,6 +178,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL OR statement
      * @return Returns this object
      */
+    @Override
     public T OR() {
         op().append(" OR ");
         return (T) this;
@@ -176,6 +189,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
+    @Override
     public T UPPER() {
         op().append(" UPPER ");
         return (T)this;
@@ -185,6 +199,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL HAVING clause
      * @return Returns this object
      */
+    @Override
     public T HAVING() {
         op().append(" HAVING ");
         return (T)this;
@@ -195,6 +210,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      * @param table The TABLE to use with FROM clause
      */
+    @Override
     public T FROM(String table) {
         op().append(" FROM ");
         op().append(table);
@@ -206,6 +222,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      * @param table The TABLE to use with FROM clause
      */
+    @Override
     public T FROM(Table table) {
         op().append(" FROM ");
         op().append(table);
@@ -217,6 +234,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      * @param tables The tables to use with FROM clause
      */
+    @Override
     public T FROM(List<Table> tables) {
         int len = tables.size();
         int cnt = 1;
@@ -234,6 +252,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL WHERE clause.
      * @return Returns this object
      */
+    @Override
     public T WHERE() {
         op().append(" WHERE ");
         return (T) this;
@@ -244,6 +263,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The INNER query to use
      * @return Returns this object
      */
+    @Override
     public T WHERE(SelectOp op) {
         op().append(" WHERE (");
         op().append(op);
@@ -259,6 +279,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to append with WHERE clause
      * @return Returns this object
      */
+    @Override
     public T WHERE(Column column) {
         op().append(" WHERE ");
         op().append(column);
@@ -270,6 +291,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param table The TABLE name
      * @return Returns this object
      */
+    @Override
     public T TABLE(String table) {
         op().append(table);
         return (T) this;
@@ -280,6 +302,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param table The TABLE name
      * @return Returns this object
      */
+    @Override
     public T TABLE(Table table) {
         op().append(table);
         return (T) this;
@@ -290,6 +313,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with YEAR()
      * @return Returns this object
      */
+    @Override
     public T YEAR(Column column) {
         op().append(" YEAR(");
         op().append(column);
@@ -301,6 +325,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL DISTINCT clause
      * @return Returns this object
      */
+    @Override
     public T DISTINCT() {
         op().append(" DISTINCT ");
         return (T) this;
@@ -311,6 +336,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with DISTINCT operator
      * @return Returns this object
      */
+    @Override
     public T DISTINCT(String column) {
         op().append(" DISTINCT ");
         op().append(column);
@@ -322,6 +348,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with DISTINCT operator
      * @return Returns this object
      */
+    @Override
     public T DISTINCT(Column column) {
         op().append(" DISTINCT ");
         op().append(column);
@@ -333,6 +360,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with COUNT()
      * @return Returns this object
      */
+    @Override
     public T COUNT(String column) {
         op().append(" COUNT(");
         op().append(column);
@@ -345,6 +373,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with COUNT()
      * @return Returns this object
      */
+    @Override
     public T COUNT(Column column) {
         op().append(" COUNT(");
         op().append(column);
@@ -357,6 +386,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op T type operation
      * @return Returns this object
      */
+    @Override
     public T COUNT(SelectOp op) {
         op().append(" COUNT(");
         op().append(op);
@@ -372,6 +402,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with MAX()
      * @return Returns this object
      */
+    @Override
     public T MAX(Column column) {
         op().append(" MAX(");
         op().append(column);
@@ -384,6 +415,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with MIN()
      * @return Returns this object
      */
+    @Override
     public T MIN(Column column) {
         op().append(" MIN(");
         op().append(column);
@@ -396,6 +428,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to use with AVG()
      * @return Returns this object
      */
+    @Override
     public T AVG(Column column) {
         op().append(" AVG(");
         op().append(column);
@@ -408,6 +441,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to SUM
      * @return Returns this object
      */
+    @Override
     public T SUM(Column column) {
         op().append(" SUM(");
         op().append(column);
@@ -420,6 +454,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation
      * @return The current object
      */
+    @Override
     public T EXISTS(SelectOp op) {
         op().append(" EXISTS");
         op().append(" (");
@@ -435,6 +470,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * The SQL BETWEEN clause
      * @return Returns this object
      */
+    @Override
     public T BETWEEN() {
         op().append(" BETWEEN ");
         return (T) this;
@@ -445,6 +481,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue. Contains COLUMN name AND COLUMN value
      * @return Returns this object
      */
+    @Override
     public T BETWEEN(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
@@ -464,6 +501,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation to wrap IN 'BETWEEN' clause
      * @return Returns this object
      */
+    @Override
     public T BETWEEN(SelectOp op) {
         op().append(" BETWEEN (");
         op().append(op);
@@ -479,6 +517,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param pattern The String pattern to look for.
      * @return Returns this object
      */
+    @Override
     public T LIKE(String pattern) {
         op().append(" LIKE ");
         op().append("?");
@@ -492,6 +531,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param op The SQL operation to wrap IN 'IN' function
      * @return Returns this object
      */
+    @Override
     public T IN(SelectOp op) {
         op().append(" IN (");
         op().append(op);
@@ -507,6 +547,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columnValues The ColumnValue for SQL IN clause
      *@return Returns this object
      */
+    @Override
     public T IN(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
@@ -527,7 +568,8 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param objects The objects
      * @return Returns this
      */
-    public T IN(Object ... objects){
+    @Override
+    public T IN(Object... objects){
         int len = objects.length;
         int cnt = 1;
         op().append(" IN (");
@@ -547,6 +589,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param n The int value of LIMIT
      * @return Returns this object
      */
+    @Override
     public T LIMIT(int n) {
         getValues().add(ColumnValue.set(n));
         op().append(" LIMIT ");
@@ -560,6 +603,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param n The int value to pass IN OFFSET
      * @return Returns this object
      */
+    @Override
     public T OFFSET(int n) {
         getValues().add(ColumnValue.set(n));
         op().append(" OFFSET ");
@@ -572,6 +616,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param alias The alias to use
      * @return Returns this object
      */
+    @Override
     public T AS(String alias) {
         op().append(" AS ");
         op().append(alias);
@@ -580,6 +625,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
     }
     
     
+    @Override
     public T AS(SelectOp operation) {
         op().append("AS (");
         op().append(operation.getSQL());
@@ -592,6 +638,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ORDER BY clause
      * @return Returns this object
      */
+    @Override
     public T ORDERBY() {
         op().append(" ORDER BY ");
         return (T) this;
@@ -602,6 +649,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN ON which ORDER BY to apply
      * @return Returns this object
      */
+    @Override
     public T ORDERBY(Column column) {
         op().append(" ORDER BY ");
         op().append(column);
@@ -612,6 +660,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ASC clause for ascending order
      * @return Returns this object
      */
+    @Override
     public T ASC() {
         op().append(" ASC ");
         return (T) this;
@@ -621,6 +670,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL DESC clause for descending order
      * @return Returns this object
      */
+    @Override
     public T DESC() {
         op().append(" DESC ");
         return (T) this;
@@ -630,6 +680,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL GREATER THAN clause.
      * @return Returns this object
      */
+    @Override
     public T GT() {
         op().append(" > ");
         return (T) this;
@@ -640,6 +691,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value
      * @return Returns this object
      */
+    @Override
     public T GT(ColumnValue value) {
         op().append(" > ");
         op().append("?");
@@ -651,6 +703,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LESS THAN clause.
      * @return Returns this object
      */
+    @Override
     public T LT() {
         op().append(" < ");
         return (T) this;
@@ -661,6 +714,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
+    @Override
     public T LT(ColumnValue value) {
         op().append(" < ");
         op().append("?");
@@ -672,6 +726,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL GREATER OR EQUAL clause.
      * @return Returns this object
      */
+    @Override
     public T GE(){
         op().append(" >= ");
         return (T) this;
@@ -682,6 +737,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
+    @Override
     public T GE(ColumnValue value) {
         op().append(value.getColumnName());
         op().append(" >= ");
@@ -695,6 +751,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param value The ColumnValue
      * @return Returns this object
      */
+    @Override
     public T LE(ColumnValue value) {
         op().append(value.getColumnName());
         op().append(" <= ");
@@ -707,6 +764,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LESS OR EQUAL clause.
      * @return Returns this object
      */
+    @Override
     public T LE() {
         op().append(" <= ");
         return (T) this;
@@ -717,6 +775,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to append with = operator
      * @return Returns this object
      */
+    @Override
     public T EQ(String condition) {
         op().append(" = ");
         op().append(condition);
@@ -728,6 +787,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param condition The condition to append with = operator
      * @return Returns this object
      */
+    @Override
     public T EQ(Column condition) {
         op().append(" = ");
         op().append(condition);
@@ -739,6 +799,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
+    @Override
     public T EQ() {
         op().append(" = ");
         return (T) this;
@@ -750,6 +811,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
+    @Override
     public T GROUPBY(List<Column<?>> columns){
         int len = columns.size();
         int cnt = 1;
@@ -769,6 +831,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @return Returns this object
      *
      */
+    @Override
     public T GROUPBY(Column<?> column){
         op().append(" GROUP BY ");
         op().append(column);
@@ -789,6 +852,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columns The columns to use
      * @return Returns this object
      */
+    @Override
     public T GROUP_WITH(List<Column<?>> columns) {
         columns.stream().map((column) -> {
             op().append(",");
@@ -813,6 +877,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The columns to use
      * @return Returns this object
      */
+    @Override
     public T GROUP_WITH(Column<?> column) {
         op().append(", ");
         op().append(column);
@@ -824,6 +889,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN
      * @return Returns this object
      */
+    @Override
     public T USING(String column) {
         op().append(" USING(");
         op().append(column);
@@ -836,6 +902,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN
      * @return Returns this object
      */
+    @Override
     public T USING(Column column) {
         op().append(" USING(");
         op().append(column);
@@ -847,6 +914,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * MySQL MINUS operator
      * @return Returns this object
      */
+    @Override
     public T MINUS(){
         op().append(" MINUS ");
         return (T) this;
@@ -856,6 +924,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL INNER clause
      * @return Returns this object
      */
+    @Override
     public T INNER(){
         op().append(" INNER");
         return (T) this;
@@ -866,6 +935,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL JOIN operation
      * @return Returns this object
      */
+    @Override
     public T JOIN() {
         op().append(" JOIN ");
         return (T) this;
@@ -876,6 +946,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param query The INNER query to use with JOIN
      * @return Returns this object
      */
+    @Override
     public T JOIN(SelectOp query) {
         op().append(" JOIN (");
         op().append(query);
@@ -887,6 +958,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param table The JOIN TABLE 
      * @return Returns this object
      */
+    @Override
     public T JOIN(Table table) {
         op().append(" JOIN ");
         op().append(table);
@@ -897,6 +969,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL LEFT JOIN clause
      * @return Returns this object
      */
+    @Override
     public T LEFT() {
         op().append(" LEFT");
         return (T) this;
@@ -906,6 +979,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL RIGHT JOIN clause
      * @return Returns this object
      */
+    @Override
     public T RIGHT() {
         op().append(" RIGHT");
         return (T) this;
@@ -915,6 +989,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL UNION clause
      * @return Returns this object
      */
+    @Override
     public T UNION() {
         op().append(" UNION ");
         return (T) this;
@@ -924,11 +999,13 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ON clause used IN conjunction with JOIN
      * @return Returns this object
      */
+    @Override
     public T ON() {
         op().append(" ON ");
         return (T) this;
     }
     
+    @Override
     public T ON(SelectOp selectOp) {
         op().append(" ON (");
         op().append(selectOp);
@@ -941,6 +1018,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to JOIN ON
      * @return Returns this object
      */
+    @Override
     public T ON(Column column) {
         op().append(" ON ");
         op().append(column);
@@ -952,6 +1030,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL ANY clause
      * @return Returns this object
      */
+    @Override
     public T ANY() {
         op().append(" ANY ");
         return (T) this;
@@ -961,6 +1040,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL SOME clause. It's an alias for ANY
      * @return Returns this object
      */
+    @Override
     public T SOME(){
         op().append(" SOME ");
         return (T) this;
@@ -971,6 +1051,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      *
      * @return Returns this object
      */
+    @Override
     public T SUBSTRING(){
         op().append(" SUBSTRING ");
         return (T) this;
@@ -980,6 +1061,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL CHARINDEX() function
      * @return Returns this object
      */
+    @Override
     public T CHARINDEX(){
         op().append(" CHARINDEX ");
         return (T) this;
@@ -989,6 +1071,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * SQL SELECT clause
      * @return Returns this object
      */
+    @Override
     public T SELECT() {
         op().append("SELECT ");
         return (T) this;
@@ -999,6 +1082,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param columns List of columns to SELECT
      * @return Returns this object
      */
+    @Override
     public T SELECT(List<Column<?>> columns) {
         op().append("SELECT ");
         int len = columns.size();
@@ -1017,6 +1101,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param column The COLUMN to SELECT
      * @return Returns this object
      */
+    @Override
     public T SELECT(Column<?> column) {
         op().append("SELECT ");
         op().append(column);
@@ -1028,6 +1113,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
      * @param index The index name
      * @return Returns this object
      */
+    @Override
     public T WITHINDEX(Index index) {
         op().append(" WITH(");
         op().append("INDEX(");
@@ -1036,6 +1122,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> {
         return (T) this;
     }
     
+    @Override
     public T WITH(String alias) {
         op().append("WITH ");
         op().append(alias);

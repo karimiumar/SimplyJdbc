@@ -35,7 +35,7 @@ public abstract class AbstractPersistenceService<T> {
     }
 
     protected void getMappedResult(ResultSetMapper<T> rowMapper, List<T> result, AbstractOp sql) {
-        try(PreparedStatement ps = prepareAndFill(sql);
+        try(PreparedStatement ps = createPreparedStatement(sql);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
                 result.add(rowMapper.map(rs));
@@ -47,7 +47,7 @@ public abstract class AbstractPersistenceService<T> {
 
     int getSavedResult(AbstractOp sql) {
         int key = -1;
-        try(PreparedStatement ps = prepareAndFill(sql)){
+        try(PreparedStatement ps = createPreparedStatement(sql)){
             ps.executeUpdate();
             try(ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -62,9 +62,9 @@ public abstract class AbstractPersistenceService<T> {
         }
     }
 
-    private PreparedStatement prepareAndFill(AbstractOp sql) throws SQLException {
+    private PreparedStatement createPreparedStatement(AbstractOp sql) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql.getSQL(), Statement.RETURN_GENERATED_KEYS);
-        sql.fill(ps);
+        sql.setParametersOfPreparedStatement(ps);
         return ps;
     }
 }
