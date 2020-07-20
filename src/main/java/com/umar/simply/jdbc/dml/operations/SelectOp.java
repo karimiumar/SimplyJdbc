@@ -5,6 +5,10 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents a database's <b>SELECT</b> operation
+ * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
+ */
 public class SelectOp extends AbstractOp<SelectOp> {
 
     private final StringBuilder sb = new StringBuilder();
@@ -21,7 +25,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
     /**
      * SQL all. Its used in conjunction with SELECT operation to return all the columns
      *
-     * @return Returns this object
+     * @return Returns {@link SelectOp}
      */
     public SelectOp all() {
         op().append("*");
@@ -44,7 +48,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * The values to work GROUP_WITH AS actual parameters
      *
      * @param values The COLUMN values to fill
-     * @return Returns this object
+     * @return Returns {@link SelectOp}
      */
     public SelectOp values(ColumnValue<?>... values) {
         int len = values.length;
@@ -64,7 +68,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * SQL Columns to be selected OR worked GROUP_WITH
      *
      * @param columns The columns to fetch
-     * @return Returns this object
+     * @return Returns {@link SelectOp}
      */
     public SelectOp column(List<Column<?>> columns) {
         int len = columns.size();
@@ -82,7 +86,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * SQL Columns to be selected OR worked GROUP_WITH
      *
      * @param column The columns to fetch
-     * @return Returns this object
+     * @return Returns {@link SelectOp}
      */
     public SelectOp column(Column<?> column) {
         op().append(column);
@@ -93,7 +97,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * SQL Columns to be selected OR worked GROUP_WITH
      *
      * @param column The columns to fetch
-     * @return Returns this object
+     * @return Returns {@link SelectOp}
      */
     public SelectOp COLUMN(String column) {
         op().append(column);
@@ -102,7 +106,9 @@ public class SelectOp extends AbstractOp<SelectOp> {
 
     @Override
     public String getSQL() {
-        return op().toString().trim();
+        final String sql = op().toString().trim();
+        op().setLength(0);
+        return sql;
     }
 
     @Override

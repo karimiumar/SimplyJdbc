@@ -78,7 +78,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * The NOT EQUAL operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T NE() {
@@ -89,7 +89,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * The NOT EQUAL operator
      * @param condition The condition to suffix <> operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T NE(Column<?> condition) {
@@ -100,7 +100,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL NOT statement
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T NOT() {
@@ -119,7 +119,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL IS statement
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T IS() {
@@ -129,7 +129,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * The SQL NULL operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T NULL(){
@@ -139,7 +139,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL AND statement
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T AND() {
@@ -150,7 +150,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL AND statement
      * @param column The COLUMN to append AND clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T AND(Column<?> column) {
@@ -176,7 +176,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL OR statement
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T OR() {
@@ -187,7 +187,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL UPPER clause
      *
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T UPPER() {
@@ -197,7 +197,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL HAVING clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T HAVING() {
@@ -207,7 +207,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL FROM clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      * @param table The TABLE to use with FROM clause
      */
     @Override
@@ -219,7 +219,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL FROM clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      * @param table The TABLE to use with FROM clause
      */
     @Override
@@ -231,7 +231,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     
     /**
      * SQL FROM clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      * @param tables The tables to use with FROM clause
      */
     @Override
@@ -250,7 +250,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL WHERE clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T WHERE() {
@@ -261,7 +261,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL WHERE clause. Use this for the scenario <code>WHERE (SELECT AVG(T) FROM X) AS AVG </code>
      * @param op The INNER query to use
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T WHERE(SelectOp op) {
@@ -277,7 +277,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL WHERE clause
      * @param column The COLUMN to append with WHERE clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T WHERE(Column column) {
@@ -289,7 +289,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL TABLE to be worked with
      * @param table The TABLE name
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T TABLE(String table) {
@@ -300,7 +300,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL TABLE to be worked with
      * @param table The TABLE name
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T TABLE(Table table) {
@@ -311,7 +311,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL YEAR() function
      * @param column The COLUMN to use with YEAR()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T YEAR(Column column) {
@@ -323,7 +323,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL DISTINCT clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T DISTINCT() {
@@ -334,7 +334,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL DISTINCT clause
      * @param column The COLUMN to use with DISTINCT operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T DISTINCT(String column) {
@@ -346,7 +346,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL DISTINCT clause
      * @param column The COLUMN to use with DISTINCT operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T DISTINCT(Column column) {
@@ -358,7 +358,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL COUNT() function
      * @param column The COLUMN to use with COUNT()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T COUNT(String column) {
@@ -371,7 +371,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL COUNT() function
      * @param column The COLUMN to use with COUNT()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T COUNT(Column column) {
@@ -384,7 +384,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL COUNT() function
      * @param op T type operation
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T COUNT(SelectOp op) {
@@ -400,7 +400,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL MAX() function
      * @param column The COLUMN to use with MAX()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T MAX(Column column) {
@@ -413,7 +413,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL MIN() function
      * @param column The COLUMN to use with MIN()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T MIN(Column column) {
@@ -426,7 +426,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL AVG() function
      * @param column The COLUMN to use with AVG()
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T AVG(Column column) {
@@ -439,7 +439,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL SUM() function. 'SUM' function is appended around the column
      * @param column The COLUMN to SUM
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SUM(Column column) {
@@ -468,7 +468,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * The SQL BETWEEN clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T BETWEEN() {
@@ -479,7 +479,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      * SQL BETWEEN clause.
      *
      * @param columnValues The ColumnValue. Contains COLUMN name AND COLUMN value
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T BETWEEN(List<ColumnValue<?>> columnValues) {
@@ -499,7 +499,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL BETWEEN clause. 'BETWEEN' operator is appended around the SQL operation
      * @param op The SQL operation to wrap IN 'BETWEEN' clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T BETWEEN(SelectOp op) {
@@ -515,7 +515,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL LIKE clause. 'LIKE' operator is appended followed by ''pattern''.
      * @param pattern The String pattern to look for.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LIKE(String pattern) {
@@ -529,7 +529,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      * The SQL IN() function. The 'IN' function is appended followed by the SQL operation
      * Use it for the scenario <code>WHERE first_name IN (SELECT first_name FROM customer)</code>
      * @param op The SQL operation to wrap IN 'IN' function
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T IN(SelectOp op) {
@@ -545,7 +545,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * The SQL IN() function.The 'IN' takes a list of ColumnValue
      * @param columnValues The ColumnValue for SQL IN clause
-     *@return Returns this object
+     *@return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T IN(List<ColumnValue<?>> columnValues) {
@@ -566,7 +566,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * This method can be used when creating IN queries from JPA
      * @param objects The objects
-     * @return Returns this
+     * @return Returns an instance of {@link AbstractOp}
      */
     @Override
     public T IN(Object... objects){
@@ -584,10 +584,23 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     }
 
     /**
+     * This is specifically created for Hibernate IN where
+     * Hibernate/JPA only require IN as String without any parentheses ()
+     *
+     * @param operands The operands to use
+     * @return Returns an instance of {@link AbstractOp}
+     */
+    public T IN(String operands) {
+        op().append(" IN ");
+        op().append(operands);
+        return (T) this;
+    }
+
+    /**
      * MySQL LIMIT Function
      *
      * @param n The int value of LIMIT
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LIMIT(int n) {
@@ -601,7 +614,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      * MySQL OffSet Function
      *
      * @param n The int value to pass IN OFFSET
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T OFFSET(int n) {
@@ -614,7 +627,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL AS clause
      * @param alias The alias to use
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T AS(String alias) {
@@ -636,7 +649,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL ORDER BY clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ORDERBY() {
@@ -647,7 +660,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL ORDER BY clause
      * @param column The COLUMN ON which ORDER BY to apply
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ORDERBY(Column column) {
@@ -658,7 +671,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL ASC clause for ascending order
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ASC() {
@@ -668,7 +681,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL DESC clause for descending order
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T DESC() {
@@ -678,7 +691,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL GREATER THAN clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GT() {
@@ -689,7 +702,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL GREATER THAN clause.
      * @param value
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GT(ColumnValue value) {
@@ -701,7 +714,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL LESS THAN clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LT() {
@@ -712,7 +725,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL LESS THAN clause.
      * @param value The ColumnValue
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LT(ColumnValue value) {
@@ -724,7 +737,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL GREATER OR EQUAL clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GE(){
@@ -735,7 +748,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL GREATER OR EQUAL TO clause.
      * @param value The ColumnValue
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GE(ColumnValue value) {
@@ -749,7 +762,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL LESS OR EQUAL TO clause.
      * @param value The ColumnValue
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LE(ColumnValue value) {
@@ -762,7 +775,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL LESS OR EQUAL clause.
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LE() {
@@ -773,7 +786,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL = operator. An '=' symbol is appended by this method followed by the 'condition'.
      * @param condition The condition to append with = operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T EQ(String condition) {
@@ -785,7 +798,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL = operator. An '=' symbol is appended by this method followed by the 'condition'.
      * @param condition The condition to append with = operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T EQ(Column condition) {
@@ -797,7 +810,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL = operator. An '=' symbol is appended by this method.<br>
      *
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T EQ() {
@@ -808,7 +821,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL GROUP BY clause. 'GROUP BY' operator is appended followed by columns to group.
      * @param columns The columns to group together
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      *
      */
     @Override
@@ -828,7 +841,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL GROUP BY clause. 'GROUP BY' operator is appended followed by columns to group.
      * @param column The columns to group together
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      *
      */
     @Override
@@ -850,7 +863,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      *   SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID).GROUP_WITH(asList(CUSTOMER_COUNTRY,CUSTOMER_CITY)).FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
      *   </code>
      * @param columns The columns to use
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GROUP_WITH(List<Column<?>> columns) {
@@ -875,7 +888,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      *   SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID).GROUP_WITH(CUSTOMER_COUNTRY).FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
      *   </code>
      * @param column The columns to use
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T GROUP_WITH(Column<?> column) {
@@ -887,7 +900,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * MySQL USING operator. 'USING' operator is appended around the 'column'
      * @param column The COLUMN
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T USING(String column) {
@@ -900,7 +913,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * MySQL USING operator. 'USING' operator is appended around the 'column'
      * @param column The COLUMN
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T USING(Column column) {
@@ -912,7 +925,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * MySQL MINUS operator
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T MINUS(){
@@ -922,7 +935,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL INNER clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T INNER(){
@@ -933,7 +946,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      *
      * SQL JOIN operation
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T JOIN() {
@@ -944,7 +957,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL JOIN operation INNER SELECT query
      * @param query The INNER query to use with JOIN
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T JOIN(SelectOp query) {
@@ -956,7 +969,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL JOIN operation
      * @param table The JOIN TABLE 
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T JOIN(Table table) {
@@ -967,7 +980,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL LEFT JOIN clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T LEFT() {
@@ -977,7 +990,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL RIGHT JOIN clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T RIGHT() {
@@ -987,7 +1000,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL UNION clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T UNION() {
@@ -997,7 +1010,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL ON clause used IN conjunction with JOIN
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ON() {
@@ -1016,7 +1029,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL ON clause used IN conjunction with JOIN
      * @param column The COLUMN to JOIN ON
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ON(Column column) {
@@ -1028,7 +1041,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL ANY clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T ANY() {
@@ -1038,7 +1051,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL SOME clause. It's an alias for ANY
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SOME(){
@@ -1049,7 +1062,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL SUBSTRING function
      *
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SUBSTRING(){
@@ -1059,7 +1072,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL CHARINDEX() function
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T CHARINDEX(){
@@ -1069,7 +1082,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
 
     /**
      * SQL SELECT clause
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SELECT() {
@@ -1080,7 +1093,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL SELECT clause
      * @param columns List of columns to SELECT
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SELECT(List<Column<?>> columns) {
@@ -1099,7 +1112,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL SELECT clause
      * @param column The COLUMN to SELECT
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T SELECT(Column<?> column) {
@@ -1111,7 +1124,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
     /**
      * SQL WITH INDEX clause
      * @param index The index name
-     * @return Returns this object
+     * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
     public T WITHINDEX(Index index) {

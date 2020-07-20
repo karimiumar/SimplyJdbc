@@ -583,4 +583,11 @@ public class SqlQueryTest {
         Assertions.assertEquals(result,expected);
         Assertions.assertEquals(2,params.size());
     }
+
+    @Test
+    public void givenParametersShouldGenerateValidInClauseForJPA() {
+        SelectOp sql = create().SELECT().COLUMN("rule").FROM("BusinessRule rule").WHERE().COLUMN("rule.type").IN(":operands");
+        String result = sql.getSQL();
+        Assertions.assertEquals("SELECT rule FROM BusinessRule rule WHERE rule.type IN :operands", result);
+    }
 }

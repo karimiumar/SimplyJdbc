@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Represents a database's <b>UPDATE</b> operation
- * @author umar
+ * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
 public class UpdateOp extends AbstractOp<UpdateOp> {
 
@@ -18,6 +18,12 @@ public class UpdateOp extends AbstractOp<UpdateOp> {
         op().append("UPDATE ");
     }
 
+    /**
+     * The SQL SET clause used in conjunction with UPDATE operation
+     *
+     * @param columnValues The {@link ColumnValue} objects
+     * @return Returns {@link UpdateOp}
+     */
     public UpdateOp SET(ColumnValue<?> ... columnValues){
         int len = columnValues.length;
         int cnt = 1;
@@ -34,7 +40,9 @@ public class UpdateOp extends AbstractOp<UpdateOp> {
     }
 
     public String getSQL() {
-        return op().toString().trim();
+        final String sql = op().toString().trim();
+        op().setLength(0);
+        return sql;
     }
 
     @Override

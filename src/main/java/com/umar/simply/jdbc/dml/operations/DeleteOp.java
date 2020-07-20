@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Represents a database's <b>DELETE</b> operation
+ * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
 public class DeleteOp extends AbstractOp<DeleteOp> {
 
@@ -20,6 +21,12 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
         return new DeleteOp();
     }
 
+    /**
+     * The DELETE FROM Table SQL Clause
+     *
+     * @param table The table name
+     * @return Returns {@link DeleteOp}
+     */
     public DeleteOp DELETE_FROM(String table) {
         op().append("DELETE FROM ");
         op().append(table);
@@ -27,6 +34,12 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
         return this;
     }
 
+    /**
+     * The DELETE FROM Table SQL clause
+     *
+     * @param table The {@link Table}
+     * @return Returns {@link DeleteOp}
+     */
     public DeleteOp DELETE_FROM(Table table) {
         op().append("DELETE FROM ");
         op().append(table);
@@ -50,7 +63,9 @@ public class DeleteOp extends AbstractOp<DeleteOp> {
 
     @Override
     public String getSQL() {
-        return op().toString().trim();
+        final String sql = op().toString().trim();
+        op().setLength(0);
+        return sql;
     }
 
     @Override

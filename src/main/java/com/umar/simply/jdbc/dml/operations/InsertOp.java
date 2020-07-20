@@ -6,6 +6,10 @@ import com.umar.simply.jdbc.meta.Table;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents a database's <b>INSERT</b> operation
+ * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
+ */
 public class InsertOp extends AbstractOp<InsertOp> {
     private final StringBuilder sb = new StringBuilder();
     private final List<ColumnValue<?>> values = new LinkedList<>();
@@ -20,7 +24,8 @@ public class InsertOp extends AbstractOp<InsertOp> {
     /**
      * The INSERT INTO operation.
      * @param table The TABLE name to use for INSERT operation
-     * @return Returns this object
+     *
+     * @return Returns {@link InsertOp}
      */
     public InsertOp INTO_TABLE(String table) {
         op().append("INSERT INTO ");
@@ -30,8 +35,9 @@ public class InsertOp extends AbstractOp<InsertOp> {
 
     /**
      * The INSERT INTO operation.
-     * @param table The TABLE name to use for INSERT operation
-     * @return Returns this object
+     * @param table The {@link Table} to use for INSERT operation
+     *
+     * @return Returns {@link InsertOp}
      */
     public InsertOp INTO_TABLE(Table table) {
         op().append("INSERT INTO ");
@@ -39,6 +45,12 @@ public class InsertOp extends AbstractOp<InsertOp> {
         return this;
     }
 
+    /**
+     * The SQL VALUES Clause used in conjunction with INSERT operation.
+     *
+     * @param columnValues A list of {@link ColumnValue}
+     * @return Returns {@link InsertOp}
+     */
     public InsertOp VALUES(List<ColumnValue<?>> columnValues) {
         int len = columnValues.size();
         int cnt = 1;
@@ -66,7 +78,9 @@ public class InsertOp extends AbstractOp<InsertOp> {
 
     @Override
     public String getSQL() {
-        return op().toString().trim();
+        final String sql = op().toString().trim();
+        op().setLength(0);
+        return sql;
     }
 
     @Override
