@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.dml.operations;
 
+import com.umar.simply.jdbc.dml.operations.api.UpdateFunction;
 import com.umar.simply.jdbc.meta.ColumnValue;
 
 import java.util.LinkedList;
@@ -9,7 +10,7 @@ import java.util.List;
  * Represents a database's <b>UPDATE</b> operation
  * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
-public class UpdateOp extends AbstractOp<UpdateOp> {
+public class UpdateOp extends AbstractOp<UpdateOp> implements UpdateFunction {
 
     private final StringBuilder sb = new StringBuilder();
     private final List<ColumnValue<?>> values = new LinkedList<>();

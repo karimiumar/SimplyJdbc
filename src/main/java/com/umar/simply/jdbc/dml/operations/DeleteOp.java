@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.dml.operations;
 
+import com.umar.simply.jdbc.dml.operations.api.DeleteFunction;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Represents a database's <b>DELETE</b> operation
  * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
-public class DeleteOp extends AbstractOp<DeleteOp> {
+public class DeleteOp extends AbstractOp<DeleteOp> implements DeleteFunction {
 
     private final StringBuilder sb = new StringBuilder();
     private final List<ColumnValue<?>> values = new LinkedList<>();

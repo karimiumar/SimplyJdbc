@@ -29,6 +29,8 @@ import java.sql.SQLException;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import static java.util.Arrays.asList;
 
+import com.umar.simply.jdbc.dml.operations.api.DeleteFunction;
+import com.umar.simply.jdbc.dml.operations.api.InsertFunction;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -45,7 +47,7 @@ public class InsertOpJdbcTest  {
 
     @AfterAll
     public static void clean(){
-        DeleteOp operation = DeleteOp.create();
+        DeleteFunction operation = DeleteOp.create();
         operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(set(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
@@ -57,7 +59,7 @@ public class InsertOpJdbcTest  {
 
     @Test
     public void testInsertOp() {
-        InsertOp insert = InsertOp.create();
+        InsertFunction insert = InsertOp.create();
         insert.INTO_TABLE(TBL_PERSON).VALUES(asList(set(PERSON_FIRST_NAME,"Tina"), set(PERSON_LAST_NAME,"Turner"), set(PERSON_EMAIL,"tina@rediffmail.com"), set(PERSON_IS_ADULT, true)));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {

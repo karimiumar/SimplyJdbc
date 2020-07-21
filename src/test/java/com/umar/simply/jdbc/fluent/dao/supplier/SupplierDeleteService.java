@@ -1,6 +1,7 @@
 package com.umar.simply.jdbc.fluent.dao.supplier;
 
 import com.umar.simply.jdbc.dml.operations.SelectOp;
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.DeletePersistenceService;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import com.umar.simply.jdbc.fluent.dao.supplier.contract.FluentSupplierDeleteService;
@@ -26,7 +27,7 @@ public class SupplierDeleteService implements FluentSupplierDeleteService {
     }
 
     @Override
-    public SupplierDeleteService where(SelectOp op) {
+    public SupplierDeleteService where(SelectFunction op) {
         dps.where(op);
         return this;
     }

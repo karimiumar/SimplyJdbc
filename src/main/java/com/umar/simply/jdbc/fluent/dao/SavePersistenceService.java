@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao;
 
+import com.umar.simply.jdbc.dml.operations.api.InsertFunction;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentSavePersistenceService;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
@@ -14,7 +15,7 @@ import com.umar.simply.jdbc.ResultSetMapper;
 
 public class SavePersistenceService<T> extends AbstractPersistenceService<T> implements FluentSavePersistenceService<T> {
 
-    private final InsertOp sql = InsertOp.create();
+    private final InsertFunction sql = InsertOp.create();
     private ResultSetMapper<T> rowMapper;
     private Table table;
 
@@ -39,7 +40,7 @@ public class SavePersistenceService<T> extends AbstractPersistenceService<T> imp
     public T execute() {
         int id = getSavedResult(sql);
         Optional<T> optional = findById(table,rowMapper,set(table.getIdColumn(),id));
-        return optional.get();
+        return optional.orElseThrow(()->new RuntimeException(String.format("Unable to find a record with id: %d in table:%s", id, table)));
     }
 
     @Override

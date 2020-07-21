@@ -22,7 +22,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
 
     @Override
     public List<Product> listProductsSuppliedBy(Supplier supplier) {
-        return (List<Product>) SELECT().ALL()
+        return SELECT().ALL()
                 .FROM(TBL_PRODUCT).WHERE()
                 .COLUMN(PRODUCT_SUPPLIERID_COL).EQ(set(supplier.id))
                 .using(PRODUCT_ROW_MAPPER)
@@ -31,7 +31,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
 
     @Override
     public List<Supplier> listSuppliersOfProduct(Product queryProduct) {
-        return (List<Supplier>) SELECT().ALL()
+        return SELECT().ALL()
                 .FROM(TBL_SUPPLIER)
                 .JOIN().TABLE(TBL_PRODUCT)
                 .ON(SUPP_ID).EQ(set(queryProduct.supplierId))
@@ -44,16 +44,14 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
         List<ProductTable.ProductSupplier> productSuppliers = listAllProductsOfSuppliers_Order_By_Supplier();
         SortedMap<Supplier, List<Product>> productsSupplierwiseMap = new TreeMap<>(Comparator.comparingInt((Supplier o) -> o.id));
         Set<Supplier> suppliers = new HashSet<>();
-        for(int i=0; i<productSuppliers.size(); i++) {
-            ProductTable.ProductSupplier ps = productSuppliers.get(i);
+        for (ProductSupplier ps : productSuppliers) {
             Supplier supplier = ps.getSupplier();
             suppliers.add(supplier);
         }
-        for(int i=0; i<productSuppliers.size(); i++) {
-            ProductTable.ProductSupplier ps = productSuppliers.get(i);
+        for (ProductSupplier ps : productSuppliers) {
             Product product = ps.getProduct();
-            suppliers.forEach((supplier) ->  {
-                if(supplier.id == product.supplierId) {
+            suppliers.forEach((supplier) -> {
+                if (supplier.id == product.supplierId) {
                     supplier.add(product);
                 }
             });
@@ -66,7 +64,7 @@ public class ProductSupplierQueryService extends QueryService implements FluentP
     }
     
     private List<ProductTable.ProductSupplier> listAllProductsOfSuppliers_Order_By_Supplier() {
-        return (List<ProductSupplier>) SELECT(asList(
+        return SELECT(asList(
                 PRD_ID_ALIAS
                 ,PRD_NAME_ALIAS
                 ,PRD_UNIT_PRICE_ALIAS

@@ -1,5 +1,7 @@
-package com.umar.simply.jdbc.dml.operations;
+package com.umar.simply.jdbc.dml.operations.api;
 
+import com.umar.simply.jdbc.dml.operations.AbstractOp;
+import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Index;
@@ -16,6 +18,7 @@ public interface SqlFunctions<T extends AbstractOp<T>> {
 
     String getSQL();
 
+    List<ColumnValue<?>> getValues();
     /**
      * Fills the PreparedStatement object with values
      *
@@ -29,7 +32,7 @@ public interface SqlFunctions<T extends AbstractOp<T>> {
     /**
      * A typesafe method for SQL operation which takes the form
      * <code>WHERE column1 = x AND column2 = y AND column3 = 'abc'</code>
- Appends the COLUMN name suffixed by =? to a PreparedStatement object.
+     * Appends the COLUMN name suffixed by =? to a PreparedStatement object.
      *
      * @param columnValues The ColumnValue objects
      * @return Returns the current object
@@ -137,7 +140,7 @@ public interface SqlFunctions<T extends AbstractOp<T>> {
      * @param op The INNER query to use
      * @return Returns an instance of {@link AbstractOp} object
      */
-    T WHERE(SelectOp op);
+    T WHERE(SelectFunction op);
 
     /**
      * SQL WHERE clause

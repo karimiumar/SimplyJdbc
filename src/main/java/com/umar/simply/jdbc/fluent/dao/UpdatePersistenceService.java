@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao;
 
+import com.umar.simply.jdbc.dml.operations.api.UpdateFunction;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentUpdatePersistenceService;
 import com.umar.simply.jdbc.dml.operations.UpdateOp;
 import com.umar.simply.jdbc.meta.ColumnValue;
@@ -14,7 +15,7 @@ import com.umar.simply.jdbc.ResultSetMapper;
 
 public class UpdatePersistenceService<T> extends AbstractPersistenceService<T> implements FluentUpdatePersistenceService<T> {
 
-    private final UpdateOp sql = new UpdateOp();
+    private final UpdateFunction sql = new UpdateOp();
     private ResultSetMapper<T> rowMapper;
     private int id;
     private Table table;

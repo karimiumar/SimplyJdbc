@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentQueryService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
@@ -9,13 +10,12 @@ import com.umar.simply.jdbc.meta.Table;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import com.umar.simply.jdbc.ResultSetMapper;
 
 public class QueryService<T> extends AbstractPersistenceService<T> implements FluentQueryService<T> {
 
-    private final SelectOp sql = SelectOp.create();
+    private final SelectFunction sql = SelectOp.create();
     protected ResultSetMapper<T> rowMapper;
 
     public QueryService(final Connection connection) {
@@ -24,13 +24,13 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
 
     @Override
     public QueryService<T> ALL() {
-        sql.all();
+        sql.COLUMN("*");
         return this;
     }
     
     @Override
     public QueryService<T> ALL(List<String> aliases) {
-        sql.all(aliases);
+        sql.ALL(aliases);
         return this;
     }
 
@@ -54,19 +54,19 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
 
     @Override
     public QueryService<T> VALUES(List<ColumnValue<?>> columnValues) {
-        sql.values(getValuesArray(columnValues));
+        sql.VALUES(getValuesArray(columnValues));
         return this;
     }
 
     @Override
     public QueryService<T> COLUMN(List<Column<?>> columns) {
-        sql.column(columns);
+        sql.COLUMN(columns);
         return this;
     }
 
     @Override
     public QueryService<T> COLUMN(Column<T> column) {
-        sql.column(column);
+        sql.COLUMN(column);
         return this;
     }
 
@@ -467,7 +467,7 @@ public class QueryService<T> extends AbstractPersistenceService<T> implements Fl
     }
 
     @Override
-    public SelectOp getSQL() {
+    public SelectFunction getSQL() {
         return sql;
     }
 

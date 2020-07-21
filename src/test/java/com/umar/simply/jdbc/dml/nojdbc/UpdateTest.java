@@ -6,6 +6,8 @@ import com.umar.simply.jdbc.dml.operations.UpdateOp;
 import static com.umar.simply.jdbc.meta.ColumnValue.set;
 import static com.umar.simply.jdbc.fluent.dao.person.PersonTable.*;
 import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.OrderTable.*;
+
+import com.umar.simply.jdbc.dml.operations.api.UpdateFunction;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +17,7 @@ public class UpdateTest {
 
     @Test
     public void combineAndConditionTest(){
-        UpdateOp update = new UpdateOp();
+        UpdateFunction update = new UpdateOp();
         update.TABLE("PERSON").SET(set(PERSON_FIRST_NAME,"Eva"))
                 .WHERE().NOT().EQ(set(PERSON_ID,1))
                 .AND(SelectOp.create().EQ(set(PERSON_IS_ADULT,true))
@@ -24,27 +26,27 @@ public class UpdateTest {
         String expected = "UPDATE PERSON SET firstname =? WHERE  NOT id =?  AND (adult =?  OR email =? )";
         System.out.println(update.getSQL());
         List<ColumnValue<?>> params = update.getValues();
-        Assertions.assertTrue(params.size() == 4);
+        Assertions.assertEquals(4, params.size());
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
     }
 
     @Test
     public void combineAndConditionWithValuesTest(){
-        UpdateOp update = new UpdateOp();
+        UpdateFunction update = new UpdateOp();
         update.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Eva")).WHERE().NOT().EQ(set(PERSON_ID,123))
                 .AND(SelectOp.create().EQ(set(PERSON_IS_ADULT,false)).OR().EQ(set(PERSON_EMAIL,"tina@123.com")));
         String result = update.getSQL();
         String expected = "UPDATE person SET firstname =? WHERE  NOT id =?  AND (adult =?  OR email =? )";
         List<ColumnValue<?>> params = update.getValues();
-        Assertions.assertTrue(params.size() == 4);
+        Assertions.assertEquals(4, params.size());
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
     }
 
     @Test
     public void complexOrConditionTest() {
-        UpdateOp update = new UpdateOp();
+        UpdateFunction update = new UpdateOp();
         update.TABLE(TBL_ORDERS).SET(set(ORDER_CUSTOMERID,44))
                 .WHERE()
                 .NOT(SelectOp.create()
@@ -56,14 +58,14 @@ public class UpdateTest {
         String expected = "UPDATE orders SET customer_id =? WHERE  NOT( total_amount >= ? AND total_amount <= ? )";
         System.out.println(result);
         List<ColumnValue<?>> params = update.getValues();
-        Assertions.assertTrue(params.size() == 3);
+        Assertions.assertEquals(3, params.size());
         System.out.println(update.getSQL());
         Assertions.assertEquals(result, expected);
     }
 
     @Test
     public void complexConditionTest() {
-        UpdateOp update = new UpdateOp();
+        UpdateFunction update = new UpdateOp();
         update.TABLE(TBL_PERSON).SET(set(PERSON_CITY, "Dusseldorf"))
                 .WHERE()
                 .NOT(SelectOp.create()
@@ -74,7 +76,7 @@ public class UpdateTest {
         System.out.println(result);
         Assertions.assertEquals(result, expected);
         List<ColumnValue<?>> params = update.getValues();
-        Assertions.assertTrue(params.size() == 2);
+        Assertions.assertEquals(2, params.size());
         System.out.println(update.getSQL());
     }
 

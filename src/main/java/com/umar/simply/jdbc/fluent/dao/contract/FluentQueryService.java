@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao.contract;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.QueryService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 import com.umar.simply.jdbc.meta.Column;
@@ -89,5 +90,5 @@ public interface FluentQueryService<T> {
     QueryService<T> WITH(String alias);
     List<?> execute();
     QueryService<T> using(ResultSetMapper<T> rowMapper);
-    SelectOp getSQL();
+    SelectFunction getSQL();
 }

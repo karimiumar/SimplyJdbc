@@ -30,8 +30,7 @@ public class OrderSaveService implements FluentOrderSaveService {
     @Override
     public Order execute() {
         SavePersistenceService<Order> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Order saved = sps.save(TBL_ORDERS).withValues(values).using(ORDER_ROW_MAPPER).execute();
-        return saved;
+        return sps.save(TBL_ORDERS).withValues(values).using(ORDER_ROW_MAPPER).execute();
     }
     
 }

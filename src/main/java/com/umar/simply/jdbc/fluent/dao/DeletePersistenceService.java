@@ -1,5 +1,7 @@
 package com.umar.simply.jdbc.fluent.dao;
 
+import com.umar.simply.jdbc.dml.operations.api.DeleteFunction;
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.contract.FluentDeletePersistenceService;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
@@ -12,7 +14,7 @@ import com.umar.simply.jdbc.ResultSetMapper;
 
 public class DeletePersistenceService<T> extends AbstractPersistenceService<T> implements FluentDeletePersistenceService<T> {
 
-    DeleteOp sql = DeleteOp.create();
+    DeleteFunction sql = DeleteOp.create();
 
     public DeletePersistenceService(final Connection connection) {
         super(connection);
@@ -25,7 +27,7 @@ public class DeletePersistenceService<T> extends AbstractPersistenceService<T> i
     }
 
     @Override
-    public DeletePersistenceService<T> where(SelectOp op) {
+    public DeletePersistenceService<T> where(SelectFunction op) {
         sql.WHERE(op);
         return this;
     }

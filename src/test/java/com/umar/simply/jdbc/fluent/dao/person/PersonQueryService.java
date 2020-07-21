@@ -19,8 +19,7 @@ public class PersonQueryService extends QueryService implements FluentPersonQuer
 
     @Override
     public List<Person> people() {
-        List<Person> people = SELECT().ALL().FROM(TBL_PERSON).using(PERSON_ROW_MAPPER).execute();
-        return people;
+        return (List<Person>) SELECT().ALL().FROM(TBL_PERSON).using(PERSON_ROW_MAPPER).execute();
     }
     
     @Override
@@ -32,7 +31,7 @@ public class PersonQueryService extends QueryService implements FluentPersonQuer
     public List<Person> findByName(String name) {
         Objects.requireNonNull(name, "parameter <name> is required");
         List<Person> result = Arrays.asList();
-        if(null == name || name.equals("") || name.equals(" ")) return result;
+        if(name.equals("") || name.equals(" ")) return result;
         String [] names = name.trim().split("\\s");     
         if(names.length > 1) {
            return searchByLastOrFirstNames(names);
@@ -60,7 +59,6 @@ public class PersonQueryService extends QueryService implements FluentPersonQuer
     }
     
     private List<Person> searchByLastOrFirstNames(String ... names) {
-        List<Person> result = SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("%"+names[0]+"%").OR().COLUMN(PERSON_LAST_NAME).LIKE("%"+names[1]+"%").using(PERSON_ROW_MAPPER).execute();
-        return result;
+        return (List<Person>) SELECT().ALL().FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("%"+names[0]+"%").OR().COLUMN(PERSON_LAST_NAME).LIKE("%"+names[1]+"%").using(PERSON_ROW_MAPPER).execute();
     }
 }

@@ -31,8 +31,7 @@ public class SupplierSaveService implements FluentSupplierSaveService {
     @Override
     public Supplier execute() {
        SavePersistenceService<Supplier> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-       Supplier saved = sps.save(TBL_SUPPLIER).withValues(newValues).using(SUPPLIER_ROW_MAPPER).execute();
-       return saved;
+        return sps.save(TBL_SUPPLIER).withValues(newValues).using(SUPPLIER_ROW_MAPPER).execute();
     }
     
 }

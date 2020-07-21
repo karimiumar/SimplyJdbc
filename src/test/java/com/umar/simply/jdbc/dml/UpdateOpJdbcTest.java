@@ -4,6 +4,9 @@ import com.umar.simply.jdbc.ddl.CreateTablesInH2db;
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import com.umar.simply.jdbc.dml.operations.InsertOp;
 import com.umar.simply.jdbc.dml.operations.UpdateOp;
+import com.umar.simply.jdbc.dml.operations.api.DeleteFunction;
+import com.umar.simply.jdbc.dml.operations.api.InsertFunction;
+import com.umar.simply.jdbc.dml.operations.api.UpdateFunction;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import com.umar.simply.jdbc.meta.ColumnValue;
 
@@ -41,7 +44,7 @@ public class UpdateOpJdbcTest  {
     @MethodSource("people")
     @Order(1)
     public void insertPeople(ColumnValue<String> fname, ColumnValue<String> lname, ColumnValue<String> email, ColumnValue<Boolean> isAdult){
-        InsertOp insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(fname,lname, email, isAdult));
+        InsertFunction insert = InsertOp.create().INTO_TABLE(TBL_PERSON).VALUES(asList(fname,lname, email, isAdult));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert.getSQL())) {
             insert.setParametersOfPreparedStatement(ps).executeUpdate();
@@ -52,7 +55,7 @@ public class UpdateOpJdbcTest  {
 
     @AfterAll
     public static void clean() {
-        DeleteOp operation = DeleteOp.create();
+        DeleteFunction operation = DeleteOp.create();
         operation.DELETE_FROM(TBL_PERSON).WHERE().anyColumnValues(eq(PERSON_FIRST_NAME,"Tina"), eq(PERSON_FIRST_NAME,"Angelina"), eq(PERSON_FIRST_NAME,"Eva"), eq(PERSON_LAST_NAME,"Ali Karimi"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL())) {
@@ -65,7 +68,7 @@ public class UpdateOpJdbcTest  {
     @Test
     @Order(2)
     public void updateWhere() {
-        UpdateOp operation = new UpdateOp();
+        UpdateFunction operation = new UpdateOp();
         operation.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Mohammad"),set(PERSON_LAST_NAME,"Ali Karimi")).WHERE().EQ(eq(PERSON_FIRST_NAME,"Tina"));
         try (Connection connection = JdbcUtilService.getConnection();
              PreparedStatement ps = connection.prepareStatement(operation.getSQL(), Statement.RETURN_GENERATED_KEYS)) {
@@ -86,7 +89,7 @@ public class UpdateOpJdbcTest  {
     @Test
     @Order(3)
     public void updateWhereAnd() {
-        UpdateOp update = new UpdateOp();
+        UpdateFunction update = new UpdateOp();
         update.TABLE(TBL_PERSON).SET(set(PERSON_FIRST_NAME,"Mohammad Umar"), set(PERSON_LAST_NAME,"Ali Karimi"), set(PERSON_EMAIL,"karimiumar@gmail.com"))
                 .WHERE().EQ(eq(PERSON_FIRST_NAME,"Mohammad"), eq(PERSON_IS_ADULT,true), eq(PERSON_EMAIL,"tina@rediffmail.com"));
         try (Connection connection = JdbcUtilService.getConnection();

@@ -2,6 +2,8 @@ package com.umar.simply.jdbc.dml.nojdbc;
 
 import com.umar.simply.jdbc.dml.operations.DeleteOp;
 import static com.umar.simply.jdbc.meta.Column.column;
+
+import com.umar.simply.jdbc.dml.operations.api.DeleteFunction;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ public class DeleteOpTest {
 
     @Test
     public void whereEq(){
-        DeleteOp operation = DeleteOp.create();
+        DeleteFunction operation = DeleteOp.create();
         operation.DELETE_FROM("PERSON").WHERE().EQ(eq(column("firstname"), "abc"));
         String result = operation.getSQL();
         String expected = "DELETE FROM PERSON  WHERE firstname =?";
@@ -24,7 +26,7 @@ public class DeleteOpTest {
 
     @Test
     public void deleteDuplicates(){
-        DeleteOp sql = DeleteOp.create().DELETE_FROM("contacts t1")
+        DeleteFunction sql = DeleteOp.create().DELETE_FROM("contacts t1")
                 .INNER().JOIN().TABLE("contacts t2")
                 .WHERE().COLUMN("t1.id").LT().COLUMN("t2.id").AND().COLUMN("t1.email").EQ("t2.email");
         String result = sql.getSQL();

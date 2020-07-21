@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.dml.nojdbc;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.person.Person;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
 
@@ -15,6 +16,8 @@ import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public class SqlQueryTest {
     @Test
     public void selectDistinctColumn(){
-        SelectOp select = create();
+        SelectFunction select = create();
         select.SELECT()
                 .DISTINCT(CUSTOMER_COUNTRY)
                 .FROM(TBL_CUSTOMERS)
@@ -36,7 +39,7 @@ public class SqlQueryTest {
 
     @Test
     public void selectCountDistinctColumn(){
-        SelectOp sql = create();
+        SelectFunction sql = create();
         sql.SELECT().COUNT(create().DISTINCT("country")).FROM("customer");
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(DISTINCT country) FROM customer";
@@ -45,30 +48,30 @@ public class SqlQueryTest {
 
     @Test
     public void selectMySQLTop10() {
-        SelectOp sql = create();
-        sql.SELECT().column(asList(CUSTOMER_COUNTRY, CUSTOMER_CITY)).FROM(TBL_CUSTOMERS).AS("C1").LIMIT(10);
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN(asList(CUSTOMER_COUNTRY, CUSTOMER_CITY)).FROM(TBL_CUSTOMERS).AS("C1").LIMIT(10);
         String result = sql.getSQL();
         String expected = "SELECT country,city FROM customer AS C1  LIMIT ?";
         Assertions.assertEquals(result,expected);
         List<ColumnValue<?>>params = sql.getValues();
-        Assertions.assertTrue(params.size() == 1);
+        Assertions.assertEquals(1, params.size());
     }
 
     @Test
     public void selectMySQLOffset6To10() {
-        SelectOp sql = create();
-        sql.SELECT().column(asList(CUSTOMER_COUNTRY, CUSTOMER_CITY)).FROM(TBL_CUSTOMERS).LIMIT(5).OFFSET(5);
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN(asList(CUSTOMER_COUNTRY, CUSTOMER_CITY)).FROM(TBL_CUSTOMERS).LIMIT(5).OFFSET(5);
         String result = sql.getSQL();
         String expected = "SELECT country,city FROM customer LIMIT ? OFFSET ?";
         Assertions.assertEquals(result,expected);
         List<ColumnValue<?>>params = sql.getValues();
-        Assertions.assertTrue(params.size() == 2);
+        Assertions.assertEquals(2, params.size());
     }
 
     @Test
     public void selectAll(){
-        SelectOp sql = create();
-        sql.SELECT().all().FROM("customer c");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM("customer c");
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer c";
         Assertions.assertEquals(result,expected);
@@ -76,9 +79,9 @@ public class SqlQueryTest {
 
     @Test
     public void in() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_CUSTOMERS)
-                .WHERE().column(asList(CUSTOMER_COUNTRY)).IN(asList(set("Germany"), set("US")));
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_CUSTOMERS)
+                .WHERE().COLUMN(singletonList(CUSTOMER_COUNTRY)).IN(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         //"SELECT * FROM customer c1 WHERE country IN ('Germany','US')";
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
@@ -89,9 +92,9 @@ public class SqlQueryTest {
 
     @Test
     public void inUsingSchemaVars() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_CUSTOMERS)
-                .WHERE().column(asList(CUSTOMER_COUNTRY))
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_CUSTOMERS)
+                .WHERE().COLUMN(singletonList(CUSTOMER_COUNTRY))
                 .IN(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
@@ -102,8 +105,8 @@ public class SqlQueryTest {
 
     @Test
     public void whereInUsingExSchemaVars() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_CUSTOMERS).WHERE().column(CUSTOMER_COUNTRY).IN(asList(set("Germany"), set("US")));
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_CUSTOMERS).WHERE().COLUMN(CUSTOMER_COUNTRY).IN(asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country IN (?,?)";
         List<ColumnValue<?>> params = sql.getValues();
@@ -113,9 +116,9 @@ public class SqlQueryTest {
 
    @Test
     public void notIn() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_CUSTOMERS)
-                .WHERE().column(CUSTOMER_COUNTRY).NOT().IN(
+       SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_CUSTOMERS)
+                .WHERE().COLUMN(CUSTOMER_COUNTRY).NOT().IN(
                 asList(set("Germany"), set("US")));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE country NOT  IN (?,?)";
@@ -126,10 +129,10 @@ public class SqlQueryTest {
 
     @Test
     public void notInSubQuery() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_CUSTOMERS)
-                .WHERE().column(CUSTOMER_FIRST_NAME).NOT().IN(
-                create().SELECT().column(PERSON_FIRST_NAME).AS("p1.firstname").FROM(TBL_PERSON).AS("p1"));
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_CUSTOMERS)
+                .WHERE().COLUMN(CUSTOMER_FIRST_NAME).NOT().IN(
+                create().SELECT().COLUMN(PERSON_FIRST_NAME).AS("p1.firstname").FROM(TBL_PERSON).AS("p1"));
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer WHERE first_name NOT  IN (SELECT firstname AS p1.firstname  FROM person AS p1)";
         Assertions.assertEquals(result,expected);
@@ -137,7 +140,7 @@ public class SqlQueryTest {
 
     @Test
     public void avg() {
-        SelectOp sql = create();
+        SelectFunction sql = create();
         sql.SELECT().AVG(PRODUCT_UNIT_PRICE_COL).FROM(TBL_PRODUCT);
         String result = sql.getSQL();
         String expected = "SELECT  AVG(unit_price) FROM product";
@@ -146,7 +149,7 @@ public class SqlQueryTest {
     
     @Test
     public void max() {
-        SelectOp sql = create();
+        SelectFunction sql = create();
         sql.SELECT().MAX(PRODUCT_UNIT_PRICE_COL).FROM(TBL_PRODUCT);
         String result = sql.getSQL();
         String expected = "SELECT  MAX(unit_price) FROM product";
@@ -155,7 +158,7 @@ public class SqlQueryTest {
 
     @Test
     public void min() {
-        SelectOp sql = create();
+        SelectFunction sql = create();
         sql.SELECT().MIN(column("price")).FROM("product");
         String result = sql.getSQL();
         String expected = "SELECT  MIN(price) FROM product";
@@ -164,7 +167,7 @@ public class SqlQueryTest {
 
     @Test
     public void sum(){
-        SelectOp sql = create();
+        SelectFunction sql = create();
         sql.SELECT().SUM(PRODUCT_UNIT_PRICE_COL).FROM(TBL_PRODUCT);
         String result = sql.getSQL();
         String expected = "SELECT  SUM(unit_price) FROM product";
@@ -173,8 +176,8 @@ public class SqlQueryTest {
 
     @Test
     public void asTest() {
-        SelectOp sql = create();
-        sql.SELECT().column(PERSON_FIRST_NAME).AS("NAME").FROM(TBL_PERSON);
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN(PERSON_FIRST_NAME).AS("NAME").FROM(TBL_PERSON);
         String result = sql.getSQL();
         String expected = "SELECT firstname AS NAME  FROM person";
         Assertions.assertEquals(result,expected);
@@ -182,8 +185,8 @@ public class SqlQueryTest {
 
     @Test
     public void likeStartingWith_a() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a%");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("a%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -193,8 +196,8 @@ public class SqlQueryTest {
 
     @Test
     public void likeEndingWith_a() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("%a");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("%a");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -204,8 +207,8 @@ public class SqlQueryTest {
 
     @Test
     public void nameHaving_or() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("%or%");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("%or%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -215,8 +218,8 @@ public class SqlQueryTest {
 
     @Test
     public void nameHaving_r_InSecondPos() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("_r%");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("_r%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -226,8 +229,8 @@ public class SqlQueryTest {
 
     @Test
     public void nameStartingWith_a_AndAtleast3Chars() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a_%_%");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("a_%_%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -237,8 +240,8 @@ public class SqlQueryTest {
 
     @Test
     public void nameStartsWith_a_AndEndsWith_o() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).LIKE("a%o");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).LIKE("a%o");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -248,8 +251,8 @@ public class SqlQueryTest {
 
     @Test
     public void notStartWith_a() {
-        SelectOp sql = create();
-        sql.SELECT().all().FROM(TBL_PERSON).WHERE().column(PERSON_FIRST_NAME).NOT().LIKE("a%");
+        SelectFunction sql = create();
+        sql.SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().COLUMN(PERSON_FIRST_NAME).NOT().LIKE("a%");
         String result = sql.getSQL();
         String expected = "SELECT * FROM person WHERE firstname NOT  LIKE ?";
         List<ColumnValue<?>> params = sql.getValues();
@@ -259,7 +262,7 @@ public class SqlQueryTest {
 
     @Test
     public void betweenTextValues(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_PRODUCT).WHERE().column(PRODUCT_NAME_COL)
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_PRODUCT).WHERE().COLUMN(PRODUCT_NAME_COL)
                 .BETWEEN(asList(set("Carnarvon Tigers"),set("Mozzarella di Giovanni")));
         String result = sql.getSQL();
         //SELECT * FROM product WHERE product_name BETWEEN 'Carnarvon Tigers' AND 'Mozzarella di Giovanni'
@@ -271,9 +274,9 @@ public class SqlQueryTest {
 
    @Test
     public void betweenWithIn(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_PRODUCT).WHERE(create().column(PRODUCT_UNIT_PRICE_COL)
+       SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_PRODUCT).WHERE(create().COLUMN(PRODUCT_UNIT_PRICE_COL)
                 .BETWEEN(asList(set(10), set(20))))
-                .AND().NOT().column(PRODUCT_CAT_ID_COL).IN(asList(set(1), set(2), set(3)));
+                .AND().NOT().COLUMN(PRODUCT_CAT_ID_COL).IN(asList(set(1), set(2), set(3)));
         String result = sql.getSQL();
         //"SELECT * FROM product WHERE (unit_price BETWEEN '10' AND '20') AND  NOT category_id IN ('1','2','3')"
         String expected = "SELECT * FROM product WHERE (unit_price BETWEEN ? AND ?) AND  NOT category_id IN (?,?,?)";
@@ -283,8 +286,8 @@ public class SqlQueryTest {
     }
     @Test
     public void notBetween(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_PRODUCT)
-                .WHERE().column(PRODUCT_UNIT_PRICE_COL).NOT().BETWEEN(asList(set(10),set(20)));
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_PRODUCT)
+                .WHERE().COLUMN(PRODUCT_UNIT_PRICE_COL).NOT().BETWEEN(asList(set(10),set(20)));
         String result = sql.getSQL();
         String expected = "SELECT * FROM product WHERE unit_price NOT  BETWEEN ? AND ?";
         Assertions.assertEquals(result,expected);
@@ -294,8 +297,8 @@ public class SqlQueryTest {
 
     @Test
     public void isNull(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_PRODUCT)
-                .WHERE().column(PRODUCT_NAME_COL).IS().values(set(null));
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_PRODUCT)
+                .WHERE().COLUMN(PRODUCT_NAME_COL).IS().VALUES(set(null));
         String result = sql.getSQL();
         String expected = "SELECT * FROM product WHERE product_name IS ?";
         Assertions.assertEquals(result,expected);
@@ -305,9 +308,9 @@ public class SqlQueryTest {
 
     @Test
     public void orderBy(){
-        SelectOp sql = create().SELECT(asList(PRODUCT_ID_COL, PRODUCT_NAME_COL, PRODUCT_UNIT_PRICE_COL))
-                .FROM(TBL_PRODUCT).WHERE().column(PRODUCT_UNIT_PRICE_COL).EQ().values(set(20))
-                .ORDERBY().column(PRODUCT_NAME_COL);
+        SelectFunction sql = create().SELECT(asList(PRODUCT_ID_COL, PRODUCT_NAME_COL, PRODUCT_UNIT_PRICE_COL))
+                .FROM(TBL_PRODUCT).WHERE().COLUMN(PRODUCT_UNIT_PRICE_COL).EQ().VALUES(set(20))
+                .ORDERBY().COLUMN(PRODUCT_NAME_COL);
         String result = sql.getSQL();
         String expected = "SELECT id,product_name,unit_price FROM product WHERE unit_price = ? ORDER BY product_name";
         Assertions.assertEquals(result,expected);
@@ -317,7 +320,7 @@ public class SqlQueryTest {
 
     @Test
     public void groupBy(){
-        SelectOp sql = create().SELECT().COUNT(CUSTOMER_ID)
+        SelectFunction sql = create().SELECT().COUNT(CUSTOMER_ID)
                 .GROUP_WITH(CUSTOMER_COUNTRY)
                 .FROM(TBL_CUSTOMERS).AS("c1").GROUPBY(CUSTOMER_COUNTRY);
         String result = sql.getSQL();
@@ -329,7 +332,7 @@ public class SqlQueryTest {
     
     @Test
     public void groupByOrderByDesc(){
-        SelectOp sql = create()
+        SelectFunction sql = create()
                 .SELECT().COUNT(column("id"))
                 .GROUP_WITH(column("country"))
                 .FROM("customer")
@@ -344,12 +347,12 @@ public class SqlQueryTest {
     
     @Test
     public void subQuerySelectOrderByDesc(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_CUSTOMERS)
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_CUSTOMERS)
                 .LEFT().JOIN(create()
-                .SELECT().SUM(ORDER_TOTAL_AMT).AS("TOTAL_AMOUNT").GROUP_WITH(asList(ORDER_CUSTOMERID))
+                .SELECT().SUM(ORDER_TOTAL_AMT).AS("TOTAL_AMOUNT").GROUP_WITH(singletonList(ORDER_CUSTOMERID))
                 .FROM(TBL_ORDERS).GROUPBY(ORDER_CUSTOMERID))
                 .AS("CUSTOMER_TOTALS")
-                .ON().column(CUSTOMER_ID).EQ("CUSTOMER_TOTALS.CUSTOMER_ID")
+                .ON().COLUMN(CUSTOMER_ID).EQ("CUSTOMER_TOTALS.CUSTOMER_ID")
                 .ORDERBY().COLUMN("CUSTOMER_TOTALS.TOTAL_AMOUNT").DESC();
         String result = sql.getSQL();
         String expected = "SELECT * FROM customer LEFT JOIN (SELECT  SUM(total_amount) AS TOTAL_AMOUNT ,customer_id FROM orders GROUP BY customer_id ) AS CUSTOMER_TOTALS  ON id = CUSTOMER_TOTALS.CUSTOMER_ID ORDER BY CUSTOMER_TOTALS.TOTAL_AMOUNT DESC";
@@ -358,10 +361,10 @@ public class SqlQueryTest {
 
     @Test
     public void totalAmtOrderedForEachCustomer(){
-        SelectOp sql = create().SELECT().SUM(ORDER_TOTAL_AMT).GROUP_WITH(asList(CUSTOMER_FIRST_NAME,CUSTOMER_LAST_NAME))
+        SelectFunction sql = create().SELECT().SUM(ORDER_TOTAL_AMT).GROUP_WITH(asList(CUSTOMER_FIRST_NAME,CUSTOMER_LAST_NAME))
                 .FROM(TBL_ORDERS)
                 .JOIN().TABLE(TBL_CUSTOMERS).AS("C")
-                .ON().column(ORDER_CUSTOMERID).EQ().column(column("C.id"))
+                .ON().COLUMN(ORDER_CUSTOMERID).EQ().COLUMN(column("C.id"))
                 .GROUPBY(asList(CUSTOMER_FIRST_NAME,CUSTOMER_LAST_NAME))
                 .ORDERBY().SUM(ORDER_TOTAL_AMT)
                 .DESC();
@@ -375,7 +378,7 @@ public class SqlQueryTest {
      */
     @Test
     public void havingCount(){
-        SelectOp sql = create()
+        SelectFunction sql = create()
                 .SELECT().COUNT(column("C.id")).GROUP_WITH(column("C.country"))
                 .FROM(TBL_CUSTOMERS).AS("C")
                 .GROUPBY(column("C.country"))
@@ -384,14 +387,14 @@ public class SqlQueryTest {
         String expected = "SELECT  COUNT(C.id), C.country FROM customer AS C  GROUP BY C.country HAVING  COUNT(C.id) > ?";
         Assertions.assertEquals(result,expected);
         List<ColumnValue<?>> params = sql.getValues();
-        ColumnValue cv0 = params.get(0);
-        Assertions.assertTrue(10 == (Integer) cv0.getValue());
+        ColumnValue<?> cv0 = params.get(0);
+        Assertions.assertEquals(10, (int) (Integer) cv0.getValue());
     }
 
     @Test
     public void listAllProductsStartingWithCha_or_Chan(){
-        SelectOp sql = create().SELECT().column(asList(PRODUCT_ID_COL, PRODUCT_NAME_COL, PRODUCT_UNIT_PRICE_COL))
-                .FROM(TBL_PRODUCT).WHERE().column(PRODUCT_NAME_COL).LIKE("Cha_").OR().column(PRODUCT_NAME_COL).LIKE("Chan_");
+        SelectFunction sql = create().SELECT().COLUMN(asList(PRODUCT_ID_COL, PRODUCT_NAME_COL, PRODUCT_UNIT_PRICE_COL))
+                .FROM(TBL_PRODUCT).WHERE().COLUMN(PRODUCT_NAME_COL).LIKE("Cha_").OR().COLUMN(PRODUCT_NAME_COL).LIKE("Chan_");
         String result = sql.getSQL();
         String expected = "SELECT id,product_name,unit_price FROM product WHERE product_name LIKE ? OR product_name LIKE ?";
         Assertions.assertEquals(result, expected);
@@ -401,10 +404,10 @@ public class SqlQueryTest {
 
     @Test
     public void selfJoin(){
-        /**Match customers that are from the same city and country*/
-        
-        SelectOp sql = SelectOp.create().SELECT()
-                .column(asList(column("c1.first_name"), column("c1.last_name"),
+        /*Match customers that are from the same city and country*/
+
+        SelectFunction sql = SelectOp.create().SELECT()
+                .COLUMN(asList(column("c1.first_name"), column("c1.last_name"),
                         column("c2.first_name"), column("c2.last_name"),
                         column("c2.city"), column("c2.country")))
                 .FROM(asList(Table.AS(TBL_CUSTOMERS.getTableName(), "c1"),Table.AS(TBL_CUSTOMERS.getTableName(), "c2")))
@@ -421,7 +424,7 @@ public class SqlQueryTest {
     @Test
     public void union(){
 
-        SelectOp sql = SelectOp.create().SELECT().COLUMN("c.*").FROM("customer c")
+        SelectFunction sql = SelectOp.create().SELECT().COLUMN("c.*").FROM("customer c")
                 .UNION()
                 .SELECT().COLUMN("s.*").FROM("customer c1");
         String result = sql.getSQL();
@@ -432,7 +435,7 @@ public class SqlQueryTest {
     @Test
     public void intersectUsingInnerJoin(){
         /*Simulate INTERSECT operator IN MySQL USING DISTINCT AND INNER JOIN*/
-        SelectOp sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").INNER().JOIN().TABLE("t2").USING("id");
+        SelectFunction sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").INNER().JOIN().TABLE("t2").USING("id");
         String result = sql.getSQL();
         String expected = "SELECT  DISTINCT id FROM t1 INNER JOIN t2 USING(id)";
         Assertions.assertEquals(result,expected);
@@ -441,7 +444,7 @@ public class SqlQueryTest {
     @Test
     public void insersectUsingInAndSubQuery(){
         /*Simulate INTERSECT operator IN MySQL USING IN AND Subquery*/
-        SelectOp sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").WHERE()
+        SelectFunction sql = SelectOp.create().SELECT().DISTINCT().COLUMN("id").FROM("t1").WHERE()
                 .COLUMN("id").IN(create().SELECT().COLUMN("id").FROM("t2"));
         String result = sql.getSQL();
         String expected = "SELECT  DISTINCT id FROM t1 WHERE id IN (SELECT id FROM t2)";
@@ -450,7 +453,7 @@ public class SqlQueryTest {
 
     @Test
     public void minus(){
-        SelectOp sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").MINUS().SELECT().COLUMN("id").FROM("t2");
+        SelectFunction sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").MINUS().SELECT().COLUMN("id").FROM("t2");
         String result = sql.getSQL();
         String expected = "SELECT id FROM t1 MINUS SELECT id FROM t2";
         Assertions.assertEquals(result,expected);
@@ -458,7 +461,7 @@ public class SqlQueryTest {
 
     @Test
     public void minusSimulationUsingJoin(){
-        SelectOp sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").LEFT().JOIN().TABLE("t2").USING("id")
+        SelectFunction sql = SelectOp.create().SELECT().COLUMN("id").FROM("t1").LEFT().JOIN().TABLE("t2").USING("id")
                 .WHERE().COLUMN("t2.id").IS().NULL();
         String result = sql.getSQL();
         String expected = "SELECT id FROM t1 LEFT JOIN t2 USING(id) WHERE t2.id IS  NULL";
@@ -467,8 +470,8 @@ public class SqlQueryTest {
 
     @Test
     public void findDuplicates(){
-        SelectOp sql = SelectOp.create().SELECT().COUNT(PERSON_EMAIL).GROUP_WITH(PERSON_EMAIL)
-                .FROM(TBL_PERSON).GROUPBY(PERSON_EMAIL).HAVING().COUNT(PERSON_EMAIL).GT().values(set(1));
+        SelectFunction sql = SelectOp.create().SELECT().COUNT(PERSON_EMAIL).GROUP_WITH(PERSON_EMAIL)
+                .FROM(TBL_PERSON).GROUPBY(PERSON_EMAIL).HAVING().COUNT(PERSON_EMAIL).GT().VALUES(set(1));
         String result = sql.getSQL();
         String expected = "SELECT  COUNT(email), email FROM person GROUP BY email HAVING  COUNT(email) > ?";
         Assertions.assertEquals(result,expected);
@@ -478,7 +481,7 @@ public class SqlQueryTest {
 
     @Test
     public void crossJoin(){
-        SelectOp sql = SelectOp.create().SELECT().all().FROM(asList(TBL_PRODUCT, TBL_ORDERS));
+        SelectFunction sql = SelectOp.create().SELECT().COLUMN("*").FROM(asList(TBL_PRODUCT, TBL_ORDERS));
         String result = sql.getSQL();
         String expected = "SELECT * FROM product,orders";
         Assertions.assertEquals(result,expected);
@@ -486,10 +489,10 @@ public class SqlQueryTest {
 
     @Test
     public void testExists(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_SUPPLIER).AS("s1").WHERE()
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_SUPPLIER).AS("s1").WHERE()
                 .EXISTS(
                         create().SELECT(PRODUCT_NAME_COL).AS("prd_name").FROM(TBL_PRODUCT)
-                        .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().values(set(20))
+                        .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().VALUES(set(20))
                 );
         String result = sql.getSQL();
         String expected = "SELECT * FROM supplier AS s1  WHERE  EXISTS (SELECT product_name AS prd_name  FROM product WHERE supplier_id = s1.id AND unit_price < ? )";
@@ -500,10 +503,10 @@ public class SqlQueryTest {
     
     @Test
     public void testNotExists(){
-        SelectOp sql = create().SELECT().all().FROM(TBL_SUPPLIER).AS("s1").WHERE().NOT()
+        SelectFunction sql = create().SELECT().COLUMN("*").FROM(TBL_SUPPLIER).AS("s1").WHERE().NOT()
                 .EXISTS(
                         create().SELECT(PRODUCT_NAME_COL).FROM(TBL_PRODUCT).AS("prd1")
-                        .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().values(set(20))
+                        .WHERE(PRODUCT_SUPPLIERID_COL).EQ(column("s1.id")).AND(PRODUCT_UNIT_PRICE_COL).LT().VALUES(set(20))
                 );
         String result = sql.getSQL();
         String expected = "SELECT * FROM supplier AS s1  WHERE  NOT  EXISTS (SELECT product_name FROM product AS prd1  WHERE supplier_id = s1.id AND unit_price < ? )";
@@ -515,10 +518,10 @@ public class SqlQueryTest {
     @Test()
     public void shouldFail() {
         Exception assertThrows = Assertions.assertThrows(RuntimeException.class, ()->{
-            create().SELECT().all().FROM(TBL_SUPPLIER).WHERE().NOT()
+            create().SELECT().COLUMN("*").FROM(TBL_SUPPLIER).WHERE().NOT()
                     .EXISTS(
                             create().SELECT(PRODUCT_NAME_COL).FROM(TBL_PRODUCT)
-                                    .WHERE(PRODUCT_SUPPLIERID_COL).EQ(SUPPLIER_ID_COL).AND(PRODUCT_UNIT_PRICE_COL).LT().values(set(new Person()))
+                                    .WHERE(PRODUCT_SUPPLIERID_COL).EQ(SUPPLIER_ID_COL).AND(PRODUCT_UNIT_PRICE_COL).LT().VALUES(set(new Person()))
                     );
         },"Invalid type of value passed");
         Assertions.assertTrue(assertThrows.getMessage().contains("Invalid type of value passed"));
@@ -530,7 +533,7 @@ public class SqlQueryTest {
      */
     @Test
     public void joinWithBraces() {
-        SelectOp sql = create().SELECT().COUNT("*").AS("CNT").FROM("STORE_SALES").AS("SS")
+        SelectFunction sql = create().SELECT().COUNT("*").AS("CNT").FROM("STORE_SALES").AS("SS")
                 .JOIN(Table.AS("HOUSEHOLD_DEMOGRAPHICS", "HD"))
                 .ON(create().COLUMN("SS.SS_HDEMO_SK").EQ("HD.HD_DEMO_SK"))
                 .JOIN(Table.AS("TIME_DIM", "T"))
@@ -555,8 +558,8 @@ public class SqlQueryTest {
     
     @Test
     public void testIfRecordExists() {
-        SelectOp sql = create().SELECT().EXISTS(
-                create().SELECT().all().FROM(TBL_PRODUCT)
+        SelectFunction sql = create().SELECT().EXISTS(
+                create().SELECT().COLUMN("*").FROM(TBL_PRODUCT)
                         .JOIN(TBL_SUPPLIER).USING(PRODUCT_SUPPLIERID_COL)
                         .WHERE().EQ(eq(PRODUCT_NAME_COL, "abcd"))
         );
@@ -573,10 +576,10 @@ public class SqlQueryTest {
     
     @Test
     public void testExecute2ndQueryIfFirstQueryHasEmpyResult() {
-        SelectOp sql = create().WITH("r").AS(
-                create().SELECT().all().FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"INDIA"))
-        ).SELECT().all().FROM("r").UNION().ALL().SELECT().all().FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"US")
-        ).AND().NOT().EXISTS(create().SELECT().all().FROM("r"));
+        SelectFunction sql = create().WITH("r").AS(
+                create().SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"INDIA"))
+        ).SELECT().COLUMN("*").FROM("r").UNION().ALL().SELECT().COLUMN("*").FROM(TBL_PERSON).WHERE().EQ(eq(PERSON_COUNTRY,"US")
+        ).AND().NOT().EXISTS(create().SELECT().COLUMN("*").FROM("r"));
         String result = sql.getSQL();
         String expected = "WITH r AS (SELECT * FROM person WHERE country =?) SELECT * FROM r UNION  ALL SELECT * FROM person WHERE country =?  AND  NOT  EXISTS (SELECT * FROM r )";
         List<ColumnValue<?>> params = sql.getValues();
@@ -586,7 +589,7 @@ public class SqlQueryTest {
 
     @Test
     public void givenParametersShouldGenerateValidInClauseForJPA() {
-        SelectOp sql = create().SELECT().COLUMN("rule").FROM("BusinessRule rule").WHERE().COLUMN("rule.type").IN(":operands");
+        SelectFunction sql = create().SELECT().COLUMN("rule").FROM("BusinessRule rule").WHERE().COLUMN("rule.type").IN(":operands");
         String result = sql.getSQL();
         Assertions.assertEquals("SELECT rule FROM BusinessRule rule WHERE rule.type IN :operands", result);
     }

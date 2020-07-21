@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.dml.operations;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import java.util.LinkedList;
@@ -9,7 +10,7 @@ import java.util.List;
  * Represents a database's <b>SELECT</b> operation
  * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
-public class SelectOp extends AbstractOp<SelectOp> {
+public class SelectOp extends AbstractOp<SelectOp> implements SelectFunction {
 
     private final StringBuilder sb = new StringBuilder();
     private final List<ColumnValue<?>> values = new LinkedList<>();
@@ -21,18 +22,8 @@ public class SelectOp extends AbstractOp<SelectOp> {
     public static SelectOp create() {
         return new SelectOp();
     }
-
-    /**
-     * SQL all. Its used in conjunction with SELECT operation to return all the columns
-     *
-     * @return Returns {@link SelectOp}
-     */
-    public SelectOp all() {
-        op().append("*");
-        return this;
-    }
     
-    public SelectOp all(List<String> aliases) {
+    public SelectOp ALL(List<String> aliases) {
         int len = aliases.size();
         int cnt = 1;
         for(String alias:aliases) {
@@ -50,7 +41,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param values The COLUMN values to fill
      * @return Returns {@link SelectOp}
      */
-    public SelectOp values(ColumnValue<?>... values) {
+    public SelectOp VALUES(ColumnValue<?>... values) {
         int len = values.length;
         int cnt = 1;
         for (ColumnValue<?> value : values) {
@@ -70,7 +61,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param columns The columns to fetch
      * @return Returns {@link SelectOp}
      */
-    public SelectOp column(List<Column<?>> columns) {
+    public SelectOp COLUMN(List<Column<?>> columns) {
         int len = columns.size();
         int cnt = 1;
         for (Column<?> column : columns) {
@@ -88,7 +79,7 @@ public class SelectOp extends AbstractOp<SelectOp> {
      * @param column The columns to fetch
      * @return Returns {@link SelectOp}
      */
-    public SelectOp column(Column<?> column) {
+    public SelectOp COLUMN(Column<?> column) {
         op().append(column);
         return this;
     }

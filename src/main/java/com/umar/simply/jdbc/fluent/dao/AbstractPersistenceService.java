@@ -2,6 +2,7 @@ package com.umar.simply.jdbc.fluent.dao;
 
 import com.umar.simply.jdbc.dml.operations.AbstractOp;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
+import com.umar.simply.jdbc.dml.operations.api.SqlFunctions;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
@@ -13,14 +14,14 @@ import com.umar.simply.jdbc.ResultSetMapper;
 
 public abstract class AbstractPersistenceService<T> {
     private final Connection connection;
-    
+
     public AbstractPersistenceService(final Connection connection) {
         this.connection = connection;
     }
 
     protected Optional<T> findById(Table table, ResultSetMapper<T> rowMapper, ColumnValue<?> idColumn){
         final List<T> result = new ArrayList<>(1);
-        SelectOp sql = SelectOp.create().SELECT().all().FROM(table).WHERE().EQ(idColumn);
+        SelectOp sql = SelectOp.create().SELECT().COLUMN("*").FROM(table).WHERE().EQ(idColumn);
         getMappedResult(rowMapper, result, sql);
         return result.size() > 0 ? Optional.of(result.get(0)) : Optional.empty();
     }
@@ -34,7 +35,7 @@ public abstract class AbstractPersistenceService<T> {
         return vals;
     }
 
-    protected void getMappedResult(ResultSetMapper<T> rowMapper, List<T> result, AbstractOp sql) {
+    protected void getMappedResult(ResultSetMapper<T> rowMapper, List<T> result, SqlFunctions<? extends AbstractOp> sql) {
         try(PreparedStatement ps = createPreparedStatement(sql);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
@@ -45,7 +46,7 @@ public abstract class AbstractPersistenceService<T> {
         }
     }
 
-    int getSavedResult(AbstractOp sql) {
+    int getSavedResult(SqlFunctions<? extends AbstractOp> sql) {
         int key = -1;
         try(PreparedStatement ps = createPreparedStatement(sql)){
             ps.executeUpdate();
@@ -62,7 +63,7 @@ public abstract class AbstractPersistenceService<T> {
         }
     }
 
-    private PreparedStatement createPreparedStatement(AbstractOp sql) throws SQLException {
+    private PreparedStatement createPreparedStatement(SqlFunctions<? extends AbstractOp> sql) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(sql.getSQL(), Statement.RETURN_GENERATED_KEYS);
         sql.setParametersOfPreparedStatement(ps);
         return ps;

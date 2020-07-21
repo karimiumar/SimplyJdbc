@@ -32,7 +32,6 @@ public class ProductSaveService implements FluentProductSaveService {
     @Override
     public Product execute() {
         SavePersistenceService<Product> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Product saved = sps.save(TBL_PRODUCT).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
-        return saved;
+        return sps.save(TBL_PRODUCT).withValues(newValues).using(PRODUCT_ROW_MAPPER).execute();
     }
 }

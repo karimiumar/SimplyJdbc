@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.fluent.dao.person;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
 import com.umar.simply.jdbc.fluent.dao.JdbcUtilService;
 import com.umar.simply.jdbc.fluent.dao.person.contract.FluentDeletePersonService;
 import com.umar.simply.jdbc.dml.operations.SelectOp;
@@ -25,7 +26,7 @@ public class DeletePersonService implements FluentDeletePersonService {
     }
 
     @Override
-    public DeletePersonService where(SelectOp op) {
+    public DeletePersonService where(SelectFunction op) {
         dps.where(op);
         return this;
     }

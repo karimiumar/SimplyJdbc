@@ -1,5 +1,6 @@
 package com.umar.simply.jdbc.dml.operations;
 
+import com.umar.simply.jdbc.dml.operations.api.InsertFunction;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Table;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Represents a database's <b>INSERT</b> operation
  * @author Mohammad Umar Ali Karimi (karimiumar@gmail.com)
  */
-public class InsertOp extends AbstractOp<InsertOp> {
+public class InsertOp extends AbstractOp<InsertOp> implements InsertFunction {
     private final StringBuilder sb = new StringBuilder();
     private final List<ColumnValue<?>> values = new LinkedList<>();
 

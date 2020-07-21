@@ -33,7 +33,6 @@ public class PersonSaveService implements FluentPersonSaveService {
     @Override
     public Person execute() {
         SavePersistenceService<Person> sps = new SavePersistenceService<>(JdbcUtilService.getConnection());
-        Person saved = sps.save(TBL_PERSON).withValues(newValues).using(PERSON_ROW_MAPPER).execute();
-        return saved;
+        return sps.save(TBL_PERSON).withValues(newValues).using(PERSON_ROW_MAPPER).execute();
     }
 }

@@ -1,5 +1,7 @@
 package com.umar.simply.jdbc.dml.operations;
 
+import com.umar.simply.jdbc.dml.operations.api.SelectFunction;
+import com.umar.simply.jdbc.dml.operations.api.SqlFunctions;
 import com.umar.simply.jdbc.meta.Column;
 import com.umar.simply.jdbc.meta.ColumnValue;
 import com.umar.simply.jdbc.meta.Index;
@@ -264,7 +266,7 @@ public abstract class AbstractOp<T extends AbstractOp<T>> implements SqlFunction
      * @return Returns an instance of {@link AbstractOp} object
      */
     @Override
-    public T WHERE(SelectOp op) {
+    public T WHERE(SelectFunction op) {
         op().append(" WHERE (");
         op().append(op);
         op().append(")");

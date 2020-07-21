@@ -6,6 +6,8 @@ import static com.umar.simply.jdbc.fluent.dao.supplier.db.tables.ProductTable.*;
 import static com.umar.simply.jdbc.meta.ColumnValue.*;
 
 import static java.util.Arrays.asList;
+
+import com.umar.simply.jdbc.dml.operations.api.InsertFunction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +24,7 @@ public class InsertOpTest {
 
     @Test
     public void insertIntoProduct() {
-        InsertOp sql = InsertOp.create();
+        InsertFunction sql = InsertOp.create();
         sql.INTO_TABLE(TBL_PRODUCT).VALUES(asList(
                 set(PRODUCT_NAME_COL,"Nike Shoes"),
                 set(PRODUCT_SUPPLIERID_COL, 2),
@@ -39,7 +41,7 @@ public class InsertOpTest {
 
     @Test
     public void insertIntoPerson(){
-        InsertOp sql = InsertOp.create();
+        InsertFunction sql = InsertOp.create();
         sql.INTO_TABLE(TBL_PERSON).VALUES(asList(
                 set(PERSON_FIRST_NAME,"Jasmine"),
                 set(PERSON_LAST_NAME, "Black"), 
