@@ -50,6 +50,15 @@ public interface SelectFunction extends SqlFunctions<SelectOp> {
     SelectOp COLUMN(String column);
 
     /**
+     * A utility function to handle special cases when the caller has to create
+     * dynamic conditions and doesn't specifically knows the column names to use.
+     *
+     * @param condition The condition in String format
+     * @return Returns {@link SelectOp}
+     */
+    SelectOp CONDITION(String condition);
+
+    /**
      * This returns the resulting SQL
      * @return Returns the resulting SQL
      */

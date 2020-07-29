@@ -96,6 +96,12 @@ public class SelectOp extends AbstractOp<SelectOp> implements SelectFunction {
     }
 
     @Override
+    public SelectOp CONDITION(String condition) {
+        op().append(condition);
+        return this;
+    }
+
+    @Override
     public String getSQL() {
         final String sql = op().toString().trim();
         op().setLength(0);
