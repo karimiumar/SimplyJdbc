@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.0.206</h2.version>
     </properties>
     <dependencies>
         <dependency>
